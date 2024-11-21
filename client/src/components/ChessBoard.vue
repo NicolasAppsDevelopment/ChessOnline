@@ -1,36 +1,19 @@
 <template>
-   <table class="table">
-      <thead>
-          <tr>
-              <th v-for="(column, index) in columns" :key="index"> {{column}}</th>
-          </tr>
-      </thead>
+    <!--
+    <p>v-model="chessBoard.board"</p>
+    <table class="table">
       <tbody>
-          <tr v-for="(item, index) in items" :key="index">
+          <tr v-for="(item, index) in chessBoard.board" :key="index">
               <td v-for="(column, indexColumn) in columns" :key="indexColumn">{{item[column]}}</td>
           </tr>
       </tbody>
     </table>
+  -->
 </template>
 
-<script setup>
-
-
-items: [
-        {
-            'id':'1',
-            'title': 'hello',
-            'description': 'ok ok',
-            'created_date': '2018-09-09'
-        },
-        {
-            'id':'2',
-            'title': 'hello 2',
-            'description': 'ok ok 2',
-            'created_date': '2018-10-09'
-        }
-    ],
-columns: [ 'id', 'title', 'description', 'created_date']
+<script setup lang="ts">
+import type { Chessboard } from '../class/chessboard';
+const chessBoard = defineModel<Chessboard>('chessboard', {required : true});
 
 </script>
 
