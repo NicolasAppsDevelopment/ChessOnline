@@ -1,6 +1,6 @@
-import { Piece } from "./piece";
+import { Piece, Color } from "./piece";
 export class Knight extends Piece {
-    constructor(color: boolean, x: number, y:number) {
+    constructor(color: Color, x: number, y:number) {
       super("Knight", color, x, y);
     }
     moveLightLeftHeavyUp() {
