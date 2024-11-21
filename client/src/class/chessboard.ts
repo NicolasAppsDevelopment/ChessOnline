@@ -11,9 +11,9 @@ export class Chessboard {
 
   constructor() {
     this.board = [];
-    for(var i: number = 0; i < 7; i++) {
+    for(let i: number = 0; i <= 7; i++) {
       this.board[i] = [];
-      for(var j: number = 0; j< 7; j++) {
+      for(let j: number = 0; j <= 7; j++) {
         this.board[i][j] = null;
       }
     }

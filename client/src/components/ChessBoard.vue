@@ -1,20 +1,20 @@
 <template>
-    <!--
-    <p>v-model="chessBoard.board"</p>
-    <table class="table">
-      <tbody>
-          <tr v-for="(item, index) in chessBoard.board" :key="index">
-              <td v-for="(column, indexColumn) in columns" :key="indexColumn">{{item[column]}}</td>
-          </tr>
-      </tbody>
-    </table>
-  -->
+ 
+  <table class="table">
+    <tbody>
+        <tr v-for="column in chessBoard?.board">
+            <td v-for="cell in column" >{{[cell]}}</td>
+        </tr>
+    </tbody>
+  </table>
+  
 </template>
 
 <script setup lang="ts">
 import type { Chessboard } from '@/class/chessboard';
-const chessBoard = defineModel<Chessboard>('chessboard');
+const chessBoard = defineModel<Chessboard>('chessBoard', {});
 
+console.log(chessBoard.value?.board[0])
 </script>
 
 <style scoped>
