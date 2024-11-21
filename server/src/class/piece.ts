@@ -1,10 +1,15 @@
+export enum Color {
+  Black = "Black",
+  White = "White"
+}
+
 export class Piece {
     protected name: string;
-    protected color: boolean //0 is white and 1 is black
+    protected color: Color
     protected x: number
     protected y: number
   
-    constructor(name: string, color: boolean, x: number, y:number) {
+    constructor(name: string, color: Color, x: number, y:number) {
       this.name = name;
       this.color = color;
       this.x = x;
