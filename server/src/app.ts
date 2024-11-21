@@ -27,7 +27,7 @@ app.use(
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:5173",
+        origin: "http://10.8.0.2:5173",
     },
 });
 
@@ -43,5 +43,5 @@ io.on("connection", (socket) => {
 });
 
 server.listen(PORT, () => {
-    console.log('server running at http://localhost:' + PORT);
+    console.log('server running at http://10.8.0.2:' + PORT);
 });

@@ -8,7 +8,7 @@ export const state = reactive({
 });
 
 // "undefined" means the URL will be computed from the `window.location` object
-const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:8100";
+const URL = "http://10.8.0.2:8100/";//process.env.NODE_ENV === "production" ? undefined : "http://10.8.0.2:8100/";
 
 export const socket = io(URL);
 
@@ -20,10 +20,6 @@ socket.on("disconnect", () => {
   state.connected = false;
 });
 
-socket.on("foo", (...args) => {
-  state.fooEvents.push(args);
-});
-
-socket.on("bar", (...args) => {
-  state.barEvents.push(args);
+socket.on("message", (id: string) => {
+  console.log("Message received: ", id);
 });
