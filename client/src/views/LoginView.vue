@@ -1,12 +1,12 @@
 <template>
   <InputText v-model="user.username"></InputText>
-  <InputText v-model="user.password"></InputText>
+  <Password v-model="user.password" :feedback="false"></Password>
   <Button :label="label" @click="getToken()"></Button>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { InputText } from 'primevue';
+import { InputText, Password } from 'primevue';
 import { Button } from 'primevue';
 import { useUserService } from '@/composables/user/userService';
 import { useUserLoginService } from '@/composables/user/userLoginService';

@@ -2,8 +2,6 @@
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
 
-import ChessBoard from './components/ChessBoard.vue'
-
 import { socket } from "@/socket";
 
 socket.emit("message", "test");
@@ -11,7 +9,9 @@ socket.emit("message", "test");
 </script>
 
 <template>
-    <ChessBoard></ChessBoard>
+  <div>
+    <RouterView />
+  </div>
 </template>
 
 

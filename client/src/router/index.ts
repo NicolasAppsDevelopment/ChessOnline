@@ -3,7 +3,6 @@ import LoginPage from '@/views/LoginView.vue';
 const routes = [
   { path: '/', redirect: '/login' },
   { path: '/login', component: LoginPage },
-  { path: '/login', component: LoginPage },
 ];
 
 const router = createRouter({
