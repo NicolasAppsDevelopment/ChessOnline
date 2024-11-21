@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Chessboard } from '../class/chessboard';
-const chessBoard = defineModel<Chessboard>('chessboard', {required : true});
+import type { Chessboard } from '@/class/chessboard';
+const chessBoard = defineModel<Chessboard>('chessboard');
 
 </script>
 
