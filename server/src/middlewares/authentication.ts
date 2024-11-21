@@ -24,14 +24,6 @@ export function expressAuthentication(
                         if (err) {
                             reject(err);
                         } else {
-                            if (scopes !== undefined) {
-                                let jtwScopes = decoded.scopes ?? [];
-                                for (const requiredScope of scopes) {
-                                    if (!jtwScopes.includes(requiredScope)) {
-                                        reject(new Error("JWT does not contain required scope"));
-                                    }
-                                }
-                            }
                             resolve(decoded);
                         }
                     }

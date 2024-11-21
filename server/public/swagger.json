@@ -19,15 +19,16 @@
 					"password": {
 						"type": "string"
 					},
-					"role": {
-						"type": "string"
+					"elo": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
 					"id",
 					"username",
 					"password",
-					"role"
+					"elo"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -121,9 +122,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"read:user"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": []
@@ -147,9 +146,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"create:user"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [],
@@ -185,9 +182,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"read:user"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -214,9 +209,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"delete:user"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
@@ -250,9 +243,7 @@
 				],
 				"security": [
 					{
-						"jwt": [
-							"update:user"
-						]
+						"jwt": []
 					}
 				],
 				"parameters": [
