@@ -5,7 +5,6 @@ import { JWT_SECRET } from "../services/authentication.service";
 export function expressAuthentication(
     request: express.Request,
     securityName: string,
-    scopes?: string[]
 ) {
     if (securityName === "jwt") {
         const token =

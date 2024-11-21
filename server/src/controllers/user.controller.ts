@@ -20,13 +20,6 @@ import {
 @Route("users")
 @Tags("Users")
 export class UserController extends Controller {
-  // Récupère tous les utilisateurs
-  @Get("/")
-  @Security("jwt")
-  public async getAllUsers(): Promise<UserOutputDTO[]> {
-    return userService.getAllUsers();
-  }
-
   // Récupère un utilisateur par ID
   @Get("{id}")
   @Security("jwt")
@@ -36,7 +29,6 @@ export class UserController extends Controller {
 
   // Crée un nouvel utilisateur
   @Post("/")
-  @Security("jwt")
   public async createUser(
     @Body() requestBody: UserInputDTO,
   ): Promise<UserOutputDTO> {
