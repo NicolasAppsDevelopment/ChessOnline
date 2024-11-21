@@ -1,17 +1,21 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import ChessBoardComponent from './components/ChessBoard.vue'
 
-import ChessBoard from './components/ChessBoard.vue'
+import { ref } from 'vue';
+import type { Chessboard } from '../src/class/chessboard';
 
 import { socket } from "@/socket";
 
 socket.emit("message", "test");
 
+const chessBoard = ref<Chessboard>();
+
 </script>
 
 <template>
-    <ChessBoard></ChessBoard>
+    <ChessBoardComponent v-model:chessBoard="chessBoard"></ChessBoardComponent>
 </template>
 
 
