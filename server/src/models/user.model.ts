@@ -4,7 +4,7 @@ export interface UserAttributes {
   id?: number;
   username: string;
   password: string;
-  role: string;
+  elo: number;
 }
 
 export class User
@@ -14,7 +14,7 @@ export class User
   public id!: number;
   public username!: string;
   public password!: string;
-  public role!: string;
+  public elo!: number;
 }
 
 User.init(
@@ -27,13 +27,14 @@ User.init(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role: {
-      type: DataTypes.STRING,
+    elo: {
+      type: DataTypes.NUMBER,
       allowNull: false,
       defaultValue: "user",
     },
@@ -43,3 +44,5 @@ User.init(
     tableName: "User",
   },
 );
+
+User.sync();

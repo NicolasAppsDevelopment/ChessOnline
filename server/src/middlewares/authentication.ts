@@ -5,7 +5,6 @@ import { JWT_SECRET } from "../services/authentication.service";
 export function expressAuthentication(
     request: express.Request,
     securityName: string,
-    scopes?: string[]
 ) {
     if (securityName === "jwt") {
         const token =
@@ -24,14 +23,6 @@ export function expressAuthentication(
                         if (err) {
                             reject(err);
                         } else {
-                            if (scopes !== undefined) {
-                                let jtwScopes = decoded.scopes ?? [];
-                                for (const requiredScope of scopes) {
-                                    if (!jtwScopes.includes(requiredScope)) {
-                                        reject(new Error("JWT does not contain required scope"));
-                                    }
-                                }
-                            }
                             resolve(decoded);
                         }
                     }

@@ -20,23 +20,15 @@ import {
 @Route("users")
 @Tags("Users")
 export class UserController extends Controller {
-  // Récupère tous les utilisateurs
-  @Get("/")
-  @Security("jwt", ["read:user"])
-  public async getAllUsers(): Promise<UserOutputDTO[]> {
-    return userService.getAllUsers();
-  }
-
   // Récupère un utilisateur par ID
   @Get("{id}")
-  @Security("jwt", ["read:user"])
+  @Security("jwt")
   public async getUserById(@Path() id: number): Promise<UserOutputDTO> {
     return userService.getUserById(id);
   }
 
   // Crée un nouvel utilisateur
   @Post("/")
-  @Security("jwt", ["create:user"])
   public async createUser(
     @Body() requestBody: UserInputDTO,
   ): Promise<UserOutputDTO> {
@@ -46,14 +38,14 @@ export class UserController extends Controller {
 
   // Supprime un utilisateur par ID
   @Delete("{id}")
-  @Security("jwt", ["delete:user"])
+  @Security("jwt")
   public async deleteUser(@Path() id: number): Promise<void> {
     await userService.deleteUser(id);
   }
 
   // Met à jour un utilisateur par ID
   @Patch("{id}")
-  @Security("jwt", ["update:user"])
+  @Security("jwt")
   public async updateUser(
     @Path() id: number,
     @Body() requestBody: UserInputPatchDTO,

@@ -2,14 +2,9 @@ import { UserOutputDTO } from "../dto/user.dto";
 import { notFound } from "../error/NotFoundError";
 import { UserMapper } from "../mapper/user.mapper";
 import { User } from "../models/user.model";
+import bcrypt from "bcrypt";
 
 export class UserService {
-  // Récupère tous les utilisateurs
-  public async getAllUsers(): Promise<UserOutputDTO[]> {
-    let userList = await User.findAll();
-    return UserMapper.toOutputDtoList(userList);
-  }
-
   // Récupère un utilisateur par ID
   public async getUserById(id: number): Promise<UserOutputDTO> {
     let user = await User.findByPk(id);
@@ -25,8 +20,9 @@ export class UserService {
     username: string,
     password: string,
   ): Promise<UserOutputDTO> {
+    const hashedPassword = await bcrypt.hash(password, 10);
     return UserMapper.toOutputDto(
-      await User.create({ username: username, password: password, role: "user" }),
+      await User.create({ username: username, password: hashedPassword, elo: 0 }),
     );
   }
 
