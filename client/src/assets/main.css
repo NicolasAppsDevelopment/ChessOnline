@@ -37,75 +37,6 @@ a,
 
 /* FOR CHESSBOARD COMPONENT */
 
-/*#chessboard {
-  width: 70%;
-
-  display: flex;
-  flex-direction: row;
-}
-
-#squares_letters {
-  margin-top: 22px;
-
-  display: flex;
-  flex-direction: column;
-
-  justify-content: space-around;
-}
-
-#squares_letters p {
-  width: 20px;
-
-  margin: 1px;
-  text-align:center;
-  align-content:center;
-}
-
-table {
-  table-layout: fixed;
-  height: 100%;
-  display: grid;
-}
-
-
-td {
-  text-align:center;
-  aspect-ratio: 1 / 1;
-
-}
-
-.square {
-  border:1px solid black;
-}
-
-
-tbody {
-  border: 10px solid saddlebrown;
-}
-
-
-tbody tr:nth-child(even) td:nth-child(even){
-  background-color: black;
-}
-
-tbody tr:nth-child(even) td:nth-child(odd){
-  background-color: white;
-}
-
-tbody tr:nth-child(odd) td:nth-child(odd){
-  background-color: black;
-}
-
-tbody tr:nth-child(odd) td:nth-child(even){
-  background-color: white;
-}
-
-img {
-  width: 100%;
-  object-fit: contain;
-
-}*/
-
 .chessboard {
   display: grid;
   grid-template-columns: repeat(8, 1fr); /* 8 columns */
@@ -114,6 +45,25 @@ img {
   height: 96vmin; /* Matches width for a perfect square */
   border: 2px solid black; /* Optional border around chessboard */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.chessboard-top {
+    display: flex;
+    justify-content: space-around;
+    width: 96vmin;
+}
+
+.chessboard-right-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.chessboard-right {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 96vmin;
+  padding-left: 4px;
 }
 
 .square {
