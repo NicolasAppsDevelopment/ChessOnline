@@ -2,7 +2,7 @@
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 
 import {ref} from "vue";
-import { Chessboard } from "@/class/chessboard";
+import { Chessboard } from "@/models/Chessboard";
 
 const chessBoard = ref<Chessboard>(new Chessboard());
 

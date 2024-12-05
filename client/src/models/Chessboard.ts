@@ -1,10 +1,10 @@
-import { Piece, Color } from "./piece";
-import { Rook } from "./rook";
-import { Knight } from "./knight";
-import { Bishop } from "./bishop";
-import { Queen } from "./queen";
-import { King } from "./king";
-import { Pawn } from "./pawn";
+import { Piece, Color } from "./Piece";
+import { Rook } from "./Rook";
+import { Knight } from "./Knight";
+import { Bishop } from "./Bishop";
+import { Queen } from "./Queen";
+import { King } from "./King";
+import { Pawn } from "./Pawn";
 
 export class Chessboard {
   public board: (Piece|null)[][];

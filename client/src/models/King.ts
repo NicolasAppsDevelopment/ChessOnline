@@ -1,4 +1,4 @@
-import { Piece, Color } from "./piece";
+import { Piece, Color } from "./Piece";
 export class King extends Piece {
     constructor(color: Color, x: number, y:number) {
       super("King", color, x, y);

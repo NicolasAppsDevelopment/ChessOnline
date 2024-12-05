@@ -1,9 +1,5 @@
 <script setup lang="ts">
 
-import { socket } from "@/socket";
-
-socket.emit("message", "test");
-
 </script>
 
 <template>
