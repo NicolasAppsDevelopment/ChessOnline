@@ -1,28 +1,41 @@
 <template>
 
   <!--  TODO Rotate the print of the chessboard -->
-  <table class="table">
-    <tbody>
-        <tr v-for="column in chessBoard?.board">
-            <td v-for="cell in column" class="square">
-              <img v-if="cell?.getSprite()" v-bind:src="cell?.getSprite()" v-bind:alt="cell?.getColor() + ' ' + cell?.getName()" />
-              <div v-if="!cell?.getSprite()"> </div>
-            </td>
+  <div id="chessboard">
+    <table>
+      <thead>
+        <tr>
+          <td><span>8</span></td>
+          <td><span>7</span></td>
+          <td><span>6</span></td>
+          <td><span>5</span></td>
+          <td><span>4</span></td>
+          <td><span>3</span></td>
+          <td><span>2</span></td>
+          <td><span>1</span></td>
         </tr>
-    </tbody>
-    <tfoot>
-      <tr>
-        <td><span>8</span></td>
-        <td><span>7</span></td>
-        <td><span>6</span></td>
-        <td><span>5</span></td>
-        <td><span>4</span></td>
-        <td><span>3</span></td>
-        <td><span>2</span></td>
-        <td><span>1</span></td>
-      </tr>
-    </tfoot>
-  </table>
+      </thead>
+      <tbody>
+          <tr v-for="column in chessBoard?.board">
+              <td v-for="cell in column" class="square">
+                <img v-if="cell?.getSprite()" v-bind:src="cell?.getSprite()" v-bind:alt="cell?.getColor() + ' ' + cell?.getName()" />
+                <div v-if="!cell?.getSprite()"> </div>
+              </td>
+          </tr>
+      </tbody>
+    </table>
+
+    <div id="squares_letters">
+      <p>H</p>
+      <p>G</p>
+      <p>F</p>
+      <p>E</p>
+      <p>D</p>
+      <p>C</p>
+      <p>B</p>
+      <p>A</p>
+    </div>
+  </div>
 
 </template>
 

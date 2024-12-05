@@ -34,15 +34,41 @@ a,
   }
 }
 
-.table {
-  border: 10px solid saddlebrown;
+#chessboard {
+  display: flex;
+  flex-direction: row;
+  width: fit-content;
+}
+
+#squares_letters {
+  margin-top: 22px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: space-evenly;
+}
+
+#squares_letters p {
+  width: 20px;
+  height: 100px;
+
+  margin: 1px;
+  text-align:center;
+  align-content:center;
+}
+
+thead td {
+  height: 20px;
+  width: 100px;
 }
 
 td{
   text-align:center;
-  width:100px;
-  height:100px;
-  border:1px solid black;
+}
+
+tbody {
+  border: 10px solid saddlebrown;
 }
 
 tbody tr:nth-child(even) td:nth-child(even){
@@ -62,10 +88,9 @@ tbody tr:nth-child(odd) td:nth-child(even){
 }
 
 .square {
-  min-height: 40px;
-  min-width: 40px;
-  max-height: 100px;
-  max-width: 100px;
+  width:100px;
+  height:100px;
+  border:1px solid black;
 }
 
 .white {
