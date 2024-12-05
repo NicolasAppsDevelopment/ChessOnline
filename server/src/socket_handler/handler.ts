@@ -2,13 +2,14 @@ import {Socket} from "socket.io";
 
 export function createHandler(socket: Socket) {
     return {
-        message: async function (
-            message: string
+        joinRoom: async function (
+            roomUuid: string
         ) {
-            console.log("Message received: ", message);
+            socket.join(roomUuid);
 
             // notify back
-            socket.emit("message", socket.id);
+            socket.emit("ROOM_JOINED", socket.id);
         },
+
     };
 }

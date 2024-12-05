@@ -41,10 +41,10 @@ app.use(errorHandler);
 
 io.on("connection", (socket) => {
     const {
-        message,
+        joinRoom,
     } = createHandler(socket);
 
-    socket.on("message", message);
+    socket.on("JOIN_ROOM", joinRoom);
 });
 
 server.listen(PORT, () => {

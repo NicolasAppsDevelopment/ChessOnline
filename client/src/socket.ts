@@ -1,6 +1,7 @@
 import { reactive } from "vue";
 import { io } from "socket.io-client";
 import {ApiUrl} from "@/constants/ApiUrl";
+import router from "@/router";
 
 export const state = reactive({
   connected: false,
@@ -21,6 +22,6 @@ socket.on("disconnect", () => {
   state.connected = false;
 });
 
-socket.on("message", (id: string) => {
-  console.log("Message received: ", id);
+socket.on("ROOM_JOINED", () => {
+  router.push({ path: '/game' });
 });

@@ -20,6 +20,17 @@ export class UserService {
     username: string,
     password: string,
   ): Promise<UserOutputDTO> {
+    if (await User.findOne({ where: { username: username } })) {
+        let error = new Error("A user with this username already exists");
+        (error as any).status = 403;
+        throw error;
+    }
+    if (username == "" || password == "") {
+      let error = new Error("Username or password is empty");
+      (error as any).status = 403;
+      throw error;
+    }
+
     const hashedPassword = await bcrypt.hash(password, 10);
     return UserMapper.toOutputDto(
       await User.create({ username: username, password: hashedPassword, elo: 0 }),
