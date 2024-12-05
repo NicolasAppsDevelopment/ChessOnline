@@ -37,7 +37,7 @@ a,
 
 /* FOR CHESSBOARD COMPONENT */
 
-#chessboard {
+/*#chessboard {
   width: 70%;
 
   display: flex;
@@ -64,22 +64,25 @@ a,
 table {
   table-layout: fixed;
   height: 100%;
+  display: grid;
 }
 
 
 td {
   text-align:center;
+  aspect-ratio: 1 / 1;
+
 }
 
 .square {
   border:1px solid black;
 }
 
-/*
+
 tbody {
   border: 10px solid saddlebrown;
 }
-*/
+
 
 tbody tr:nth-child(even) td:nth-child(even){
   background-color: black;
@@ -101,4 +104,44 @@ img {
   width: 100%;
   object-fit: contain;
 
+}*/
+
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* 8 columns */
+  grid-template-rows: repeat(8, 1fr); /* 8 rows */
+  width: 96vmin; /* Board is a square, responsive to viewport size */
+  height: 96vmin; /* Matches width for a perfect square */
+  border: 2px solid black; /* Optional border around chessboard */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.square {
+  aspect-ratio: 1 / 1;
+  display: flex;
+  align-items: center;
+  padding: 5%;
+  background-color: #1E1E1E;
+  color: #fff;
+}
+
+/* Alternating square colors */
+.chessboard div:nth-child(even) div:nth-child(odd) {
+  background-color: #eee;
+}
+.chessboard div:nth-child(even) div:nth-child(even) {
+  background-color: #444;
+}
+.chessboard div:nth-child(odd) div:nth-child(odd) {
+  background-color: #444;
+}
+.chessboard div:nth-child(odd) div:nth-child(even) {
+  background-color: #eee;
+}
+
+.square img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
 }

@@ -1,6 +1,16 @@
 <template>
+  <div class="chessboard">
+    <div v-for="column in chessBoard?.board">
+      <div v-for="cell in column" class="square">
+        <img v-if="cell?.getSprite()" v-bind:src="cell?.getSprite()" v-bind:alt="cell?.getColor() + ' ' + cell?.getName()" />
+        <div v-if="!cell?.getSprite()"> </div>
+      </div>
+    </div>
+  </div>
 
-  <!--  TODO Rotate the print of the chessboard -->
+
+
+  <!--  TODO Rotate the print of the chessboard
   <div id="chessboard">
     <table>
       <thead>
@@ -35,7 +45,7 @@
       <p>B</p>
       <p>A</p>
     </div>
-  </div>
+  </div> -->
 
 </template>
 
