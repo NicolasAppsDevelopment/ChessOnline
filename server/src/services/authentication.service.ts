@@ -1,10 +1,9 @@
 import {User} from "../models/user.model"; // Modèle Sequelize
 import jwt from "jsonwebtoken"; // Pour générer le JWT
-import {Buffer} from "buffer"; // Pour décoder Base64
 import {notFound} from "../error/NotFoundError";
 import bcrypt from "bcrypt";
 
-export const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret_key"; // Clé secrète pour signer le token
+export const JWT_SECRET = process.env.JWT_SECRET ?? "your_jwt_secret_key"; // Clé secrète pour signer le token
 
 export class AuthenticationService {
   public async authenticate(
@@ -27,10 +26,14 @@ export class AuthenticationService {
     }
 
     // Si l'utilisateur est authentifié, on génère un JWT
-    return jwt.sign({username: user.username}, JWT_SECRET, {
-      expiresIn: "1h",
-    });
+    return this.generateToken(username);
   }
+
+    public async generateToken(username: string): Promise<string> {
+        return jwt.sign({username}, JWT_SECRET, {
+          expiresIn: "1h",
+        });
+    }
 }
 
 export const authService = new AuthenticationService();

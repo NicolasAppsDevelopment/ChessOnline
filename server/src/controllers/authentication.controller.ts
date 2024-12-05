@@ -1,6 +1,7 @@
-import { Route, Controller, Post, Body } from "tsoa";
+import {Route, Controller, Post, Body, Security, Header} from "tsoa";
 import { AuthenticationInputDTO } from "../dto/authentication.dto";
 import { authService } from "../services/authentication.service";
+import {jwtDecode} from "jwt-decode";
 
 @Route("auth")
 export class AuthenticationController extends Controller {
@@ -15,7 +16,21 @@ export class AuthenticationController extends Controller {
       throw error;
     }
     const token = await authService.authenticate(username, password);
+    return { token };
+  }
 
+  @Security("jwt")
+  @Post("/refresh")
+  public async refresh(
+      @Header("Authorization") authorization: string,
+  ) {
+    const oldToken = authorization.split(" ")[1];
+    const data = jwtDecode(oldToken) as {
+      username: string;
+      password: string;
+    };
+
+    const token = await authService.generateToken(data.username);
     return { token };
   }
 }

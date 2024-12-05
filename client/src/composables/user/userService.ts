@@ -1,12 +1,23 @@
 import type { User } from '@/models/User';
 import { useUserApi } from './userApi';
+import { useStoredUserService } from './storedUserService';
 
 const userApi = useUserApi();
+const storedUserService = useStoredUserService();
 export function useUserService() {
   return {
-    async authenticate(user: User): Promise<User> {
-      user.token = await userApi.authenticate(user);
-      return user;
+    async login(user: User): Promise<void> {
+      user = await userApi.authenticate(user);
+      storedUserService.storedUser.value = user;
+      storedUserService.subscribeReAuth();
     },
+    async register(user: User): Promise<void> {
+      user = await userApi.register(user);
+      storedUserService.storedUser.value = user;
+      storedUserService.subscribeReAuth();
+    },
+    async logout(): Promise<void> {
+      storedUserService.clear();
+    }
   };
 }
