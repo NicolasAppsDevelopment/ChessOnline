@@ -3,10 +3,11 @@ import {Button, InputText, Password} from "primevue";
 import {AxiosError} from "axios";
 import {ref, onMounted} from "vue";
 import {useRoomService} from "@/composables/room/roomService";
-import {useStoredUserService} from "@/composables/user/storedUserService";
+
 import type {Room} from "@/models/Room";
+import Navbar from "@/components/Navbar.vue";
 const roomService = useRoomService();
-const storedUserService = useStoredUserService();
+
 const room = ref<Room>({ name: "", password: "" });
 const rooms = ref<string[]>([]);
 
@@ -69,9 +70,8 @@ async function joinRoom(name: string) {
 </script>
 
 <template>
-  <Button label="Logout" @click="storedUserService.clear()"></Button>
-  <h1>{{ storedUserService.storedUser.value.username }}</h1>
-  <h2>Join a room</h2>
+  <Navbar></Navbar>
+    <h2>Join a room</h2>
   <ul>
     <li v-for="room in rooms" :key="room">
       <p>{{ room }}</p>

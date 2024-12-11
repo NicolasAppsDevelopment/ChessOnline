@@ -1,8 +1,18 @@
 <template>
-  <p v-if="lastError">{{ lastError }}</p>
-  <InputText v-model="user.username"></InputText>
-  <Password v-model="user.password" :feedback="false"></Password>
-  <Button :label="processing ? 'Processing...' : 'Login'" @click="getToken()" :disabled="processing"></Button>
+
+  <div class="container-card login-form" style="margin-left: 50%; margin-right: 50%;">
+    <h1>Login</h1>
+    <p v-if="lastError">{{ lastError }}</p>
+    <p>Username</p>
+    <InputText v-model="user.username"></InputText>
+    <p>Password</p>
+    <Password v-model="user.password" :feedback="false"></Password>
+    <Button :label="processing ? 'Processing...' : 'Login'" @click="getToken()" :disabled="processing"></Button>
+    <p> If you don't have an account yet, you can
+      <router-link to="/register"> Register </router-link>
+    </p>
+  </div>
+
 </template>
 
 <script setup lang="ts">
@@ -35,3 +45,4 @@ async function getToken() {
   }
 }
 </script>
+

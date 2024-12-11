@@ -5,6 +5,7 @@ import Aura from '@primevue/themes/aura';
 import 'primeflex/primeflex.css';
 import router from '@/router';
 import {useStoredUserService} from "@/composables/user/storedUserService";
+import '@/assets/main.css';
 
 const app = createApp(App);
 
