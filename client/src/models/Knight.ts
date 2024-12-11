@@ -1,30 +1,46 @@
 import { Piece, Color } from "./Piece";
+import { Position } from "@/models/Position";
+import type {Chessboard} from "@/models/Chessboard";
 export class Knight extends Piece {
-    constructor(color: Color, x: number, y:number) {
-      super("Knight", color, x, y);
+    constructor(color: Color, position: Position) {
+      super("Knight", color, position);
     }
-    moveLightLeftHeavyUp() {
-      super.move(this.x-1,this.y-2);
+
+    override getMoves(board: Chessboard): Position[] {
+      let moves: Position[] = [];
+
+      if (this.position.x-2 >= 0 && this.position.y-1 >= 0) {
+        moves.push(new Position(this.position.x-2,this.position.y-1));
+      }
+
+      if (this.position.x-2 >= 0 && this.position.y+1 < 8) {
+        moves.push(new Position(this.position.x-2,this.position.y+1));
+      }
+
+      if (this.position.x-1 >= 0 && this.position.y-2 >= 0) {
+        moves.push(new Position(this.position.x-1,this.position.y-2));
+      }
+
+      if (this.position.x-1 >= 0 && this.position.y+2 < 8) {
+        moves.push(new Position(this.position.x-1,this.position.y+2));
+      }
+
+      if (this.position.x+1 < 8 && this.position.y-2 >= 0) {
+        moves.push(new Position(this.position.x+1,this.position.y-2));
+      }
+
+      if (this.position.x+1 < 8 && this.position.y+2 < 8) {
+        moves.push(new Position(this.position.x+1,this.position.y+2));
+      }
+
+      if (this.position.x+2 < 8 && this.position.y-1 >= 0) {
+        moves.push(new Position(this.position.x+2,this.position.y-1));
+      }
+
+      if (this.position.x+2 < 8 && this.position.y+1 < 8) {
+        moves.push(new Position(this.position.x+2,this.position.y+1));
+      }
+
+      return moves;
     }
-    moveHeavyLeftLightUp() {
-      super.move(this.x-2,this.y-1);
-    }
-    moveLightLeftHeavyDown() {
-      super.move(this.x-1,this.y+2);
-    }
-    moveHeavyLeftLightDown() {
-      super.move(this.x-1,this.y-2);
-    }
-    moveLightRightHeavyUp() {
-      super.move(this.x+1,this.y-2);
-    }
-    moveHeavyRightLightUp() {
-      super.move(this.x+2,this.y-1);
-    }
-    moveLightRightHeavyDown() {
-      super.move(this.x+1,this.y+2);
-    }
-    moveHeavyRightLightDown() {
-      super.move(this.x+2,this.y+1);
-    }
-  }
+}

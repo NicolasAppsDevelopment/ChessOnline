@@ -1,58 +1,110 @@
-import { Piece, Color } from "./Piece";
-import { Rook } from "./Rook";
-import { Knight } from "./Knight";
-import { Bishop } from "./Bishop";
-import { Queen } from "./Queen";
-import { King } from "./King";
-import { Pawn } from "./Pawn";
+import {Color, Piece} from "./Piece";
+import {Rook} from "./Rook";
+import {Knight} from "./Knight";
+import {Bishop} from "./Bishop";
+import {Queen} from "./Queen";
+import {King} from "./King";
+import {Pawn} from "./Pawn";
+import {Position} from "@/models/Position";
 
 export class Chessboard {
-  public board: (Piece|null)[][];
+  public board: Piece[] = [];
 
   constructor() {
-    this.board = [];
-    for(let i: number = 0; i <= 7; i++) {
-      this.board[i] = [];
-      for(let j: number = 0; j <= 7; j++) {
-        this.board[i][j] = null;
+    //Create and place the whites pieces in the chessboard
+    this.board.push(new Rook(Color.White,new Position(0,7)));
+    this.board.push(new Rook(Color.White,new Position(7,7)));
+    this.board.push(new Knight(Color.White,new Position(1,7)));
+    this.board.push(new Knight(Color.White,new Position(6,7)));
+    this.board.push(new Bishop(Color.White,new Position(2,7)));
+    this.board.push(new Bishop(Color.White,new Position(5,7)));
+    this.board.push(new Queen(Color.White,new Position(3,7)));
+    this.board.push(new King(Color.White,new Position(4,7)));
+    for (let i = 0; i < 8; i++) {
+      this.board.push(new Pawn(Color.White, new Position(i, 6)));
+    }
+
+    //Create and place the blacks pieces in the chessboard
+    this.board.push(new Rook(Color.Black, new Position(0,0)));
+    this.board.push(new Rook(Color.Black, new Position(7,0)));
+    this.board.push(new Knight(Color.Black, new Position(1,0)));
+    this.board.push(new Knight(Color.Black, new Position(6,0)));
+    this.board.push(new Bishop(Color.Black, new Position(2,0)));
+    this.board.push(new Bishop(Color.Black, new Position(5,0)));
+    this.board.push(new Queen(Color.Black, new Position(3,0)));
+    this.board.push(new King(Color.Black, new Position(4,0)));
+    for (let i = 0; i < 8; i++) {
+      this.board.push(new Pawn(Color.Black, new Position(i, 1)));
+    }
+  }
+
+  movePiece(from: Position, to: Position) {
+    if (from.equals(to)) {
+      return; // can't eat yourself (on your own cell)
+    }
+
+    const pieceToMove = this.getPiece(from);
+    const pieceOnArrivalCell = this.getPiece(to);
+
+    if (pieceToMove?.getColor() == pieceOnArrivalCell?.getColor()) {
+      return; // can't eat yourself (a piece of your color)
+    }
+
+    if (!pieceToMove?.checkMove(to, this)) {
+      return;
+    }
+
+    if (pieceOnArrivalCell) {
+      const index = this.board.indexOf(pieceOnArrivalCell, 0);
+      this.board.splice(index, 1)
+    }
+    pieceToMove?.setPosition(to);
+
+    if (pieceToMove instanceof Pawn) {
+      pieceToMove.firstMoveDone(); // Pawn first move
+
+      // Promotion rule
+      if (pieceToMove.getColor() == Color.White && to.y == 0) {
+        this.board.push(new Queen(Color.White, to));
+        this.removePiece(pieceToMove);
+      } else if (pieceToMove.getColor() == Color.Black && to.y == 7) {
+        this.board.push(new Queen(Color.Black, to));
+        this.removePiece(pieceToMove);
+      }
+    }
+  }
+
+  getPiece(from: Position): Piece | null {
+    let result: Piece | null = null;
+    this.board.forEach(function (piece) {
+      if (piece.getPosition().equals(from)) {
+        result = piece;
+        return;
+      }
+    });
+
+    return result;
+  }
+
+  removePiece(piece: Piece) {
+    const index = this.board.indexOf(piece, 0);
+    this.board.splice(index, 1)
+  }
+
+  getBoard() {
+    let board: (Piece | Position)[][] = [];
+
+    for (let x = 0; x < 8; x++) {
+      board[x] = [];
+      for (let y = 0; y < 8; y++) {
+        board[x][y] = new Position(x, y);
       }
     }
 
-    //Create and place the whites pieces in the chessboard
-    this.board[0][7] = new Rook(Color.White,0,7);
-    this.board[7][7] = new Rook(Color.White,7,7);
-    this.board[1][7] = new Knight(Color.White,1,7);
-    this.board[6][7] = new Knight(Color.White,6,7);
-    this.board[2][7] = new Bishop(Color.White,2,7);
-    this.board[5][7] = new Bishop(Color.White,5,7);
-    this.board[3][7] = new Queen(Color.White,3,7);
-    this.board[4][7] = new King(Color.White,4,7);
-    this.board[0][6] = new Pawn(Color.White,0,6);
-    this.board[1][6] = new Pawn(Color.White,1,6);
-    this.board[2][6] = new Pawn(Color.White,2,6);
-    this.board[3][6] = new Pawn(Color.White,3,6);
-    this.board[4][6] = new Pawn(Color.White,4,6);
-    this.board[5][6] = new Pawn(Color.White,5,6);
-    this.board[6][6] = new Pawn(Color.White,6,6);
-    this.board[7][6] = new Pawn(Color.White,7,6);
+    this.board.forEach(function (piece) {
+      board[piece.getPosition().x][piece.getPosition().y] = piece;
+    });
 
-    //Create and place the blacks pieces in the chessboard
-    this.board[0][0] = new Rook(Color.Black,0,0);
-    this.board[7][0] = new Rook(Color.Black,7,0);
-    this.board[1][0] = new Knight(Color.Black,1,0);
-    this.board[6][0] = new Knight(Color.Black,6,0);
-    this.board[2][0] = new Bishop(Color.Black,2,0);
-    this.board[5][0] = new Bishop(Color.Black,5,0);
-    this.board[3][0] = new Queen(Color.Black,3,0);
-    this.board[4][0] = new King(Color.Black,4,0);
-    this.board[0][1] = new Pawn(Color.Black,0,1);
-    this.board[1][1] = new Pawn(Color.Black,1,1);
-    this.board[2][1] = new Pawn(Color.Black,2,1);
-    this.board[3][1] = new Pawn(Color.Black,3,1);
-    this.board[4][1] = new Pawn(Color.Black,4,1);
-    this.board[5][1] = new Pawn(Color.Black,5,1);
-    this.board[6][1] = new Pawn(Color.Black,6,1);
-    this.board[7][1] = new Pawn(Color.Black,7,1);
-
+    return board;
   }
 }

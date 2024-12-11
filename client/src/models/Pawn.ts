@@ -1,40 +1,49 @@
 import { Piece, Color } from "./Piece";
+import { Position } from "@/models/Position";
+import type {Chessboard} from "@/models/Chessboard";
 export class Pawn extends Piece {
     private firstMove: boolean;
 
-    constructor(color: Color, x: number, y:number) {
-      super("Pawn", color, x, y);
+    constructor(color: Color, position: Position) {
+      super("Pawn", color, position);
       this.firstMove = true;
     }
-    // TODO
-    // 1-  prendre en compte que son champ d'attaque n'est pas pareil que son champ de déplacement.
-    // 2-  prendre en compte que le pion peut se déplacer de 1 à 2 cases lorsque c'est sont premier mouvement.
-    // 3-  est ce que le pion est obligé de manger si il peut ?
-    move() {
-      if (!this.color){
-        super.move(this.x,this.y+1);
-      } else{
-        super.move(this.x,this.y+1);
+
+    override getMoves(board: Chessboard): Position[] {
+      let moves: Position[] = [];
+
+      // move forward
+      let yShift = this.color == Color.Black ? 1 : -1;
+      for (let moveCount = 1; moveCount <= (this.firstMove ? 2 : 1); moveCount++) {
+        const newY = this.position.y + yShift;
+        if (0 <= newY && newY <= 7 &&
+            board.getPiece(new Position(this.position.x, newY)) == null) {
+          moves.push(new Position(this.position.x, newY));
+        } else {
+          break;
+        }
+        yShift += yShift;
       }
-      this.firstMove = false;
+
+      // eat diagonally
+      yShift = this.color == Color.Black ? 1 : -1;
+      let xShift = 1;
+      for (let _ = 0; _ < 2; _++) {
+        const newY = this.position.y + yShift;
+        const newX = this.position.x + xShift;
+        if (0 <= newX && newX <= 7 &&
+            0 <= newY && newY <= 7 &&
+            board.getPiece(new Position(newX, newY)) != null
+        ) {
+          moves.push(new Position(newX, newY));
+        }
+        xShift = -xShift;
+      }
+
+      return moves;
     }
 
-    move2case() {
-      if (!this.color && this.firstMove){
-        super.move(this.x,this.y+2);
-      }
-      if (this.color &&this.firstMove) {
-        super.move(this.x,this.y+2);
-      }
+    firstMoveDone() {
       this.firstMove = false;
     }
-
-    attack() {
-      if (!this.color){
-        super.move(this.x,this.y+1);
-      } else{
-        super.move(this.x,this.y+1);
-      }
-      this.firstMove = false;
-    }
-  }
+}

@@ -13,11 +13,10 @@
     </div>
     <div class="chessboard-right-container">
       <div class="chessboard">
-        <div v-for="column in chessBoard?.board ">
-          <div v-for="cell in column" class="square" @drop="letDown" @dragover.prevent @dragenter.prevent>
-            <img v-if="cell?.getSprite()" v-bind:src="cell?.getSprite()" v-bind:alt="cell?.getColor() + ' ' + cell?.getName()"  @mousemove="move"
-                 draggable="true" @dragstart="pickUp"/>
-            <div v-if="!cell?.getSprite()"> </div>
+        <div v-for="column in chessBoard?.getBoard()">
+          <div v-for="cell in column" class="square" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
+            <img v-if="isCellNotEmpty(cell)" v-bind:src="cell.getSprite()" v-bind:alt="cell.getColor() + ' ' + cell.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
+            <div v-else> </div>
           </div>
         </div>
       </div>
@@ -38,35 +37,34 @@
 
 <script setup lang="ts">
 import type { Chessboard } from '@/models/Chessboard';
+import { Piece } from '@/models/Piece';
+import { Position } from "@/models/Position";
 const chessBoard = defineModel<Chessboard>('chessBoard', {});
 
-let pieceGrabbed : EventTarget | null = null;
-
-function pickUp(event: MouseEvent) {
-  pieceGrabbed = event.target;
-  console.log("pickup")
-  console.log(event.target)
+function pickUp(event: DragEvent, piece: Piece) {
+  event.dataTransfer?.setData('position', JSON.stringify(piece.getPosition()));
 }
 
-function move(event: MouseEvent) {
-  if (pieceGrabbed){
-    pieceGrabbed.
-    pieceGrabbed.classList.add("grabbing")
-    pieceGrabbed.style.top = event.y;
-    pieceGrabbed.style.left = event.x;
+function drop(event: DragEvent, destination: Piece | Position) {
+  event.preventDefault();
+  const fromData = event.dataTransfer?.getData('position');
+  if (fromData) {
+    const fromRaw = JSON.parse(fromData);
+    const from = new Position(fromRaw.x, fromRaw.y);
+    let to: Position;
+
+    if (destination instanceof Position) {
+      to = destination
+    } else {
+      to = destination.getPosition();
+    }
+
+    if (chessBoard.value) chessBoard.value.movePiece(from, to);
   }
-  console.log("move")
-  console.log(event.target)
 }
 
-
-function letDown(element: HTMLElement, event: MouseEvent) {
-  element.classList.remove("grabbing");
-  pieceGrabbed = null;
-  console.log("letdown")
-  console.log(event.target)
+function isCellNotEmpty(cell: Piece | Position): boolean {
+  return cell instanceof Piece;
 }
 
-
-console.log(chessBoard.value?.board[0])
 </script>

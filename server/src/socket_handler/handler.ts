@@ -10,6 +10,5 @@ export function createHandler(socket: Socket) {
             // notify back
             socket.emit("ROOM_JOINED", socket.id);
         },
-
     };
 }

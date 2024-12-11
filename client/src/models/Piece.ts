@@ -1,21 +1,22 @@
+import type {Position} from "@/models/Position";
+import type {Chessboard} from "@/models/Chessboard";
+
 export enum Color {
   Black = "Black",
   White = "White"
 }
 
-export class Piece {
+export abstract class Piece {
     protected name: string;
     protected color: Color
     protected sprite: string;
-    protected x: number
-    protected y: number
+    protected position: Position;
 
-    constructor(name: string, color: Color, x: number, y:number) {
+    protected constructor(name: string, color: Color, position: Position) {
       this.name = name;
       this.color = color;
       this.sprite = "";
-      this.x = x;
-      this.y = y;
+      this.position = position;
 
       if (color == Color.Black) {
         switch (name) {
@@ -71,9 +72,21 @@ export class Piece {
     getSprite() {
       return this.sprite;
     }
-
-    move(x: number, y:number) {
-      this.x = x;
-      this.y = y;
+    getPosition() {
+      return this.position;
+    }
+    setPosition(position: Position) {
+      this.position = position;
+    }
+    abstract getMoves(board: Chessboard): Position[] {
+      throw new Error("Method not implemented.");
+    }
+    checkMove(to: Position, board: Chessboard): boolean {
+      for (let move of this.getMoves(board)) {
+        if (move.equals(to)) {
+          return true;
+        }
+      }
+      return false;
     }
   }

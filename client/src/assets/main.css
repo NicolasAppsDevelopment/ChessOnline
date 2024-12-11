@@ -94,6 +94,7 @@ a,
   height: 100%;
   object-fit: contain;
   object-position: center;
+  cursor: grab;
 }
 
 .chessboard .grabbing {

@@ -25,6 +25,9 @@ export function useStoredUserService() {
         storedUser.value = await userApi.refresh(storedUser.value);
         this.subscribeReAuth();
       } catch (e) {
+        if (localStorage.getItem('token')) {
+          localStorage.removeItem('token');
+        }
         router.push({ path: '/login' });
         throw e;
       }

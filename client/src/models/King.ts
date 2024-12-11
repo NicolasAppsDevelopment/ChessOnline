@@ -1,30 +1,48 @@
 import { Piece, Color } from "./Piece";
+import { Position } from "@/models/Position";
+import type {Chessboard} from "@/models/Chessboard";
 export class King extends Piece {
-    constructor(color: Color, x: number, y:number) {
-      super("King", color, x, y);
+    constructor(color: Color, position: Position) {
+      super("King", color, position);
     }
-    moveLeftUp() {
-      super.move(this.x-1,this.y-1);
-    }
-    moveLeft() {
-      super.move(this.x-1,this.y);
-    }
-    moveLeftDown() {
-      super.move(this.x-1,this.y+1);
-    }
-    moveDown() {
-      super.move(this.x,this.y+1);
-    }
-    moveRightDown() {
-      super.move(this.x+1,this.y+1);
-    }
-    moveRight() {
-      super.move(this.x+1,this.y);
-    }
-    moveRightUp() {
-      super.move(this.x+1,this.y-1);
-    }
-    moveUp() {
-      super.move(this.x,this.y+1);
+
+    override getMoves(board: Chessboard): Position[] {
+      let moves: Position[] = [];
+
+      if (this.position.x-1 >= 0 && this.position.y-1 >= 0) {
+        moves.push(new Position(this.position.x-1,this.position.y-1));
+      }
+
+      if (this.position.x-1 >= 0) {
+        moves.push(new Position(this.position.x-1,this.position.y));
+      }
+
+      if (this.position.x-1 >= 0 && this.position.y+1 < 8) {
+        moves.push(new Position(this.position.x-1,this.position.y+1));
+      }
+
+      if (this.position.y+1 < 8) {
+        moves.push(new Position(this.position.x,this.position.y+1));
+      }
+
+      if (this.position.x+1 < 8 && this.position.y+1 < 8) {
+        moves.push(new Position(this.position.x+1,this.position.y+1));
+      }
+
+      if (this.position.x+1 < 8) {
+        moves.push(new Position(this.position.x+1,this.position.y));
+      }
+
+      if (this.position.x+1 < 8 && this.position.y-1 >= 0) {
+        moves.push(new Position(this.position.x+1,this.position.y-1));
+      }
+
+      if (this.position.y-1 >= 0) {
+        moves.push(new Position(this.position.x,this.position.y-1));
+      }
+
+      // TODO: Verify that the king is not moving into check
+
+      return moves;
     }
   }
