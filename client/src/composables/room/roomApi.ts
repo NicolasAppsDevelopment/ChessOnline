@@ -9,7 +9,7 @@ import { socket } from "@/socket";
 
 export function useRoomApi() {
   return {
-    async access(room: Room): Promise<void> {
+    async join(room: Room): Promise<void> {
       const res = await axiosInstance.post<string>(`${ApiUrlAccessRoom}`, {
         name: room.name,
         password: room.password,

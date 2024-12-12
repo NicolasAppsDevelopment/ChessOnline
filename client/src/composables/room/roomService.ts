@@ -4,8 +4,8 @@ import { useRoomApi } from '@/composables/room/roomApi';
 const roomApi = useRoomApi();
 export function useRoomService() {
   return {
-    async access(room: Room): Promise<void> {
-      await roomApi.access(room);
+    async join(room: Room): Promise<void> {
+      await roomApi.join(room);
     },
     async create(room: Room): Promise<void> {
       await roomApi.create(room);

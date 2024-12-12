@@ -1,12 +1,14 @@
 import express from 'express';
-import { createServer } from 'node:http';
-import { createHandler } from './socket_handler/handler';
-import { Server } from 'socket.io';
-import { RegisterRoutes } from "./routes";
+import {createServer} from 'node:http';
+import {createHandler} from './socket_handler/handler';
+import {Server} from 'socket.io';
+import {RegisterRoutes} from "./routes";
 import errorHandler from "./middlewares/errorHandler";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
+import {socketIoAuthentication} from "./middlewares/socketIoAuth";
+import {User} from "./models/user.model";
 
 const PORT = process.env.PORT ?? 8100;
 
@@ -32,16 +34,24 @@ const io = new Server(server, {
         origin: "*",
     },
 });
+io.engine.use(socketIoAuthentication);
 
 RegisterRoutes(app);
 app.use(errorHandler);
 
 io.on("connection", (socket) => {
+    // @ts-ignore
+    const user: User = socket.request.user;
+
     const {
         joinRoom,
-    } = createHandler(socket);
+        movePiece,
+        getMoves,
+    } = createHandler(socket, user);
 
     socket.on("JOIN_ROOM", joinRoom);
+    socket.on("MOVE_PIECE", movePiece);
+    socket.on("GET_MOVES", getMoves);
 });
 
 server.listen(PORT, () => {

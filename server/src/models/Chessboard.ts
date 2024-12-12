@@ -5,8 +5,8 @@ import {Bishop} from "./Bishop";
 import {Queen} from "./Queen";
 import {King} from "./King";
 import {Pawn} from "./Pawn";
-import {Position} from "@/models/Position";
-import {Cell} from "@/models/Cell";
+import {Position} from "./Position";
+import {Cell} from "./Cell";
 
 export class Chessboard {
   public board: Cell[] = [];
@@ -55,8 +55,8 @@ export class Chessboard {
 
     if (!fromCell && !toCell) return;
 
-    const pieceToMove = fromCell.piece;
-    const pieceOnArrivalCell = toCell.piece;
+    const pieceToMove = fromCell!.piece;
+    const pieceOnArrivalCell = toCell!.piece;
 
     if (!pieceToMove) return;
 
@@ -73,14 +73,14 @@ export class Chessboard {
 
       // Promotion rule
       if (pieceToMove.getColor() == Color.White && to.y == 0) {
-        fromCell.piece = new Queen(Color.White);
+        fromCell!.piece = new Queen(Color.White);
       } else if (pieceToMove.getColor() == Color.Black && to.y == 7) {
-        fromCell.piece = new Queen(Color.Black);
+        fromCell!.piece = new Queen(Color.Black);
       }
     }
 
-    toCell.piece = fromCell.piece;
-    fromCell.piece = null;
+    toCell!.piece = fromCell!.piece;
+    fromCell!.piece = null;
   }
 
   getPiece(position: Position): Piece | null {
@@ -117,17 +117,12 @@ export class Chessboard {
     return result;
   }
 
-  getBoard(): Cell[][] {
-    let board: Cell[][] = [];
-
-    for (let x = 0; x < 8; x++) {
-      board[x] = [];
+  getMoves(from: Position): Position[] {
+    const piece = this.getPiece(from);
+    if (piece == null) {
+      return [];
     }
 
-    this.board.forEach(function (cell) {
-      board[cell.position.x][cell.position.y] = cell;
-    });
-
-    return board;
+    return piece.getMoves(from, this);
   }
 }

@@ -269,12 +269,12 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/rooms/access',
+        app.post('/rooms/join',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoomsController)),
-            ...(fetchMiddlewares<RequestHandler>(RoomsController.prototype.tryAccess)),
+            ...(fetchMiddlewares<RequestHandler>(RoomsController.prototype.join)),
 
-            async function RoomsController_tryAccess(request: ExRequest, response: ExResponse, next: any) {
+            async function RoomsController_join(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     body: {"in":"body","name":"body","required":true,"ref":"CreateRoomInputDTO"},
             };
@@ -288,7 +288,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new RoomsController();
 
               await templateService.apiHandler({
-                methodName: 'tryAccess',
+                methodName: 'join',
                 controller,
                 response,
                 next,

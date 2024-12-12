@@ -14,8 +14,8 @@
     <div class="chessboard-right-container">
       <div class="chessboard">
         <div v-for="column in chessBoard?.getBoard()">
-          <div v-for="cell in column" class="square" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
-            <img v-if="isCellNotEmpty(cell)" v-bind:src="cell.getSprite()" v-bind:alt="cell.getColor() + ' ' + cell.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
+          <div v-for="cell in column" class="square" :class="{ highlight: cell.isHighlighted }" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
+            <img v-if="cell.piece" v-bind:src="cell.piece.getSprite()" v-bind:alt="cell.piece.getColor() + ' ' + cell.piece.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
             <div v-else> </div>
           </div>
         </div>
@@ -37,34 +37,27 @@
 
 <script setup lang="ts">
 import type { Chessboard } from '@/models/Chessboard';
-import { Piece } from '@/models/Piece';
 import { Position } from "@/models/Position";
+import {socket} from "@/socket";
+import type {Cell} from "@/models/Cell";
 const chessBoard = defineModel<Chessboard>('chessBoard', {});
 
-function pickUp(event: DragEvent, piece: Piece) {
-  event.dataTransfer?.setData('position', JSON.stringify(piece.getPosition()));
+function pickUp(event: DragEvent, cell: Cell) {
+  socket.emit('GET_MOVES', cell.position);
+  event.dataTransfer?.setData('position', JSON.stringify(cell.position));
 }
 
-function drop(event: DragEvent, destination: Piece | Position) {
+function drop(event: DragEvent, destination: Cell) {
   event.preventDefault();
   const fromData = event.dataTransfer?.getData('position');
   if (fromData) {
     const fromRaw = JSON.parse(fromData);
     const from = new Position(fromRaw.x, fromRaw.y);
-    let to: Position;
-
-    if (destination instanceof Position) {
-      to = destination
-    } else {
-      to = destination.getPosition();
-    }
+    const to = new Position(destination.position.x, destination.position.y);
 
     if (chessBoard.value) chessBoard.value.movePiece(from, to);
+    socket.emit('MOVE_PIECE', {from, to});
   }
-}
-
-function isCellNotEmpty(cell: Piece | Position): boolean {
-  return cell instanceof Piece;
 }
 
 </script>

@@ -15,6 +15,10 @@ export class UserService {
     }
   }
 
+  public async getUserByUsername(name: string): Promise<User | null> {
+    return await User.findOne({where: {"username": name}});
+  }
+
   // Crée un nouvel utilisateur
   public async createUser(
     username: string,

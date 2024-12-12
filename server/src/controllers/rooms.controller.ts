@@ -20,11 +20,11 @@ export class RoomsController extends Controller {
   }
 
   @Security("jwt")
-  @Post("/access")
-  public async tryAccess(
+  @Post("/join")
+  public async join(
         @Body() body: CreateRoomInputDTO
     ) {
     const { name, password } = body;
-    return await roomsService.tryAccess(name, password);
+    return await roomsService.join(name, password);
   }
 }

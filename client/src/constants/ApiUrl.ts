@@ -9,4 +9,4 @@ export const ApiUrlRegister = `${ApiUrl}/users`;
 
 export const ApiUrlGetRooms = `${ApiUrl}/rooms/all`;
 export const ApiUrlCreateRoom = `${ApiUrl}/rooms`;
-export const ApiUrlAccessRoom = `${ApiUrl}/rooms/access`;
+export const ApiUrlAccessRoom = `${ApiUrl}/rooms/join`;

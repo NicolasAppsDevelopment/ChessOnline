@@ -55,7 +55,7 @@ async function joinRoom(name: string) {
 
   try {
     processing.value = true;
-    await roomService.access({ name, password });
+    await roomService.join({ name, password });
   } catch (error) {
     if (error instanceof AxiosError) {
       lastError.value = error.response?.data.message ?? error.message;

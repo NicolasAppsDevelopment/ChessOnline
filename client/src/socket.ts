@@ -2,15 +2,14 @@ import { reactive } from "vue";
 import { io } from "socket.io-client";
 import {ApiUrl} from "@/constants/ApiUrl";
 import router from "@/router";
+import type {Cell} from "@/models/Cell";
+import type {Position} from "@/models/Position";
 
 export const state = reactive({
   connected: false,
 });
 
-// "undefined" means the URL will be computed from the `window.location` object
-const URL = ApiUrl;//process.env.NODE_ENV === "production" ? undefined : "http://10.8.0.2:8100/";
-
-export const socket = io(URL);
+export const socket = io(ApiUrl);
 
 socket.on("connect", () => {
   state.connected = true;
@@ -22,4 +21,12 @@ socket.on("disconnect", () => {
 
 socket.on("ROOM_JOINED", () => {
   router.push({ path: '/game' });
+});
+
+socket.on("MOVE_RESPONSE", (board: Cell[]) => {
+  console.log("MOVE_RESPONSE", board);
+});
+
+socket.on("MOVES_RESPONSE", (moves: Position[]) => {
+  console.log("MOVES_RESPONSE", moves);
 });

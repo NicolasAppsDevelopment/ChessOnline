@@ -1,8 +1,9 @@
 import {notFound} from "../error/NotFoundError";
 import {Room} from "../models/room.model";
-import bcrypt from "bcrypt";
+import {Chessboard} from "../models/Chessboard";
 
 export class RoomsService {
+  public boards: Map<string, Chessboard> = new Map();
   public async create(
     name: string,
     password: string
@@ -20,6 +21,7 @@ export class RoomsService {
 
     const uuid = name + ":" + password;
     await Room.create({ name: name, password: password, uuid: uuid });
+    this.boards.set(uuid, new Chessboard());
 
     return uuid;
   }
@@ -31,7 +33,7 @@ export class RoomsService {
     });
   }
 
-  public async tryAccess(
+  public async join(
       name: string,
       password: string
   ): Promise<string> {
@@ -45,6 +47,8 @@ export class RoomsService {
       (error as any).status = 403;
       throw error;
     }
+
+
 
     return room.uuid;
   }

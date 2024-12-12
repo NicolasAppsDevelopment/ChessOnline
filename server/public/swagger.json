@@ -313,9 +313,9 @@
 				}
 			}
 		},
-		"/rooms/access": {
+		"/rooms/join": {
 			"post": {
-				"operationId": "TryAccess",
+				"operationId": "Join",
 				"responses": {
 					"200": {
 						"description": "Ok",

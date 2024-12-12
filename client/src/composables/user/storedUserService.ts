@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import router from "@/router";
 import {jwtDecode} from "jwt-decode";
 import {useUserApi} from "@/composables/user/userApi";
+import {socket} from "@/socket";
 
 const storedUser = ref<User>({ username: '', password: '' });
 const userApi = useUserApi();
@@ -14,9 +15,11 @@ export function useStoredUserService() {
     storedUser,
     init(): void {
       if (localStorage.getItem('token')) {
-        storedUser.value.token = localStorage.getItem('token')!;
+        const storedToken = localStorage.getItem('token')!;
+        storedUser.value.token = storedToken;
         const data = jwtDecode(storedUser.value.token) as Token;
         storedUser.value.username = data.username;
+        socket.io.opts.extraHeaders = { Authorization: `Bearer ${storedToken}` };
         this.subscribeReAuth();
       }
     },

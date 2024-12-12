@@ -2,16 +2,16 @@ import { Piece, Color } from "./Piece";
 import { Position } from "@/models/Position";
 import type {Chessboard} from "@/models/Chessboard";
 export class Bishop extends Piece {
-    constructor(color: Color, position: Position) {
-      super("Bishop", color, position);
+    constructor(color: Color) {
+      super("Bishop", color);
     }
-    override getMoves(board: Chessboard): Position[] {
+    override getMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       // move down right
       for (let xyShift = 1; xyShift <= 8; xyShift++) {
-        const newY = this.position.y + xyShift;
-        const newX = this.position.x + xyShift;
+        const newY = from.y + xyShift;
+        const newX = from.x + xyShift;
         if (newY <= 7 && newX <= 7) {
           moves.push(new Position(newX, newY));
           if (board.getPiece(new Position(newX, newY)) != null) {
@@ -24,8 +24,8 @@ export class Bishop extends Piece {
 
       // move down left
       for (let xyShift = 1; xyShift <= 8; xyShift++) {
-        const newY = this.position.y + xyShift;
-        const newX = this.position.x - xyShift;
+        const newY = from.y + xyShift;
+        const newX = from.x - xyShift;
         if (newY <= 7 && 0 <= newX) {
           moves.push(new Position(newX, newY));
           if (board.getPiece(new Position(newX, newY)) != null) {
@@ -38,8 +38,8 @@ export class Bishop extends Piece {
 
       // move up left
       for (let xyShift = 1; xyShift <= 8; xyShift++) {
-        const newY = this.position.y - xyShift;
-        const newX = this.position.x - xyShift;
+        const newY = from.y - xyShift;
+        const newX = from.x - xyShift;
         if (0 <= newY && 0 <= newX) {
           moves.push(new Position(newX, newY));
           if (board.getPiece(new Position(newX, newY)) != null) {
@@ -52,8 +52,8 @@ export class Bishop extends Piece {
 
       // move up right
       for (let xyShift = 1; xyShift <= 8; xyShift++) {
-        const newY = this.position.y - xyShift;
-        const newX = this.position.x + xyShift;
+        const newY = from.y - xyShift;
+        const newX = from.x + xyShift;
         if (0 <= newY && newX <= 7) {
           moves.push(new Position(newX, newY));
           if (board.getPiece(new Position(newX, newY)) != null) {

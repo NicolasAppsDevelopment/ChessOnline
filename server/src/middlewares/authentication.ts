@@ -8,9 +8,10 @@ export function expressAuthentication(
 ) {
     if (securityName === "jwt") {
         const token =
-            request.body.token ||
-            request.query.token ||
-            request.headers.authorization?.split(" ")[1];
+            request.body?.token ||
+            request.query?.token ||
+            request.headers?.authorization?.split(" ")[1] ||
+            request.headers["authorization"]?.split(" ")[1];
 
         return new Promise((resolve, reject) => {
             if (token == null) {

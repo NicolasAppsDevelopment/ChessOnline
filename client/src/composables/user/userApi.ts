@@ -1,6 +1,7 @@
 import axiosInstance from '@/config/AxiosConfig';
 import {ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister} from '@/constants/ApiUrl';
 import type { User } from '@/models/User';
+import {socket} from "@/socket";
 
 export function useUserApi() {
   return {
@@ -12,12 +13,14 @@ export function useUserApi() {
       });
       user.token = res.data.token;
       localStorage.setItem('token', user.token);
+      socket.io.opts.extraHeaders = { Authorization: `Bearer ${user.token}` };
       return user;
     },
     async refresh(user: User): Promise<User> {
       const res = await axiosInstance.post<{ token: string }>(`${ApiUrlRefresh}`);
       user.token = res.data.token;
       localStorage.setItem('token', user.token);
+      socket.io.opts.extraHeaders = { Authorization: `Bearer ${user.token}` };
       return user;
     },
     async register(user: User): Promise<User> {
