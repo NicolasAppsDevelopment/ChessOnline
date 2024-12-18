@@ -5,7 +5,7 @@ const sequelize = new Sequelize({
   define: {
     timestamps: false,
   },
-  storage: "./db.sqlite", // Chemin vers la base SQLite
+  storage: "./db.sqlite",
 });
 
 export default sequelize;

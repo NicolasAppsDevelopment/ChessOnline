@@ -19,6 +19,19 @@ export class UserService {
     return await User.findOne({where: {"username": name}});
   }
 
+  public async getLeaderboard(): Promise<UserOutputDTO[]> {
+    const users = await User.findAll({
+      attributes: ['id', 'username', 'elo'],
+      order: [['elo', 'DESC']],
+      limit: 10,
+    });
+    if (users) {
+      return users.map(UserMapper.toOutputDto);
+    } else {
+      notFound("User");
+    }
+  }
+
   // Crée un nouvel utilisateur
   public async createUser(
     username: string,

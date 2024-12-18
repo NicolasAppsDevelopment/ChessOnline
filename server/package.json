@@ -1,7 +1,6 @@
 {
   "name": "express-typescript",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "tsoa": "tsoa",
@@ -52,5 +51,6 @@
     "nodemon": "^3.1.5",
     "prettier": "^3.3.3",
     "ts-node": "^10.9.2"
-  }
+  },
+  "description": ""
 }

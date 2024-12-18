@@ -71,20 +71,24 @@ async function joinRoom(name: string) {
 
 <template>
   <Navbar></Navbar>
-    <h2>Join a room</h2>
-  <ul>
-    <li v-for="room in rooms" :key="room">
-      <p>{{ room }}</p>
-      <Button label="Join" @click="joinRoom(room)"></Button>
-    </li>
-  </ul>
-  <Button label="Refresh" @click="getRooms()"></Button>
 
-  <h2>Create a room</h2>
-  <p v-if="lastError">{{ lastError }}</p>
-  <InputText v-model="room.name"></InputText>
-  <Password v-model="room.password"></Password>
-  <Button label="Create a room" @click="createRoom()"></Button>
+  <div class="container-card login-form">
+    <h2>Join a room</h2>
+    <ul>
+      <li v-for="room in rooms" :key="room">
+        <p>{{ room }}</p>
+        <Button label="Join" @click="joinRoom(room)"></Button>
+      </li>
+    </ul>
+    <Button label="Refresh" @click="getRooms()"></Button>
+
+    <h2>Create a room</h2>
+    <p v-if="lastError">{{ lastError }}</p>
+    <InputText v-model="room.name"></InputText>
+    <Password v-model="room.password"></Password>
+    <Button label="Create a room" @click="createRoom()"></Button>
+  </div>
+
 </template>
 
 <style scoped>

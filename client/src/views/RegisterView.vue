@@ -1,6 +1,6 @@
 <template>
 
-  <div class="container-card login-form" style="margin-left: 50%; margin-right: 50%;">
+  <div class="container-card login-form">
     <h1>Register</h1>
     <p v-if="lastError">{{ lastError }}</p>
     <p>Username</p>

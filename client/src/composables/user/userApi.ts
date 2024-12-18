@@ -1,5 +1,5 @@
 import axiosInstance from '@/config/AxiosConfig';
-import {ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister} from '@/constants/ApiUrl';
+import {ApiUrlGetRooms, ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister} from '@/constants/ApiUrl';
 import type { User } from '@/models/User';
 import {socket} from "@/socket";
 
@@ -30,5 +30,11 @@ export function useUserApi() {
       });
       return await this.authenticate(user);
     }
+    async getLeaderboard(): Promise<string[]> {
+      const res = await axiosInstance.get<string[]>(`${ApiUrlRegister}`);
+      res.data;
+
+      return this.getLeaderboard();
+    },
   };
 }
