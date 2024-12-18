@@ -1,16 +1,16 @@
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../services/authentication.service";
+import {UserJwtPayload} from "../models/UserJwtPayload";
+import {User} from "../models/user.model";
 
 export function expressAuthentication(
     request: express.Request,
     securityName: string,
-) {
+): Promise<UserJwtPayload> {
     if (securityName === "jwt") {
         const token =
-            request.body?.token ||
-            request.query?.token ||
-            request.headers?.authorization?.split(" ")[1] ||
+            request.headers?.authorization?.split(" ")[1] ??
             request.headers["authorization"]?.split(" ")[1];
 
         return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export function expressAuthentication(
                         if (err) {
                             reject(err);
                         } else {
-                            resolve(decoded);
+                            resolve(decoded as UserJwtPayload);
                         }
                     }
                 );
@@ -33,4 +33,11 @@ export function expressAuthentication(
     } else {
         throw new Error("Only JWT security is supported");
     }
+}
+
+export async function getUsernameFromJWT(
+    request: express.Request
+): Promise<string> {
+    const jwt = await expressAuthentication(request, "jwt");
+    return jwt.username;
 }

@@ -39,7 +39,6 @@ export function useStoredUserService() {
       const oldToken = storedUser.value.token;
       if (oldToken) {
         const delay = Math.max(jwtDecode(oldToken).exp! - (Date.now() / 1000) - (60 * 5), 0);
-        console.log('delay', delay);
         // re-authenticate user every hour
         refreshTimeout = setTimeout(() => {
           this.refresh();

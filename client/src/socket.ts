@@ -22,11 +22,3 @@ socket.on("disconnect", () => {
 socket.on("ROOM_JOINED", () => {
   router.push({ path: '/game' });
 });
-
-socket.on("MOVE_RESPONSE", (board: Cell[]) => {
-  console.log("MOVE_RESPONSE", board);
-});
-
-socket.on("MOVES_RESPONSE", (moves: Position[]) => {
-  console.log("MOVES_RESPONSE", moves);
-});

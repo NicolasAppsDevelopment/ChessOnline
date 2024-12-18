@@ -246,6 +246,7 @@ export function RegisterRoutes(app: Router) {
             async function RoomsController_createRoom(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     body: {"in":"body","name":"body","required":true,"ref":"CreateRoomInputDTO"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -277,6 +278,7 @@ export function RegisterRoutes(app: Router) {
             async function RoomsController_join(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     body: {"in":"body","name":"body","required":true,"ref":"CreateRoomInputDTO"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

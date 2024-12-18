@@ -1,28 +1,27 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database"; // Connexion à la base de données
 export interface RoomAttributes {
-  id?: number;
+  uuid: string;
   name: string;
   password: string;
-  uuid: string;
 }
 
 export class Room
   extends Model<RoomAttributes>
   implements RoomAttributes
 {
-  public id!: number;
+  public uuid!: string;
   public name!: string;
   public password!: string;
-  public uuid!: string;
 }
 
 Room.init(
   {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+    uuid: {
+      type: DataTypes.STRING,
+      allowNull: false,
       primaryKey: true,
+      unique: true,
     },
     name: {
       type: DataTypes.STRING,
@@ -32,11 +31,6 @@ Room.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
-    uuid: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
     },
   },
   {

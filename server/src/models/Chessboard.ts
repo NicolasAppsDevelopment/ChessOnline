@@ -47,25 +47,25 @@ export class Chessboard {
 
   movePiece(from: Position, to: Position) {
     if (from.equals(to)) {
-      return; // can't eat yourself (on your own cell)
+      return false; // can't eat yourself (on your own cell)
     }
 
     const fromCell = this.getCellFromPosition(from);
     const toCell = this.getCellFromPosition(to);
 
-    if (!fromCell && !toCell) return;
+    if (!fromCell && !toCell) return false;
 
     const pieceToMove = fromCell!.piece;
     const pieceOnArrivalCell = toCell!.piece;
 
-    if (!pieceToMove) return;
+    if (!pieceToMove) return false;
 
     if (pieceToMove.getColor() == pieceOnArrivalCell?.getColor()) {
-      return; // can't eat yourself (a piece of your color)
+      return false; // can't eat yourself (a piece of your color)
     }
 
     if (!pieceToMove.checkMove(from, to, this)) {
-      return;
+      return false;
     }
 
     if (pieceToMove instanceof Pawn) {
@@ -81,6 +81,8 @@ export class Chessboard {
 
     toCell!.piece = fromCell!.piece;
     fromCell!.piece = null;
+
+    return true;
   }
 
   getPiece(position: Position): Piece | null {

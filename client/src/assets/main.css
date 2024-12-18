@@ -105,6 +105,10 @@ a,
   cursor: grabbing;
 }
 
+.highlight {
+  background-color: #efca32 !important;
+}
+
 :root {
   --primary-color: #29bc86;
   --primary-color-dark: #0b5739;

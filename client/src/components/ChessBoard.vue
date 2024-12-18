@@ -40,7 +40,22 @@ import type { Chessboard } from '@/models/Chessboard';
 import { Position } from "@/models/Position";
 import {socket} from "@/socket";
 import type {Cell} from "@/models/Cell";
+import {getCellsFromRawBoard} from "@/mapper/ChessboardMapper";
+import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
 const chessBoard = defineModel<Chessboard>('chessBoard', {});
+
+socket.on("MOVE_RESPONSE", (board: any[]) => {
+  const cells: Cell[] = getCellsFromRawBoard(board);
+  if (chessBoard.value) chessBoard.value.board = cells;
+});
+
+socket.on("MOVES_RESPONSE", (moves: any[]) => {
+  const positions: Position[] = getPositionArrayFromRaw(moves);
+  for (const position of positions) {
+    const cell = chessBoard.value?.getCellFromPosition(position);
+    if (cell) cell.isHighlighted = true;
+  }
+});
 
 function pickUp(event: DragEvent, cell: Cell) {
   socket.emit('GET_MOVES', cell.position);
@@ -55,8 +70,11 @@ function drop(event: DragEvent, destination: Cell) {
     const from = new Position(fromRaw.x, fromRaw.y);
     const to = new Position(destination.position.x, destination.position.y);
 
-    if (chessBoard.value) chessBoard.value.movePiece(from, to);
-    socket.emit('MOVE_PIECE', {from, to});
+    if (chessBoard.value) {
+      chessBoard.value.movePiece(from, to);
+      chessBoard.value.clearHighlights();
+    }
+    socket.emit('MOVE_PIECE', from, to);
   }
 }
 

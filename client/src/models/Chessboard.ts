@@ -83,6 +83,12 @@ export class Chessboard {
     fromCell.piece = null;
   }
 
+  clearHighlights() {
+    this.board.forEach(function (cell) {
+      cell.isHighlighted = false;
+    });
+  }
+
   getPiece(position: Position): Piece | null {
     const cell = this.getCellFromPosition(position);
     if (cell) {

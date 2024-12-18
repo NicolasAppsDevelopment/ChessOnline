@@ -38,7 +38,8 @@
     "socket.io": "^4.8.0",
     "sqlite3": "^5.1.7",
     "swagger-ui-express": "^5.0.1",
-    "tsoa": "^6.4.0"
+    "tsoa": "^6.4.0",
+    "uuid": "^11.0.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
