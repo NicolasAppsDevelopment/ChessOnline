@@ -29,10 +29,10 @@ export function useUserApi() {
         password: user.password,
       });
       return await this.authenticate(user);
-    }
+    },
     async getLeaderboard(): Promise<string[]> {
       const res = await axiosInstance.get<string[]>(`${ApiUrlRegister}`);
-      res.data;
+      /**res.data;**/
 
       return this.getLeaderboard();
     },
