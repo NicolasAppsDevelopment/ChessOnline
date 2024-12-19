@@ -53,7 +53,7 @@ export class Chessboard {
     const fromCell = this.getCellFromPosition(from);
     const toCell = this.getCellFromPosition(to);
 
-    if (!fromCell && !toCell) return;
+    if (!fromCell || !toCell) return;
 
     const pieceToMove = fromCell.piece;
     const pieceOnArrivalCell = toCell.piece;

@@ -6,7 +6,7 @@ export interface UserAttributes {
     username: string;
     password: string;
     joined_room?: Room | null;
-    joined_room_id: string | null;
+    joined_room_id?: string | null;
     elo: number;
 }
 
