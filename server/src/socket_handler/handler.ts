@@ -30,6 +30,21 @@ export function createHandler(socket: Socket, user: User) {
                 socket.to(roomUuid).emit("MOVE_RESPONSE", board.board);
             }
         },
+        getBoard: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
+            if (!roomUuid) {
+                socket.emit("GET_BOARD_RESPONSE", null);
+                return;
+            }
+
+            const board = roomsService.boards.get(roomUuid);
+            if (!board) {
+                socket.emit("GET_BOARD_RESPONSE", null);
+                return;
+            }
+
+            socket.emit("GET_BOARD_RESPONSE", board.board);
+        },
         getMoves: async function (
             from: any
         ) {

@@ -69,6 +69,18 @@ export class RoomsService {
     }
     return user.joined_room_id;
   }
+
+  public async remove(
+    uuid: string
+  ): Promise<void> {
+    const room = await Room.findOne({ where: { uuid: uuid } });
+    if (room) {
+      await room.destroy();
+      roomsService.boards.delete(uuid);
+    } else {
+      notFound("Room");
+    }
+  }
 }
 
 export const roomsService = new RoomsService();

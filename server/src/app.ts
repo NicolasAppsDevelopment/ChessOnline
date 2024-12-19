@@ -9,6 +9,7 @@ import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import {socketIoAuthentication} from "./middlewares/socketIoAuth";
 import {User} from "./models/user.model";
+import { roomsService } from './services/rooms.service';
 
 const PORT = process.env.PORT ?? 8100;
 
@@ -47,13 +48,25 @@ io.on("connection", (socket) => {
         joinRoom,
         movePiece,
         getMoves,
+        getBoard,
     } = createHandler(socket, user);
 
     socket.on("JOIN_ROOM", joinRoom);
     socket.on("MOVE_PIECE", movePiece);
     socket.on("GET_MOVES", getMoves);
+    socket.on("GET_BOARD", getBoard);
+    socket.on("disconnect", async () => {
+        const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
+        if (!roomUuid) {
+            return;
+        }
+        if (io.sockets.adapter.rooms.get(roomUuid)?.size === 1) {
+            await roomsService.remove(roomUuid);
+        }
+        socket.leave(roomUuid);
+    });
 });
 
 server.listen(PORT, () => {
-    console.log('server running at http://10.8.0.2:' + PORT);
+    console.log('server on port ' + PORT);
 });

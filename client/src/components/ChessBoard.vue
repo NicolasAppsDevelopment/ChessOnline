@@ -42,6 +42,7 @@ import {socket} from "@/socket";
 import type {Cell} from "@/models/Cell";
 import {getCellsFromRawBoard} from "@/mapper/ChessboardMapper";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
+import { onMounted } from 'vue'
 const chessBoard = defineModel<Chessboard>('chessBoard', {});
 
 socket.on("MOVE_RESPONSE", (board: any[]) => {
