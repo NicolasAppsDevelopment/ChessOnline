@@ -37,6 +37,9 @@ export function useUserApi() {
     async getUserById(id: number): Promise<User> {
       return await axiosInstance.get(`${ApiUrlGetUser}`+ id);
     },
+    async getUserRank(id: number): Promise<number> {
+      return await axiosInstance.get(`${ApiUrlGetUser}`+ id + '/rank');
+    },
     async getLeaderboard(): Promise<string[]> {
       const res = await axiosInstance.get<string[]>(`${ApiUrlRegister}`);
       /**res.data;**/

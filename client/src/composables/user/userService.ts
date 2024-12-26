@@ -20,7 +20,10 @@ export function useUserService() {
       storedUserService.clear();
     },
     async getUserById(id: number): Promise<User> {
-      return await userApi.getUserById(id)
+      return await userApi.getUserById(id);
+    },
+    async getUserRank(id: number): Promise<number> {
+      return await userApi.getUserRank(id);
     }
   };
 }

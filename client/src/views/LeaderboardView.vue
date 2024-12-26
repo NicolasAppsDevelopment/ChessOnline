@@ -1,15 +1,36 @@
 <script setup lang="ts">
 import Navbar from "@/components/Navbar.vue";
-import {useStoredUserService} from "@/composables/user/storedUserService";
+import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
+import {onBeforeMount, onMounted, ref} from "vue";
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
 
-const actualUser = await userService.getUserById(storedUserService.storedUser.value.id);
-const actualUserData = actualUser.data;
+const userId = storedUserService.storedUser.value.id;
 
-const actualUserRank = 0;
+const actualUserRank = ref("calcul...");
+const actualUserUsername = ref("calcul..");
+const actualUserElo = ref("calcul..");
+
+onMounted(async () => {
+  let actualUser = await userService.getUserById(userId);
+  actualUser = actualUser.data;
+
+
+  actualUserUsername.value = actualUser.username;
+  actualUserElo.value = actualUser.elo;
+
+  console.log();
+
+  let rank = await userService.getUserRank(userId);
+  rank = rank.data;
+
+  actualUserRank.value = rank;
+
+
+
+});
 
 </script>
 
@@ -34,12 +55,12 @@ const actualUserRank = 0;
           <td><a href="{{ path('app_account_view', {'id': user.id}) }}">{{ user.username }}</a></td>
           <td>{{ user.score }}</td>
         </tr>
-        {% endfor %}
+        {% endfor %}-->
         <tr>
           <td>{{ actualUserRank }}</td>
-          <td>{{ actualUserData.username }}</td>
-          <td>{{ actualUserData.elo }}</td>
-        </tr>-->
+          <td>{{ actualUserUsername }}</td>
+          <td>{{ actualUserElo }}</td>
+        </tr>
       </tbody>
     </table>
   </div>

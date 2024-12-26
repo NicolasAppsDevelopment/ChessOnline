@@ -28,6 +28,13 @@ export class UserController extends Controller {
     return userService.getUserById(id);
   }
 
+  // Récupère le rang d'un utilisateur par ID
+  @Get("{id}/rank")
+  @Security("jwt")
+  public async getUserRank(@Path() id: number): Promise<number | undefined> {
+    return userService.getUserRank(id);
+  }
+
   // Crée un nouvel utilisateur
   @Post("/")
   public async createUser(
