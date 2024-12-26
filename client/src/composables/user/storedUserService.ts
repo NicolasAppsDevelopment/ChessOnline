@@ -4,6 +4,7 @@ import router from "@/router";
 import {jwtDecode} from "jwt-decode";
 import {useUserApi} from "@/composables/user/userApi";
 import {socket} from "@/socket";
+import type { UserJwt } from '@/models/UserJwt'
 
 const storedUser = ref<User>({ username: '', password: '', id: -1 });
 const userApi = useUserApi();
@@ -15,13 +16,19 @@ export function useStoredUserService() {
     storedUser,
     init(): void {
       if (localStorage.getItem('token')) {
-        const storedToken = localStorage.getItem('token')!;
-        storedUser.value.token = storedToken;
-        const data = jwtDecode(storedUser.value.token) as Token;
-        storedUser.value.username = data.jwtPayload.username;
-        storedUser.value.id = data.jwtPayload.id;
-        socket.io.opts.extraHeaders = { Authorization: `Bearer ${storedToken}` };
-        this.subscribeReAuth();
+        try {
+          const storedToken = localStorage.getItem('token')!;
+          storedUser.value.token = storedToken;
+          const data = jwtDecode(storedUser.value.token) as UserJwt;
+          storedUser.value.username = data.jwtPayload.username;
+          storedUser.value.id = data.jwtPayload.id;
+          socket.io.opts.extraHeaders = { Authorization: `Bearer ${storedToken}` };
+          this.subscribeReAuth();
+        } catch (e) {
+          console.error(e);
+          localStorage.removeItem('token');
+          router.push({ path: '/login' });
+        }
       }
     },
     async refresh(): Promise<void> {

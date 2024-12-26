@@ -25,6 +25,7 @@ onMounted(() => {
   });
   socket.on('GET_BOARD_RESPONSE', (board: any[]) => {
     if (board === null) {
+      console.error("board is null");
       router.push({ path: '/' });
       return;
     }
