@@ -16,6 +16,7 @@ import {
   UserInputPatchDTO,
   UserOutputDTO,
 } from "../dto/user.dto";
+import {User} from "../models/user.model";
 
 @Route("users")
 @Tags("Users")

@@ -1,7 +1,8 @@
 import axiosInstance from '@/config/AxiosConfig';
-import {ApiUrlGetRooms, ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister} from '@/constants/ApiUrl';
+import {ApiUrlGetRooms, ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister, ApiUrlGetUser} from '@/constants/ApiUrl';
 import type { User } from '@/models/User';
 import {socket} from "@/socket";
+
 
 export function useUserApi() {
   return {
@@ -29,6 +30,12 @@ export function useUserApi() {
         password: user.password,
       });
       return await this.authenticate(user);
+    },
+    async getUserByUsername(username: string): Promise<User> {
+      return await axiosInstance.get(`${ApiUrlGetUser}`+ username);
+    },
+    async getUserById(id: number): Promise<User> {
+      return await axiosInstance.get(`${ApiUrlGetUser}`+ id);
     },
     async getLeaderboard(): Promise<string[]> {
       const res = await axiosInstance.get<string[]>(`${ApiUrlRegister}`);

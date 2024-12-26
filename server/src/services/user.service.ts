@@ -6,17 +6,22 @@ import bcrypt from "bcrypt";
 
 export class UserService {
   // Récupère un utilisateur par ID
-  public async getUserById(id: number): Promise<UserOutputDTO> {
+  public async getUserById(id: number): Promise<User> {
     let user = await User.findByPk(id);
     if (user) {
-      return UserMapper.toOutputDto(user);
+      return user;
     } else {
       notFound("User");
     }
   }
 
-  public async getUserByUsername(name: string): Promise<User | null> {
-    return await User.findOne({where: {"username": name}});
+  public async getUserByUsername(name: string): Promise<User> {
+    let user = await User.findOne({where: {username: name}});
+    if (user) {
+      return user;
+    } else {
+      notFound("User");
+    }
   }
 
   public async getLeaderboard(): Promise<UserOutputDTO[]> {

@@ -18,6 +18,9 @@ export function useUserService() {
     },
     async logout(): Promise<void> {
       storedUserService.clear();
+    },
+    async getUserById(id: number): Promise<User> {
+      return await userApi.getUserById(id)
     }
   };
 }

@@ -1,13 +1,12 @@
 import * as express from "express";
 import * as jwt from "jsonwebtoken";
 import { JWT_SECRET } from "../services/authentication.service";
-import {UserJwtPayload} from "../models/UserJwtPayload";
-import {User} from "../models/user.model";
+import {UserJwt} from "../models/UserJwt";
 
 export function expressAuthentication(
     request: express.Request,
     securityName: string,
-): Promise<UserJwtPayload> {
+): Promise<UserJwt> {
     if (securityName === "jwt") {
         const token =
             request.headers?.authorization?.split(" ")[1] ??
@@ -24,7 +23,7 @@ export function expressAuthentication(
                         if (err) {
                             reject(err);
                         } else {
-                            resolve(decoded as UserJwtPayload);
+                            resolve(decoded as UserJwt);
                         }
                     }
                 );
@@ -39,5 +38,5 @@ export async function getUsernameFromJWT(
     request: express.Request
 ): Promise<string> {
     const jwt = await expressAuthentication(request, "jwt");
-    return jwt.username;
+    return jwt.jwtPayload.username;
 }

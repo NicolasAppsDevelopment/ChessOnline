@@ -2,7 +2,7 @@ import { expressAuthentication } from "./authentication";
 import { userService } from "../services/user.service";
 import { Response, NextFunction } from "express";
 import {SocketUserRequest} from "../models/SocketUserRequest";
-import {UserJwtPayload} from "../models/UserJwtPayload";
+import {UserJwt} from "../models/UserJwt";
 
 export async function socketIoAuthentication(req: SocketUserRequest, res: Response, next: NextFunction) {
     const isHandshake = req._query.sid === undefined;
@@ -11,8 +11,8 @@ export async function socketIoAuthentication(req: SocketUserRequest, res: Respon
     }
 
     try {
-        const data: UserJwtPayload = await expressAuthentication(req, "jwt");
-        const user = await userService.getUserByUsername(data.username);
+        const data: UserJwt = await expressAuthentication(req, "jwt");
+        const user = await userService.getUserById(data.jwtPayload.id);
         if (!user) {
             return next(new Error("User not found"));
         }

@@ -5,7 +5,7 @@ import {jwtDecode} from "jwt-decode";
 import {useUserApi} from "@/composables/user/userApi";
 import {socket} from "@/socket";
 
-const storedUser = ref<User>({ username: '', password: '' });
+const storedUser = ref<User>({ username: '', password: '', id: -1 });
 const userApi = useUserApi();
 
 let refreshTimeout: number | null = null;
@@ -18,7 +18,8 @@ export function useStoredUserService() {
         const storedToken = localStorage.getItem('token')!;
         storedUser.value.token = storedToken;
         const data = jwtDecode(storedUser.value.token) as Token;
-        storedUser.value.username = data.username;
+        storedUser.value.username = data.jwtPayload.username;
+        storedUser.value.id = data.jwtPayload.id;
         socket.io.opts.extraHeaders = { Authorization: `Bearer ${storedToken}` };
         this.subscribeReAuth();
       }
@@ -46,7 +47,7 @@ export function useStoredUserService() {
       }
     },
     clear(): void {
-      storedUser.value = { username: '', password: '' };
+      storedUser.value = { username: '', password: '', id: -1 };
       localStorage.removeItem('token');
       if (refreshTimeout) { clearTimeout(refreshTimeout); }
       router.push({ path: '/login' });
