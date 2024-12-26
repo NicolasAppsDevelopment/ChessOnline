@@ -2,7 +2,7 @@
 import Navbar from "@/components/Navbar.vue";
 import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
-import {onBeforeMount, onMounted, ref} from "vue";
+import {onMounted, ref} from "vue";
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
@@ -12,6 +12,7 @@ const userId = storedUserService.storedUser.value.id;
 const actualUserRank = ref("calcul...");
 const actualUserUsername = ref("calcul..");
 const actualUserElo = ref("calcul..");
+const users = ref([]);
 
 onMounted(async () => {
   let actualUser = await userService.getUserById(userId);
@@ -21,14 +22,11 @@ onMounted(async () => {
   actualUserUsername.value = actualUser.username;
   actualUserElo.value = actualUser.elo;
 
-  console.log();
-
   let rank = await userService.getUserRank(userId);
-  rank = rank.data;
+  actualUserRank.value = rank.data;
 
-  actualUserRank.value = rank;
-
-
+  let leaderboard = await userService.getLeaderboard();
+  users.value = leaderboard.data
 
 });
 
@@ -49,13 +47,11 @@ onMounted(async () => {
         </tr>
       </thead>
       <tbody>
-        <!--{% for user in users %}
-        <tr>
-          <td>{{ user.rank }}</td>
+        <tr v-for="(user, index) in users" :key="user.id">
+          <td>{{ index + 1 }}</td>
           <td><a href="{{ path('app_account_view', {'id': user.id}) }}">{{ user.username }}</a></td>
-          <td>{{ user.score }}</td>
+          <td>{{ user.elo }}</td>
         </tr>
-        {% endfor %}-->
         <tr>
           <td>{{ actualUserRank }}</td>
           <td>{{ actualUserUsername }}</td>

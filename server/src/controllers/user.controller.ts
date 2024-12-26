@@ -28,6 +28,13 @@ export class UserController extends Controller {
     return userService.getUserById(id);
   }
 
+  // Récupère un utilisateur par ID
+  @Get("/")
+  @Security("jwt")
+  public async getLeaderboard(): Promise<UserOutputDTO[]> {
+    return userService.getLeaderboard();
+  }
+
   // Récupère le rang d'un utilisateur par ID
   @Get("{id}/rank")
   @Security("jwt")

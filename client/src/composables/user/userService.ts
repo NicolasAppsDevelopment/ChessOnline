@@ -24,6 +24,9 @@ export function useUserService() {
     },
     async getUserRank(id: number): Promise<number> {
       return await userApi.getUserRank(id);
+    },
+    async getLeaderboard(): Promise<User[]> {
+      return await userApi.getLeaderboard();
     }
   };
 }

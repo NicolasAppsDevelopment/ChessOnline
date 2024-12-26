@@ -40,11 +40,8 @@ export function useUserApi() {
     async getUserRank(id: number): Promise<number> {
       return await axiosInstance.get(`${ApiUrlGetUser}`+ id + '/rank');
     },
-    async getLeaderboard(): Promise<string[]> {
-      const res = await axiosInstance.get<string[]>(`${ApiUrlRegister}`);
-      /**res.data;**/
-
-      return this.getLeaderboard();
+    async getLeaderboard(): Promise<User[]> {
+      return await axiosInstance.get(`${ApiUrlGetUser}`);
     },
   };
 }

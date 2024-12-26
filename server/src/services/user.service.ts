@@ -41,16 +41,16 @@ export class UserService {
   }
 
 
-  public async getLeaderboard(): Promise<UserOutputDTO[]> {
+  public async getLeaderboard(): Promise<User[]> {
     const users = await User.findAll({
       attributes: ['id', 'username', 'elo'],
       order: [['elo', 'DESC']],
       limit: 10,
     });
     if (users) {
-      return users.map(UserMapper.toOutputDto);
+      return users;
     } else {
-      notFound("User");
+      notFound("Leaderboard");
     }
   }
 
