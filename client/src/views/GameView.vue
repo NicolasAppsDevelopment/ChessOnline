@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 
-import { onMounted, ref } from 'vue'
+import { onBeforeUnmount, onMounted, onUnmounted, ref } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
 import Navbar from "@/components/Navbar.vue";
 import { socket } from '@/socket'
@@ -10,7 +10,7 @@ import { getCellsFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
 
 
-const chessBoard = ref<Chessboard>(new Chessboard());
+const chessboard = ref<Chessboard>(new Chessboard());
 onMounted(() => {
   socket.emit('GET_BOARD');
   socket.on('GET_BOARD_RESPONSE', (board: any[]) => {
@@ -19,15 +19,18 @@ onMounted(() => {
       return;
     }
     const cells: Cell[] = getCellsFromRawBoard(board);
-    if (chessBoard.value) chessBoard.value.board = cells;
+    if (chessboard.value) chessboard.value.board = cells;
   });
-})
+});
+onBeforeUnmount(() => {
+  socket.emit('LEAVE_ROOM');
+});
 
 </script>
 
 <template>
   <Navbar></Navbar>
-  <ChessBoardComponent v-model:chessBoard="chessBoard"></ChessBoardComponent>
+  <ChessBoardComponent v-model:chessboard="chessboard"></ChessBoardComponent>
 </template>
 
 <style scoped>

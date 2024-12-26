@@ -2,11 +2,18 @@ import {Socket} from "socket.io";
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
 import {User} from "../models/user.model";
+
 export function createHandler(socket: Socket, user: User) {
     return {
         joinRoom: async function (
             roomUuid: string
         ) {
+            const board = roomsService.boards.get(roomUuid);
+            if (!board) {
+                await roomsService.remove(roomUuid);
+                return;
+            }
+
             socket.join(roomUuid);
 
             // notify back
