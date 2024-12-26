@@ -6,6 +6,7 @@ import 'primeflex/primeflex.css';
 import router from '@/router';
 import {useStoredUserService} from "@/composables/user/storedUserService";
 import '@/assets/main.css';
+import ToastService from 'primevue/toastservice';
 
 const app = createApp(App);
 
@@ -15,6 +16,7 @@ app.use(PrimeVue, {
   },
 });
 app.use(router);
+app.use(ToastService);
 
 useStoredUserService().init();
 
