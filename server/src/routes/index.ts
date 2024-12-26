@@ -52,7 +52,15 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
+            "isPrivate": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "JoinRoomInputDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "uuid": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -277,7 +285,7 @@ export function RegisterRoutes(app: Router) {
 
             async function RoomsController_join(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
-                    body: {"in":"body","name":"body","required":true,"ref":"CreateRoomInputDTO"},
+                    body: {"in":"body","name":"body","required":true,"ref":"JoinRoomInputDTO"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 

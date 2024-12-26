@@ -13,7 +13,7 @@ const routes = [
   { path: '/leaderboard', component: LeaderboardView },
   { path: '/statistics', component: StatisticsView },
   { path: '/history', component: HistoryView },
-  { path: '/game', component: GameView },
+  { path: '/game/:id', component: GameView },
 ];
 
 const router = createRouter({

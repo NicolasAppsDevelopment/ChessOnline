@@ -3,7 +3,7 @@ import sequelize from "../config/database"; // Connexion à la base de données
 export interface RoomAttributes {
   uuid: string;
   name: string;
-  password: string;
+  isPrivate: boolean;
 }
 
 export class Room
@@ -12,7 +12,7 @@ export class Room
 {
   public uuid!: string;
   public name!: string;
-  public password!: string;
+  public isPrivate!: boolean;
 }
 
 Room.init(
@@ -28,8 +28,8 @@ Room.init(
       allowNull: false,
       unique: true,
     },
-    password: {
-      type: DataTypes.STRING,
+    isPrivate: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
     },
   },

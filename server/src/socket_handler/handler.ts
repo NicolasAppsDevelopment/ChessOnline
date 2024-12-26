@@ -10,14 +10,15 @@ export function createHandler(socket: Socket, user: User) {
         ) {
             const board = roomsService.boards.get(roomUuid);
             if (!board) {
-                await roomsService.remove(roomUuid);
+                socket.emit("JOIN_ROOM_RESPONSE", "Room does not exist");
                 return;
             }
+
 
             socket.join(roomUuid);
 
             // notify back
-            socket.emit("ROOM_JOINED");
+            socket.emit("JOIN_ROOM_RESPONSE", null);
         },
         movePiece: async function (
             from: any,

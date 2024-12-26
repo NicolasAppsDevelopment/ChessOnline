@@ -61,18 +61,46 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ListRoomItemOutputDTO": {
+				"properties": {
+					"uuid": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"uuid",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"CreateRoomInputDTO": {
 				"properties": {
 					"name": {
 						"type": "string"
 					},
-					"password": {
-						"type": "string"
+					"isPrivate": {
+						"type": "boolean"
 					}
 				},
 				"required": [
 					"name",
-					"password"
+					"isPrivate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"JoinRoomInputDTO": {
+				"properties": {
+					"uuid": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"uuid"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -264,7 +292,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"type": "string"
+										"$ref": "#/components/schemas/ListRoomItemOutputDTO"
 									},
 									"type": "array"
 								}
@@ -339,7 +367,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/CreateRoomInputDTO"
+								"$ref": "#/components/schemas/JoinRoomInputDTO"
 							}
 						}
 					}

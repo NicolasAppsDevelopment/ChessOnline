@@ -1,6 +1,13 @@
-import type {User} from "@/models/User";
-
-export interface Room {
+export interface CreateRoom {
   name: string,
-  password: string,
+  isPrivate: boolean,
+}
+
+export interface ListRoomItem {
+  uuid: string,
+  name: string,
+}
+
+export interface JoinRoom {
+  uuid: string,
 }

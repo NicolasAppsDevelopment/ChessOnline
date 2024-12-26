@@ -1,4 +1,13 @@
 export interface CreateRoomInputDTO {
   name: string;
-  password: string;
+  isPrivate: boolean;
+}
+
+export interface JoinRoomInputDTO {
+  uuid: string;
+}
+
+export interface ListRoomItemOutputDTO {
+  uuid: string;
+  name: string;
 }

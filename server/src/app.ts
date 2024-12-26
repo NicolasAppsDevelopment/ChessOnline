@@ -56,7 +56,6 @@ io.on("connection", (socket) => {
     socket.on("GET_MOVES", getMoves);
     socket.on("GET_BOARD", getBoard);
     socket.on("LEAVE_ROOM", async () => {
-        console.log("LEAVE_ROOM");
         const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
         if (!roomUuid) {
             return;
@@ -65,7 +64,9 @@ io.on("connection", (socket) => {
 
         // room no longer exists
         if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
-            await roomsService.remove(roomUuid);
+            try {
+                await roomsService.remove(roomUuid);
+            } catch {}
         }
     });
     socket.on("disconnect", async () => {
@@ -76,7 +77,9 @@ io.on("connection", (socket) => {
 
         // room no longer exists
         if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
-            await roomsService.remove(roomUuid);
+            try {
+                await roomsService.remove(roomUuid);
+            } catch {}
         }
     });
 });

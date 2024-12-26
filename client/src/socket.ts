@@ -16,7 +16,3 @@ socket.on("connect", () => {
 socket.on("disconnect", () => {
   state.connected = false;
 });
-
-socket.on("ROOM_JOINED", () => {
-  router.push({ path: '/game' });
-});
