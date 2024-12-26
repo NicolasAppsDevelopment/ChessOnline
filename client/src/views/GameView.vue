@@ -9,15 +9,17 @@ import type { Cell } from '@/models/Cell'
 import { getCellsFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
 import { useRoute } from 'vue-router'
-const route = useRoute()
+import { useToast } from 'primevue/usetoast';
 
+const toast = useToast();
+const route = useRoute()
 
 const chessboard = ref<Chessboard>(new Chessboard());
 onMounted(() => {
   socket.emit('JOIN_ROOM', route.params.id);
   socket.on('JOIN_ROOM_RESPONSE', (error: string) => {
     if (error) {
-      console.error(error);
+      toast.add({ severity: 'error', summary: 'Error', detail: error , closable: false, life: 4000});
       router.push({ path: '/' });
       return;
     }
@@ -25,7 +27,7 @@ onMounted(() => {
   });
   socket.on('GET_BOARD_RESPONSE', (board: any[]) => {
     if (board === null) {
-      console.error("board is null");
+      toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
       router.push({ path: '/' });
       return;
     }
