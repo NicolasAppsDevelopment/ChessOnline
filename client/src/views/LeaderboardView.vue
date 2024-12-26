@@ -37,7 +37,6 @@ onMounted(async () => {
 
   <div class="p1">
     <h1>Leaderboard</h1>
-
     <table class="leaderboard">
       <thead>
         <tr>
@@ -49,7 +48,7 @@ onMounted(async () => {
       <tbody>
         <tr v-for="(user, index) in users" :key="user.id">
           <td>{{ index + 1 }}</td>
-          <td><a href="{{ path('app_account_view', {'id': user.id}) }}">{{ user.username }}</a></td>
+          <td><RouterLink :to="'/user/' + user.id">{{ user.username }}</RouterLink></td>
           <td>{{ user.elo }}</td>
         </tr>
         <tr>

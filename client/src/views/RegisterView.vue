@@ -2,14 +2,22 @@
 
   <div class="container-card login-form">
     <h1>Register</h1>
-    <p v-if="lastError">{{ lastError }}</p>
-    <p>Username</p>
-    <InputText v-model="user.username"></InputText>
-    <p>Password</p>
-    <Password v-model="user.password"></Password>
-    <Button :label="processing ? 'Processing...' : 'Register'" @click="getToken()" :disabled="processing"></Button>
-    <p> If you already have an account, you can
-      <router-link to="/login"> Login </router-link>
+    <Message v-if="lastError" severity="error" icon="fa-solid fa-circle-exclamation" class="mb-2">{{ lastError }}</Message>
+    <InputGroup class="mb-2">
+      <InputGroupAddon>
+        <i class="fa-solid fa-user"></i>
+      </InputGroupAddon>
+      <InputText v-model="user.username" placeholder="Username"></InputText>
+    </InputGroup>
+    <InputGroup class="mb-2">
+      <InputGroupAddon>
+        <i class="fa-solid fa-key"></i>
+      </InputGroupAddon>
+      <Password v-model="user.password" :feedback="false" placeholder="Password" toggleMask></Password>
+    </InputGroup>
+    <Button label="Register" icon="fa-solid fa-arrow-right" icon-pos="right" @click="getToken()" :disabled="processing"></Button>
+    <p>If you already have an account, you can
+      <router-link to="/login"> Login <i class="fa-solid fa-arrow-right"></i></router-link>
     </p>
   </div>
 
@@ -17,7 +25,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { InputText, Password, Button } from 'primevue';
+import { InputText, Password, Button, Message, InputGroup, InputGroupAddon } from 'primevue'
 import { useUserService } from '@/composables/user/userService';
 import type { User } from '@/models/User';
 import router from "@/router";

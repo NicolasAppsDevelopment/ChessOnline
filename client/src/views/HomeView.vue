@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {Button, InputText, Checkbox} from "primevue";
+import { Button, InputText, ToggleButton, InputGroup, InputGroupAddon, Message } from 'primevue'
 import {AxiosError} from "axios";
 import {ref, onMounted} from "vue";
 import {useRoomService} from "@/composables/room/roomService";
@@ -59,13 +59,19 @@ async function createRoom() {
         <RouterLink :to="'/game/' + room.uuid">{{ room.name }}</RouterLink>
       </li>
     </ul>
-    <Button label="Refresh" @click="getRooms()"></Button>
+    <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="getRooms()"></Button>
 
     <h2>Create a room</h2>
-    <p v-if="lastError">{{ lastError }}</p>
-    <InputText v-model="newRoom.name"></InputText>
-    <Checkbox v-model="newRoom.isPrivate" binary>Is private</Checkbox>
-    <Button label="Create a room" @click="createRoom()"></Button>
+    <Message v-if="lastError" severity="error" icon="fa-solid fa-circle-exclamation" class="mb-2">{{ lastError }}</Message>
+    <InputGroup class="mb-2">
+      <InputGroupAddon>
+        <i class="fa-solid fa-tag"></i>
+      </InputGroupAddon>
+      <InputText v-model="newRoom.name" placeholder="Name" />
+    </InputGroup>
+    <ToggleButton v-model="newRoom.isPrivate" onLabel="Private" offLabel="Public" onIcon="fa-solid fa-lock"
+                  offIcon="fa-solid fa-lock-open" class="w-9rem" aria-label="Visibility of the room" />
+    <Button label="Create a room" icon="fa-solid fa-plus" @click="createRoom()"></Button>
   </div>
 
 </template>
