@@ -2,32 +2,24 @@
 import Navbar from "@/components/Navbar.vue";
 import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
-import {onMounted, ref} from "vue";
+import { onMounted, onUpdated, ref } from 'vue'
+import type { User } from '@/models/User'
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
 
 const userId = storedUserService.storedUser.value.id;
-
-const actualUserRank = ref("calcul...");
-const actualUserUsername = ref("calcul..");
-const actualUserElo = ref("calcul..");
-const users = ref([]);
+const users = ref<User[]>([]);
 
 onMounted(async () => {
-  let actualUser = await userService.getUserById(userId);
-  actualUser = actualUser.data;
+  users.value = await userService.getLeaderboard();
+});
 
-
-  actualUserUsername.value = actualUser.username;
-  actualUserElo.value = actualUser.elo;
-
-  let rank = await userService.getUserRank(userId);
-  actualUserRank.value = rank.data;
-
-  let leaderboard = await userService.getLeaderboard();
-  users.value = leaderboard.data
-
+onUpdated(async () => {
+  const scrollToElement = document.getElementById(userId.toString());
+  if (scrollToElement) {
+    scrollToElement.scrollIntoView({ behavior: "smooth" });
+  }
 });
 
 </script>
@@ -46,15 +38,10 @@ onMounted(async () => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(user, index) in users" :key="user.id">
+        <tr v-for="(user, index) in users" :key="user.id" :class="{ 'highlight-border': (user.id == userId)}" :id="user.id.toString()">
           <td>{{ index + 1 }}</td>
           <td><RouterLink :to="'/user/' + user.id">{{ user.username }}</RouterLink></td>
           <td>{{ user.elo }}</td>
-        </tr>
-        <tr>
-          <td>{{ actualUserRank }}</td>
-          <td>{{ actualUserUsername }}</td>
-          <td>{{ actualUserElo }}</td>
         </tr>
       </tbody>
     </table>

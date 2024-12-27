@@ -22,9 +22,6 @@ export function useUserService() {
     async getUserById(id: number): Promise<User> {
       return await userApi.getUserById(id);
     },
-    async getUserRank(id: number): Promise<number> {
-      return await userApi.getUserRank(id);
-    },
     async getLeaderboard(): Promise<User[]> {
       return await userApi.getLeaderboard();
     }

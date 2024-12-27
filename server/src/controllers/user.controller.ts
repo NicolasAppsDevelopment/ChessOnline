@@ -14,9 +14,8 @@ import { userService } from "../services/user.service";
 import {
   UserInputDTO,
   UserInputPatchDTO,
-  UserOutputDTO,
-} from "../dto/user.dto";
-import {User} from "../models/user.model";
+  UserOutputDTO
+} from '../dto/user.dto'
 
 @Route("users")
 @Tags("Users")
@@ -26,20 +25,6 @@ export class UserController extends Controller {
   @Security("jwt")
   public async getUserById(@Path() id: number): Promise<UserOutputDTO> {
     return userService.getUserById(id);
-  }
-
-  // Récupère un utilisateur par ID
-  @Get("/")
-  @Security("jwt")
-  public async getLeaderboard(): Promise<UserOutputDTO[]> {
-    return userService.getLeaderboard();
-  }
-
-  // Récupère le rang d'un utilisateur par ID
-  @Get("{id}/rank")
-  @Security("jwt")
-  public async getUserRank(@Path() id: number): Promise<number | undefined> {
-    return userService.getUserRank(id);
   }
 
   // Crée un nouvel utilisateur

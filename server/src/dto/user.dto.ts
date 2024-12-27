@@ -14,3 +14,8 @@ export interface UserOutputDTO {
   password: string;
   elo: number;
 }
+
+export interface UserRankOutputDTO {
+  username: string;
+  elo: number;
+}

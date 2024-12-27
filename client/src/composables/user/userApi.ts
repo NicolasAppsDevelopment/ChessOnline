@@ -1,5 +1,11 @@
 import axiosInstance from '@/config/AxiosConfig';
-import {ApiUrlGetRooms, ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister, ApiUrlGetUser} from '@/constants/ApiUrl';
+import {
+  ApiUrlLogin,
+  ApiUrlRefresh,
+  ApiUrlRegister,
+  ApiUrlGetUser,
+  ApiUrlGetLeaderboard,
+} from '@/constants/ApiUrl'
 import type { User } from '@/models/User';
 import {socket} from "@/socket";
 
@@ -32,16 +38,16 @@ export function useUserApi() {
       return await this.authenticate(user);
     },
     async getUserByUsername(username: string): Promise<User> {
-      return await axiosInstance.get(`${ApiUrlGetUser}`+ username);
+      const res = await axiosInstance.get(`${ApiUrlGetUser}`+ username);
+      return res.data;
     },
     async getUserById(id: number): Promise<User> {
-      return await axiosInstance.get(`${ApiUrlGetUser}`+ id);
-    },
-    async getUserRank(id: number): Promise<number> {
-      return await axiosInstance.get(`${ApiUrlGetUser}`+ id + '/rank');
+      const res = await axiosInstance.get(`${ApiUrlGetUser}`+ id);
+      return res.data;
     },
     async getLeaderboard(): Promise<User[]> {
-      return await axiosInstance.get(`${ApiUrlGetUser}`);
+      const res = await axiosInstance.get(`${ApiUrlGetLeaderboard}`);
+      return res.data;
     },
   };
 }

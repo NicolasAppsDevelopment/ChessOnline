@@ -75,6 +75,10 @@
   background-color: #efca32 !important;
 }
 
+.highlight-border {
+  border: 3px solid #efca32 !important;
+}
+
 /* LEADERBOARD CSS */
 
 .leaderboard, .leaderboard th, .leaderboard td {
@@ -92,8 +96,6 @@
   color: var(--p-button-primary-hover-color);
   font-weight: 600;
   text-align: left;
-}
-.leaderboard th {
   padding: 1rem 1rem;
 }
 .leaderboard td {
@@ -107,8 +109,4 @@
 }
 .leaderboard tbody tr:nth-child(3){
   background-color: rgb(205, 127, 50, 0.5);
-}
-.leaderboard tbody tr:last-child {
-  border-top: 3px solid var(--primary-color);
-  background-color: rgb(0, 0, 0, 0.5);
 }
