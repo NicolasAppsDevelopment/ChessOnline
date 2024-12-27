@@ -22,9 +22,9 @@
   grid-row: 2;
 }
 .notation-top {
-    display: flex;
-    justify-content: space-around;
-    width: 96vmin;
+  display: flex;
+  justify-content: space-around;
+  width: 96vmin;
   grid-column: 2;
   grid-row: 1;
 }
@@ -34,7 +34,7 @@
   flex-direction: column;
   justify-content: space-around;
   height: 96vmin;
-  padding-right: 4px;
+  padding: 0 4px;
   width: fit-content;
   grid-column: 1;
   grid-row: 2;
@@ -57,7 +57,12 @@
 
 .chessboard-container.inversed .notation-top,
 .chessboard-container.inversed .notation-left {
-  transform: scaleX(-1);
+  transform: rotate(180deg);
+}
+
+.chessboard-container.inversed .notation-top span,
+.chessboard-container.inversed .notation-left span {
+  transform: rotate(180deg);
 }
 
 /* Alternating square colors */
