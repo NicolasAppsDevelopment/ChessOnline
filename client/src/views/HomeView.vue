@@ -54,11 +54,21 @@ async function createRoom() {
 
   <div class="container-card login-form">
     <h2>Join a public room</h2>
-    <ul>
-      <li v-for="room in rooms" :key="room.uuid">
-        <RouterLink :to="'/game/' + room.uuid">{{ room.name }}</RouterLink>
-      </li>
-    </ul>
+
+    <table class="rooms mb-2">
+      <thead>
+      <tr>
+        <th><i class="fa-solid fa-door-open"></i> Rooms</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="room in rooms" :key="room.uuid">
+        <td>
+          <RouterLink :to="'/game/' + room.uuid">{{ room.name }}</RouterLink>
+        </td>
+      </tr>
+      </tbody>
+    </table>
     <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="getRooms()"></Button>
 
     <h2>Create a room</h2>
