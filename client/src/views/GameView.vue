@@ -13,10 +13,9 @@ import { useToast } from 'primevue/usetoast';
 const toast = useToast();
 const route = useRoute()
 const roomsService = useRoomService();
-
 const chessboard = ref<Chessboard>(new Chessboard());
-onMounted(() => {
-  socket.emit('JOIN_ROOM', route.params.id);
+
+if (!socket.hasListeners('JOIN_ROOM_RESPONSE')) {
   socket.on('JOIN_ROOM_RESPONSE', async (error: string) => {
     if (error) {
       toast.add({ severity: 'error', summary: 'Error', detail: error, closable: false, life: 4000 });
@@ -26,6 +25,8 @@ onMounted(() => {
     await roomsService.join(route.params.id as string);
     socket.emit('GET_CHESSBOARD');
   });
+}
+if (!socket.hasListeners('GET_CHESSBOARD_RESPONSE')) {
   socket.on('GET_CHESSBOARD_RESPONSE', (board: any) => {
     if (board === null) {
       toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
@@ -35,6 +36,25 @@ onMounted(() => {
     const newChessboard: Chessboard = getChessboardFromRawBoard(board);
     if (chessboard.value) chessboard.value = newChessboard;
   });
+}
+if (!socket.hasListeners('PLAYER_JOINED')) {
+  socket.on('PLAYER_JOINED', async (username: string) => {
+    toast.add({ severity: 'info', summary: 'Info', detail: username + " joined the room.", closable: false, life: 4000 });
+  });
+}
+if (!socket.hasListeners('PLAYER_LEFT')) {
+  socket.on('PLAYER_LEFT', async (username: string) => {
+    toast.add({ severity: 'info', summary: 'Info', detail: username + " left the room.", closable: false, life: 4000 });
+  });
+}
+if (!socket.hasListeners('PLAYER_DISCONNECTED')) {
+  socket.on('PLAYER_DISCONNECTED', async (username: string) => {
+    toast.add({ severity: 'warn', summary: 'Warning', detail: username + " lost connection with the room.", closable: false, life: 4000 });
+  });
+}
+
+onMounted(() => {
+  socket.emit('JOIN_ROOM', route.params.id);
 });
 onBeforeUnmount(() => {
   socket.emit('LEAVE_ROOM');

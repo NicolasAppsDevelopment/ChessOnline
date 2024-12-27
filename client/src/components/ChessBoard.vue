@@ -53,18 +53,21 @@ const playerColor = computed(() => {
   return chessBoard.value?.playersId.indexOf(userId) == 0 ? Color.White : Color.Black;
 });
 
-socket.on("MOVE_RESPONSE", (board: any) => {
-  const newChessBoard: Chessboard = getChessboardFromRawBoard(board);
-  if (chessBoard.value) chessBoard.value = newChessBoard;
-});
-
-socket.on("MOVES_RESPONSE", (moves: any[]) => {
-  const positions: Position[] = getPositionArrayFromRaw(moves);
-  for (const position of positions) {
-    const cell = chessBoard.value?.getCellFromPosition(position);
-    if (cell) cell.isHighlighted = true;
-  }
-});
+if (!socket.hasListeners('MOVE_RESPONSE')) {
+  socket.on("MOVE_RESPONSE", (board: any) => {
+    const newChessBoard: Chessboard = getChessboardFromRawBoard(board);
+    if (chessBoard.value) chessBoard.value = newChessBoard;
+  });
+}
+if (!socket.hasListeners('MOVES_RESPONSE')) {
+  socket.on("MOVES_RESPONSE", (moves: any[]) => {
+    const positions: Position[] = getPositionArrayFromRaw(moves);
+    for (const position of positions) {
+      const cell = chessBoard.value?.getCellFromPosition(position);
+      if (cell) cell.isHighlighted = true;
+    }
+  });
+}
 
 function pickUp(event: DragEvent, cell: Cell) {
   if (chessBoard.value.playersId[chessBoard.value.turnIndex] != userId){
@@ -80,9 +83,6 @@ function pickUp(event: DragEvent, cell: Cell) {
 
   socket.emit('GET_MOVES', cell.position);
   event.dataTransfer?.setData('position', JSON.stringify(cell.position));
-
-
-
 }
 
 function drop(event: DragEvent, destination: Cell) {

@@ -343,7 +343,7 @@
 		},
 		"/rooms/join": {
 			"post": {
-				"operationId": "Join",
+				"operationId": "JoinRoom",
 				"responses": {
 					"200": {
 						"description": "Ok",
