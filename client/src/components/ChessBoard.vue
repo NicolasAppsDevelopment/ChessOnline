@@ -36,17 +36,27 @@
 </template>
 
 <script setup lang="ts">
-import type { Chessboard } from '@/models/Chessboard';
-import { Position } from "@/models/Position";
+import type {Chessboard} from '@/models/Chessboard';
+import {Position} from "@/models/Position";
 import {socket} from "@/socket";
 import type {Cell} from "@/models/Cell";
-import {getCellsFromRawBoard} from "@/mapper/ChessboardMapper";
+import {getChessboardFromRawBoard} from "@/mapper/ChessboardMapper";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
+import {Color} from "@/models/Piece";
+import {useStoredUserService} from "@/composables/user/storedUserService";
+
 const chessBoard = defineModel<Chessboard>('chessboard', { required: true });
 
-socket.on("MOVE_RESPONSE", (board: any[]) => {
-  const cells: Cell[] = getCellsFromRawBoard(board);
-  if (chessBoard.value) chessBoard.value.board = cells;
+const storedUserService = useStoredUserService();
+const userId = storedUserService.storedUser.value.id;
+
+
+socket.on("MOVE_RESPONSE", (board: any) => {
+  //BUG ne passe par là
+  console.log("dsfdf");
+  const newChessBoard: Chessboard = getChessboardFromRawBoard(board);
+  if (chessBoard.value) chessBoard.value = newChessBoard;
+  console.log(chessBoard.value.firstPlayerTurn);
 });
 
 socket.on("MOVES_RESPONSE", (moves: any[]) => {
@@ -58,8 +68,22 @@ socket.on("MOVES_RESPONSE", (moves: any[]) => {
 });
 
 function pickUp(event: DragEvent, cell: Cell) {
-  socket.emit('GET_MOVES', cell.position);
-  event.dataTransfer?.setData('position', JSON.stringify(cell.position));
+  console.log("userId : " + userId);
+  console.log("First Player Id : " + chessBoard.value.playersId[0]); //BUG n'est pas définit
+  console.log("Is It First Player Turn : " + chessBoard.value.firstPlayerTurn);
+  //console.log(chessBoard.value.firstPlayerTurn);
+  //console.log(cell.piece?.getColor());
+  if (chessBoard.value.firstPlayerTurn && chessBoard.value.playersId[0] == userId && cell.piece?.getColor() == Color.White){
+    socket.emit('GET_MOVES', cell.position);
+    event.dataTransfer?.setData('position', JSON.stringify(cell.position));
+  }
+  if (!chessBoard.value.firstPlayerTurn && chessBoard.value.playersId[1] == userId && cell.piece?.getColor() == Color.Black){
+    socket.emit('GET_MOVES', cell.position);
+    event.dataTransfer?.setData('position', JSON.stringify(cell.position));
+  }
+
+
+
 }
 
 function drop(event: DragEvent, destination: Cell) {

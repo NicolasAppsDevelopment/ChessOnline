@@ -10,6 +10,8 @@ import {Cell} from "./Cell";
 
 export class Chessboard {
   public board: Cell[] = [];
+  public firstPlayerTurn : boolean = true;// true is White turn (first player), false is Black turn (second player)
+  public playersId : number[] = [];
 
   constructor() {
     for (let x = 0; x < 8; x++) {

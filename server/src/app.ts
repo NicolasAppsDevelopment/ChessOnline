@@ -60,6 +60,13 @@ io.on("connection", (socket) => {
         if (!roomUuid) {
             return;
         }
+
+        const board = roomsService.boards.get(roomUuid);
+        if (!board) {
+            return;
+        }
+        board.playersId.indexOf(user.id);
+
         socket.leave(roomUuid);
 
         // room no longer exists
