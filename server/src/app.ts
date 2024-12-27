@@ -48,47 +48,17 @@ io.on("connection", (socket) => {
         joinRoom,
         movePiece,
         getMoves,
-        getBoard,
-    } = createHandler(socket, user);
+        getChessboard,
+        leaveRoom,
+        disconnected,
+    } = createHandler(socket, user, io);
 
     socket.on("JOIN_ROOM", joinRoom);
     socket.on("MOVE_PIECE", movePiece);
     socket.on("GET_MOVES", getMoves);
-    socket.on("GET_BOARD", getBoard);
-    socket.on("LEAVE_ROOM", async () => {
-        const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
-        if (!roomUuid) {
-            return;
-        }
-
-        const board = roomsService.boards.get(roomUuid);
-        if (!board) {
-            return;
-        }
-        board.playersId.indexOf(user.id);
-
-        socket.leave(roomUuid);
-
-        // room no longer exists
-        if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
-            try {
-                await roomsService.remove(roomUuid);
-            } catch {}
-        }
-    });
-    socket.on("disconnect", async () => {
-        const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
-        if (!roomUuid) {
-            return;
-        }
-
-        // room no longer exists
-        if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
-            try {
-                await roomsService.remove(roomUuid);
-            } catch {}
-        }
-    });
+    socket.on("GET_CHESSBOARD", getChessboard);
+    socket.on("LEAVE_ROOM", leaveRoom);
+    socket.on("disconnect", disconnected);
 });
 
 server.listen(PORT, () => {

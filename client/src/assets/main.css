@@ -6,6 +6,10 @@
 
 /* FOR CHESSBOARD COMPONENT */
 
+.chessboard-container {
+  display: grid;
+}
+
 .chessboard {
   display: grid;
   grid-template-columns: repeat(8, 1fr); /* 8 columns */
@@ -14,25 +18,27 @@
   height: 96vmin; /* Matches width for a perfect square */
   border: 2px solid black; /* Optional border around chessboard */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Optional shadow */
+  grid-column: 2;
+  grid-row: 2;
 }
-
-.chessboard-top {
+.notation-top {
     display: flex;
     justify-content: space-around;
     width: 96vmin;
+  grid-column: 2;
+  grid-row: 1;
 }
 
-.chessboard-right-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.chessboard-right {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-    height: 96vmin;
-  padding-left: 4px;
+.notation-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 96vmin;
+  padding-right: 4px;
+  width: fit-content;
+  grid-column: 1;
+  grid-row: 2;
+  justify-self: end;
 }
 
 .square {
@@ -42,6 +48,16 @@
   padding: 5%;
   background-color: #1E1E1E;
   color: #fff;
+}
+
+.chessboard-container.inversed .chessboard,
+.chessboard-container.inversed .square {
+  transform: rotate(180deg);
+}
+
+.chessboard-container.inversed .notation-top,
+.chessboard-container.inversed .notation-left {
+  transform: scaleX(-1);
 }
 
 /* Alternating square colors */

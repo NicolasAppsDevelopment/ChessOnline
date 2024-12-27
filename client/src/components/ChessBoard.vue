@@ -1,7 +1,24 @@
 <template>
-
-  <div>
-    <div class="chessboard-top">
+  <div class="chessboard-container" :class="{ inversed: playerColor == Color.Black }">
+    <div class="notation-top">
+      <span>A</span>
+      <span>B</span>
+      <span>C</span>
+      <span>D</span>
+      <span>E</span>
+      <span>F</span>
+      <span>G</span>
+      <span>H</span>
+    </div>
+    <div class="chessboard">
+      <div v-for="column in chessBoard?.getBoard()">
+        <div v-for="cell in column" class="square" :class="{ highlight: cell.isHighlighted }" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
+          <img v-if="cell.piece" v-bind:src="cell.piece.getSprite()" v-bind:alt="cell.piece.getColor() + ' ' + cell.piece.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
+          <div v-else> </div>
+        </div>
+      </div>
+    </div>
+    <div class="notation-left">
       <span>8</span>
       <span>7</span>
       <span>6</span>
@@ -11,28 +28,8 @@
       <span>2</span>
       <span>1</span>
     </div>
-    <div class="chessboard-right-container">
-      <div class="chessboard">
-        <div v-for="column in chessBoard?.getBoard()">
-          <div v-for="cell in column" class="square" :class="{ highlight: cell.isHighlighted }" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
-            <img v-if="cell.piece" v-bind:src="cell.piece.getSprite()" v-bind:alt="cell.piece.getColor() + ' ' + cell.piece.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
-            <div v-else> </div>
-          </div>
-        </div>
-      </div>
-      <div class="chessboard-right">
-        <span>H</span>
-        <span>G</span>
-        <span>F</span>
-        <span>E</span>
-        <span>D</span>
-        <span>C</span>
-        <span>B</span>
-        <span>A</span>
-      </div>
-    </div>
   </div>
-
+  <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
 </template>
 
 <script setup lang="ts">
@@ -44,19 +41,21 @@ import {getChessboardFromRawBoard} from "@/mapper/ChessboardMapper";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
 import {Color} from "@/models/Piece";
 import {useStoredUserService} from "@/composables/user/storedUserService";
+import {Button} from 'primevue'
+import { computed } from 'vue'
 
 const chessBoard = defineModel<Chessboard>('chessboard', { required: true });
 
 const storedUserService = useStoredUserService();
 const userId = storedUserService.storedUser.value.id;
 
+const playerColor = computed(() => {
+  return chessBoard.value?.playersId.indexOf(userId) == 0 ? Color.White : Color.Black;
+});
 
 socket.on("MOVE_RESPONSE", (board: any) => {
-  //BUG ne passe par là
-  console.log("dsfdf");
   const newChessBoard: Chessboard = getChessboardFromRawBoard(board);
   if (chessBoard.value) chessBoard.value = newChessBoard;
-  console.log(chessBoard.value.firstPlayerTurn);
 });
 
 socket.on("MOVES_RESPONSE", (moves: any[]) => {
@@ -68,19 +67,19 @@ socket.on("MOVES_RESPONSE", (moves: any[]) => {
 });
 
 function pickUp(event: DragEvent, cell: Cell) {
-  console.log("userId : " + userId);
-  console.log("First Player Id : " + chessBoard.value.playersId[0]); //BUG n'est pas définit
-  console.log("Is It First Player Turn : " + chessBoard.value.firstPlayerTurn);
-  //console.log(chessBoard.value.firstPlayerTurn);
-  //console.log(cell.piece?.getColor());
-  if (chessBoard.value.firstPlayerTurn && chessBoard.value.playersId[0] == userId && cell.piece?.getColor() == Color.White){
-    socket.emit('GET_MOVES', cell.position);
-    event.dataTransfer?.setData('position', JSON.stringify(cell.position));
+  if (chessBoard.value.playersId[chessBoard.value.turnIndex] != userId){
+    console.log('not your turn');
+    event.preventDefault();
+    return;
   }
-  if (!chessBoard.value.firstPlayerTurn && chessBoard.value.playersId[1] == userId && cell.piece?.getColor() == Color.Black){
-    socket.emit('GET_MOVES', cell.position);
-    event.dataTransfer?.setData('position', JSON.stringify(cell.position));
+  if (cell.piece?.getColor() != playerColor.value){
+    event.preventDefault();
+    console.log('player cannot move other color pieces');
+    return;
   }
+
+  socket.emit('GET_MOVES', cell.position);
+  event.dataTransfer?.setData('position', JSON.stringify(cell.position));
 
 
 
@@ -100,6 +99,10 @@ function drop(event: DragEvent, destination: Cell) {
     }
     socket.emit('MOVE_PIECE', from, to);
   }
+}
+
+function refresh() {
+  socket.emit('GET_CHESSBOARD');
 }
 
 </script>

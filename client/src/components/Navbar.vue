@@ -16,7 +16,7 @@
       </template>
       <template #end>
         <div class="flex items-center gap-2">
-          <a :href="'/user/' + user.id ">
+          <a :href="'/user/' + user.id">
             {{ user.username }}
           </a>
           <RouterLink to="/logout" custom>

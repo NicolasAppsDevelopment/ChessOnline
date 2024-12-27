@@ -8,25 +8,24 @@ import { ListRoomItemOutputDTO } from '../dto/room.dto'
 export class RoomsService {
   public boards: Map<string, Chessboard> = new Map();
   public async create(
-    name: string,
+    roomName: string,
     isPrivate: boolean,
-    username?: string
+    playerId: number,
   ): Promise<string> {
-    if (name == "") {
+    if (roomName == "") {
       let error = new Error("Name is empty");
       (error as any).status = 403;
       throw error;
     }
 
-    if (await Room.findOne({ where: { name: name } })) {
+    if (await Room.findOne({ where: { name: roomName } })) {
       let error = new Error("A room with this name already exists");
       (error as any).status = 403;
       throw error;
     }
 
     const roomUuid = uuidv4();
-    await Room.create({ uuid: roomUuid, name: name, isPrivate: isPrivate });
-    await User.update({ joined_room_id: roomUuid }, { where: { username: username } });
+    await Room.create({ uuid: roomUuid, name: roomName, isPrivate: isPrivate });
 
     this.boards.set(roomUuid, new Chessboard());
 
@@ -41,23 +40,23 @@ export class RoomsService {
   }
 
   public async join(
-      uuid: string,
-      username?: string
+      roomUuid: string,
+      playerId: number
   ): Promise<string> {
-    const room = await Room.findOne({ where: { uuid: uuid } });
+    const room = await Room.findOne({ where: { uuid: roomUuid } });
     if (!room) {
       notFound("Room");
     }
 
-    await User.update({ joined_room_id: room.uuid }, { where: { username: username } });
+    await User.update({ joined_room_id: roomUuid }, { where: { id: playerId } });
 
     return room.uuid;
   }
 
   public async getJoinedRoomUuid(
-      username?: string
+      id: number
   ): Promise<string | null> {
-    const user = await User.findOne({ where: { username: username } });
+    const user = await User.findOne({ where: { id: id } });
     if (!user) {
       return null;
     }

@@ -1,11 +1,11 @@
-import type { CreateRoom, JoinRoom, ListRoomItem } from '@/models/Room'
+import type { CreateRoom, ListRoomItem } from '@/models/Room'
 import { useRoomApi } from '@/composables/room/roomApi';
 
 const roomApi = useRoomApi();
 export function useRoomService() {
   return {
-    async join(room: JoinRoom): Promise<void> {
-      await roomApi.join(room);
+    async join(roomUuid: string): Promise<void> {
+      await roomApi.join(roomUuid);
     },
     async create(room: CreateRoom): Promise<void> {
       await roomApi.create(room);

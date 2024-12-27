@@ -1,10 +1,10 @@
-import {Socket} from "socket.io";
+import { Server, Socket } from 'socket.io'
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
 import {User} from "../models/user.model";
 import {Color} from "../models/Piece";
 
-export function createHandler(socket: Socket, user: User) {
+export function createHandler(socket: Socket, user: User, io: Server) {
     return {
         joinRoom: async function (
             roomUuid: string
@@ -27,7 +27,7 @@ export function createHandler(socket: Socket, user: User) {
             from: any,
             to: any
         ) {
-            const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
                 return;
             }
@@ -37,10 +37,7 @@ export function createHandler(socket: Socket, user: User) {
                 return;
             }
 
-            if (board.firstPlayerTurn && board.playersId[0] != user.id){
-                return;
-            }
-            if (!board.firstPlayerTurn && board.playersId[1] != user.id){
+            if (board.playersId[board.turnIndex] != user.id){
                 return;
             }
 
@@ -48,44 +45,43 @@ export function createHandler(socket: Socket, user: User) {
             const toCellPosition = new Position(to.x, to.y);
             const fromPositionPiece = board.getPiece(fromCellPosition)
 
-
             if (fromPositionPiece != null){
-
-                if (board.firstPlayerTurn && fromPositionPiece.getColor() != Color.White) {
+                if (board.turnIndex == 0 && fromPositionPiece.getColor() != Color.White) {
                     return;
                 }
-                if (!board.firstPlayerTurn && fromPositionPiece.getColor() != Color.Black) {
+                if (board.turnIndex == 1 && fromPositionPiece.getColor() != Color.Black) {
                     return;
                 }
 
                 if (board.movePiece(fromCellPosition, toCellPosition)) {
-                    board.firstPlayerTurn = !board.firstPlayerTurn ;
-                    socket.to(roomUuid).emit("MOVE_RESPONSE", board);
+                    board.switchTurn();
+                    console.log(roomUuid);
+                    console.log(io.sockets.adapter.rooms.get(roomUuid)?.size);
+                    io.to(roomUuid).emit("MOVE_RESPONSE", board);
                 }
             }
-
-
-
         },
-        getBoard: async function () {
-            const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
+        getChessboard: async function () {
+            console.log(user)
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
-                socket.emit("GET_BOARD_RESPONSE", null);
+                socket.emit("GET_CHESSBOARD_RESPONSE", null);
                 return;
             }
 
             const board = roomsService.boards.get(roomUuid);
             if (!board) {
-                socket.emit("GET_BOARD_RESPONSE", null);
+                console.log(roomsService.boards, roomUuid);
+                socket.emit("GET_CHESSBOARD_RESPONSE", null);
                 return;
             }
 
-            socket.emit("GET_BOARD_RESPONSE", board.board);
+            socket.emit("GET_CHESSBOARD_RESPONSE", board);
         },
         getMoves: async function (
             from: any
         ) {
-            const roomUuid = await roomsService.getJoinedRoomUuid(user.username);
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
                 return;
             }
@@ -96,6 +92,41 @@ export function createHandler(socket: Socket, user: User) {
             }
 
             socket.emit("MOVES_RESPONSE", board.getMoves(new Position(from.x, from.y)));
+        },
+        leaveRoom: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                return;
+            }
+
+            const board = roomsService.boards.get(roomUuid);
+            if (!board) {
+                return;
+            }
+            //TODO: remove user from board
+            //board.playersId.indexOf(user.id);
+
+            socket.leave(roomUuid);
+
+            // room no longer exists
+            if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
+                try {
+                    await roomsService.remove(roomUuid);
+                } catch {}
+            }
+        },
+        disconnected: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                return;
+            }
+
+            // room no longer exists
+            if (io.sockets.adapter.rooms.get(roomUuid)?.size === undefined) {
+                try {
+                    await roomsService.remove(roomUuid);
+                } catch {}
+            }
         }
     };
 }

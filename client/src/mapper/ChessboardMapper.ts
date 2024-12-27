@@ -1,7 +1,7 @@
 import { Cell } from "@/models/Cell";
 import { getPositionFromRaw } from "@/mapper/PositionMapper";
 import {getPieceFromRaw} from "@/mapper/PieceMapper";
-import type {Chessboard} from "@/models/Chessboard";
+import {Chessboard} from "@/models/Chessboard";
 
 export function getCellsFromRawBoard(board: any) {
   let cells: Cell[] = [];
@@ -14,7 +14,7 @@ export function getCellsFromRawBoard(board: any) {
 export function getChessboardFromRawBoard(rawChessboard: any) {
   let chessboard: Chessboard = new Chessboard();
   chessboard.board = getCellsFromRawBoard(rawChessboard.board);
-  chessboard.firstPlayerTurn = rawChessboard.firstPlayerTurn;
-
+  chessboard.turnIndex = rawChessboard.turnIndex;
+  chessboard.playersId = rawChessboard.playersId;
   return chessboard;
 }

@@ -5,12 +5,12 @@ import {Bishop} from "./Bishop";
 import {Queen} from "./Queen";
 import {King} from "./King";
 import {Pawn} from "./Pawn";
-import {Position} from "@/models/Position";
-import {Cell} from "@/models/Cell";
+import {Position} from "./Position";
+import {Cell} from "./Cell";
 
 export class Chessboard {
   public board: Cell[] = [];
-  public firstPlayerTurn : boolean = true;// true is White turn (first player), false is Black turn (second player)
+  public turnIndex : number = 0;// true is White turn (first player), false is Black turn (second player)
   public playersId : number[] = [];
 
   constructor() {
@@ -49,25 +49,25 @@ export class Chessboard {
 
   movePiece(from: Position, to: Position) {
     if (from.equals(to)) {
-      return; // can't eat yourself (on your own cell)
+      return false; // can't eat yourself (on your own cell)
     }
 
     const fromCell = this.getCellFromPosition(from);
     const toCell = this.getCellFromPosition(to);
 
-    if (!fromCell || !toCell) return;
+    if (!fromCell || !toCell) return false;
 
     const pieceToMove = fromCell.piece;
     const pieceOnArrivalCell = toCell.piece;
 
-    if (!pieceToMove) return;
+    if (!pieceToMove) return false;
 
     if (pieceToMove.getColor() == pieceOnArrivalCell?.getColor()) {
-      return; // can't eat yourself (a piece of your color)
+      return false; // can't eat yourself (a piece of your color)
     }
 
     if (!pieceToMove.checkMove(from, to, this)) {
-      return;
+      return false;
     }
 
     if (pieceToMove instanceof Pawn) {
@@ -83,6 +83,8 @@ export class Chessboard {
 
     toCell.piece = fromCell.piece;
     fromCell.piece = null;
+
+    return true;
   }
 
   clearHighlights() {

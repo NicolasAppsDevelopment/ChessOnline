@@ -10,7 +10,7 @@ import {Cell} from "./Cell";
 
 export class Chessboard {
   public board: Cell[] = [];
-  public firstPlayerTurn : boolean = true;// true is White turn (first player), false is Black turn (second player)
+  public turnIndex : number = 0;// true is White turn (first player), false is Black turn (second player)
   public playersId : number[] = [];
 
   constructor() {
@@ -75,14 +75,14 @@ export class Chessboard {
 
       // Promotion rule
       if (pieceToMove.getColor() == Color.White && to.y == 0) {
-        fromCell!.piece = new Queen(Color.White);
+        fromCell.piece = new Queen(Color.White);
       } else if (pieceToMove.getColor() == Color.Black && to.y == 7) {
-        fromCell!.piece = new Queen(Color.Black);
+        fromCell.piece = new Queen(Color.Black);
       }
     }
 
-    toCell!.piece = fromCell!.piece;
-    fromCell!.piece = null;
+    toCell.piece = fromCell.piece;
+    fromCell.piece = null;
 
     return true;
   }
@@ -128,5 +128,9 @@ export class Chessboard {
     }
 
     return piece.getMoves(from, this);
+  }
+
+  switchTurn() {
+    this.turnIndex = (this.turnIndex + 1) % 2;
   }
 }

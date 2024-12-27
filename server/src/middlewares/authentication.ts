@@ -34,9 +34,9 @@ export function expressAuthentication(
     }
 }
 
-export async function getUsernameFromJWT(
+export async function getUserIdFromJWT(
     request: express.Request
-): Promise<string> {
+): Promise<number> {
     const jwt = await expressAuthentication(request, "jwt");
-    return jwt.jwtPayload.username;
+    return jwt.jwtPayload.id;
 }

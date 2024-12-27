@@ -85,7 +85,3 @@ async function createRoom() {
   </div>
 
 </template>
-
-<style scoped>
-
-</style>

@@ -292,9 +292,9 @@ export function RegisterRoutes(app: Router) {
         app.post('/rooms/join',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(RoomsController)),
-            ...(fetchMiddlewares<RequestHandler>(RoomsController.prototype.join)),
+            ...(fetchMiddlewares<RequestHandler>(RoomsController.prototype.joinRoom)),
 
-            async function RoomsController_join(request: ExRequest, response: ExResponse, next: any) {
+            async function RoomsController_joinRoom(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     body: {"in":"body","name":"body","required":true,"ref":"JoinRoomInputDTO"},
                     request: {"in":"request","name":"request","required":true,"dataType":"object"},
@@ -309,7 +309,7 @@ export function RegisterRoutes(app: Router) {
                 const controller = new RoomsController();
 
               await templateService.apiHandler({
-                methodName: 'join',
+                methodName: 'joinRoom',
                 controller,
                 response,
                 next,
