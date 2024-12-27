@@ -79,7 +79,7 @@
   border: 3px solid #efca32 !important;
 }
 
-/* LEADERBOARD CSS */
+/* LEADERBOARD TABLE CSS */
 
 .leaderboard, .leaderboard th, .leaderboard td {
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -111,8 +111,7 @@
   background-color: rgb(205, 127, 50, 0.5);
 }
 
-
-
+/* ROOMS TABLE CSS */
 
 .rooms, .rooms th, .rooms td {
   border: 1px solid rgba(255, 255, 255, 0.25);
@@ -141,10 +140,29 @@
   color: white;
 }
 
+
+
+
+
+
 .tag {
   background-color: black;
   color: white;
   padding: 1px 5px;
   border-radius: 100px;
   font-size: small;
+}
+
+/* TOGGLE ON-OFF BUTTON CSS */
+.on-off-custom.p-togglebutton, .on-off-custom.p-togglebutton span {
+  color: white !important;
+}
+.on-off-custom.p-togglebutton::before {
+  display: none;
+}
+.on-off-custom.p-togglebutton.p-togglebutton-checked {
+  background: rgb(113, 16, 0) !important;
+}
+.on-off-custom.p-togglebutton {
+  background: rgb(0, 96, 44) !important;
 }

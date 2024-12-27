@@ -80,7 +80,7 @@ async function createRoom() {
       <InputText v-model="newRoom.name" placeholder="Name" />
     </InputGroup>
     <ToggleButton v-model="newRoom.isPrivate" onLabel="Private" offLabel="Public" onIcon="fa-solid fa-lock"
-                  offIcon="fa-solid fa-lock-open" class="w-9rem" aria-label="Visibility of the room" />
+                  offIcon="fa-solid fa-lock-open" class="on-off-custom w-9rem" aria-label="Visibility of the room" />
     <Button label="Create a room" icon="fa-solid fa-plus" @click="createRoom()"></Button>
   </div>
 
