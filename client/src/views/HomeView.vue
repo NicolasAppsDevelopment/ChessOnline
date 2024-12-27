@@ -58,7 +58,7 @@ async function createRoom() {
     <table class="rooms mb-2">
       <thead>
       <tr>
-        <th><i class="fa-solid fa-door-open"></i> Rooms</th>
+        <th><i class="fa-solid fa-door-open"></i> Rooms <span class="tag">{{ rooms.length }}</span></th>
       </tr>
       </thead>
       <tbody>
