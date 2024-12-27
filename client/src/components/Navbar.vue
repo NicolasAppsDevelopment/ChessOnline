@@ -16,6 +16,9 @@
       </template>
       <template #end>
         <div class="flex items-center gap-2">
+          <a :href="'/user/' + user.id ">
+            {{ user.username }}
+          </a>
           <RouterLink to="/logout" custom>
             <a @click="storedUserService.clear()">
               <span class="fa-solid fa-power-off" />
@@ -34,6 +37,8 @@ import { useRouter } from 'vue-router';
 import {useStoredUserService} from "@/composables/user/storedUserService";
 
 const storedUserService = useStoredUserService();
+const user = storedUserService.storedUser.value;
+
 const router = useRouter();
 const items = ref([
   {
@@ -45,6 +50,11 @@ const items = ref([
     label: 'Leaderboard',
     icon: 'fa-solid fa-trophy',
     route: '/leaderboard'
+  },
+  {
+    label: 'History',
+    icon: 'fa-solid fa-book-open',
+    route: '/history'
   }
 ]);
 </script>
