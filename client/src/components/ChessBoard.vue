@@ -10,7 +10,7 @@
       <span>G</span>
       <span>H</span>
     </div>
-    <div class="chessboard">
+    <div class="chessboard" :class="{ disabled: !isMyTurn }">
       <div v-for="column in chessBoard?.getBoard()">
         <div v-for="cell in column" class="square" :class="{ highlight: cell.isHighlighted }" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
           <img v-if="cell.piece" v-bind:src="cell.piece.getSprite()" v-bind:alt="cell.piece.getColor() + ' ' + cell.piece.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
@@ -52,6 +52,9 @@ const userId = storedUserService.storedUser.value.id;
 const playerColor = computed(() => {
   return chessBoard.value?.playersId.indexOf(userId) == 0 ? Color.White : Color.Black;
 });
+const isMyTurn = computed(() => {
+  return chessBoard.value?.playersId[chessBoard.value.turnIndex] == userId;
+});
 
 if (!socket.hasListeners('MOVE_RESPONSE')) {
   socket.on("MOVE_RESPONSE", (board: any) => {
@@ -70,7 +73,7 @@ if (!socket.hasListeners('MOVES_RESPONSE')) {
 }
 
 function pickUp(event: DragEvent, cell: Cell) {
-  if (chessBoard.value.playersId[chessBoard.value.turnIndex] != userId){
+  if (!isMyTurn.value){
     console.log('not your turn');
     event.preventDefault();
     return;

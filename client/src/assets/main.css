@@ -21,6 +21,12 @@
   grid-column: 2;
   grid-row: 2;
 }
+
+.chessboard.disabled * {
+  cursor: default;
+  pointer-events: none;
+}
+
 .notation-top {
   display: flex;
   justify-content: space-around;
