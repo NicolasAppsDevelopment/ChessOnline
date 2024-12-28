@@ -5,7 +5,7 @@ export class Bishop extends Piece {
     constructor(color: Color) {
       super("Bishop", color);
     }
-    override getMoves(from: Position, board: Chessboard): Position[] {
+    protected override getAllMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       // move down right

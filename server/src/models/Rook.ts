@@ -6,7 +6,7 @@ export class Rook extends Piece {
       super("Rook", color);
     }
 
-    override getMoves(from: Position, board: Chessboard): Position[] {
+    protected override getAllMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       // move down

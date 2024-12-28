@@ -48,23 +48,12 @@ export class Chessboard {
   }
 
   movePiece(from: Position, to: Position) {
-    if (from.equals(to)) {
-      return false; // can't eat yourself (on your own cell)
-    }
-
     const fromCell = this.getCellFromPosition(from);
     const toCell = this.getCellFromPosition(to);
-
     if (!fromCell || !toCell) return false;
 
     const pieceToMove = fromCell.piece;
-    const pieceOnArrivalCell = toCell.piece;
-
     if (!pieceToMove) return false;
-
-    if (pieceToMove.getColor() == pieceOnArrivalCell?.getColor()) {
-      return false; // can't eat yourself (a piece of your color)
-    }
 
     if (!pieceToMove.checkMove(from, to, this)) {
       return false;
@@ -121,13 +110,13 @@ export class Chessboard {
     return result;
   }
 
-  getMoves(from: Position): Position[] {
+  getValidMoves(from: Position): Position[] {
     const piece = this.getPiece(from);
     if (piece == null) {
       return [];
     }
 
-    return piece.getMoves(from, this);
+    return piece.getValidMoves(from, this);
   }
 
   switchTurn() {

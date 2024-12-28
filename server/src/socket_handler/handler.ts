@@ -57,14 +57,11 @@ export function createHandler(socket: Socket, user: User, io: Server) {
 
                 if (chessboard.movePiece(fromCellPosition, toCellPosition)) {
                     chessboard.switchTurn();
-                    console.log(roomUuid);
-                    console.log(io.sockets.adapter.rooms.get(roomUuid)?.size);
                     io.to(roomUuid).emit("MOVE_RESPONSE", chessboard);
                 }
             }
         },
         getChessboard: async function () {
-            console.log(user)
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
                 socket.emit("GET_CHESSBOARD_RESPONSE", null);
@@ -73,7 +70,6 @@ export function createHandler(socket: Socket, user: User, io: Server) {
 
             const chessboard = roomsService.boards.get(roomUuid);
             if (!chessboard) {
-                console.log(roomsService.boards, roomUuid);
                 socket.emit("GET_CHESSBOARD_RESPONSE", null);
                 return;
             }
@@ -93,7 +89,7 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            socket.emit("MOVES_RESPONSE", chessboard.getMoves(new Position(from.x, from.y)));
+            socket.emit("MOVES_RESPONSE", chessboard.getValidMoves(new Position(from.x, from.y)));
         },
         leaveRoom: async function () {
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);

@@ -81,6 +81,10 @@ function pickUp(event: DragEvent, cell: Cell) {
     return;
   }
 
+  if (chessBoard.value) {
+    chessBoard.value.clearHighlights();
+  }
+
   socket.emit('GET_MOVES', cell.position);
   event.dataTransfer?.setData('position', JSON.stringify(cell.position));
 }

@@ -31,12 +31,11 @@ export class AuthenticationService {
   }
 
     public async generateToken(data: User|UserJwtPayload): Promise<string> {
-      let jwtPayload :UserJwtPayload;
+      let jwtPayload: UserJwtPayload;
 
       if (data instanceof User) {
         jwtPayload = new UserJwtPayload(data.id, data.username) ;
-      }
-      else {
+      } else {
         jwtPayload = new UserJwtPayload(data.id, data.username) ;
       }
 
