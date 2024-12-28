@@ -33,8 +33,8 @@ export function useStoredUserService() {
     },
     async refresh(): Promise<void> {
       try {
-        storedUser.value = await userApi.refresh(storedUser.value);
-        this.subscribeReAuth();
+        await userApi.refresh();
+        this.init();
       } catch (e) {
         if (localStorage.getItem('token')) {
           localStorage.removeItem('token');

@@ -13,7 +13,7 @@
       <InputGroupAddon>
         <i class="fa-solid fa-key"></i>
       </InputGroupAddon>
-      <Password v-model="user.password" :feedback="false" placeholder="Password" toggleMask></Password>
+      <Password v-model="user.password" placeholder="Password" toggleMask></Password>
     </InputGroup>
     <Button label="Register" icon="fa-solid fa-arrow-right" icon-pos="right" @click="getToken()" :disabled="processing"></Button>
     <p>If you already have an account, you can

@@ -7,17 +7,12 @@ const storedUserService = useStoredUserService();
 export function useUserService() {
   return {
     async login(user: User): Promise<void> {
-      user = await userApi.authenticate(user);
-      storedUserService.storedUser.value = user;
-      storedUserService.subscribeReAuth();
+      await userApi.authenticate(user);
+      storedUserService.init();
     },
     async register(user: User): Promise<void> {
-      user = await userApi.register(user);
-      storedUserService.storedUser.value = user;
-      storedUserService.subscribeReAuth();
-    },
-    async logout(): Promise<void> {
-      storedUserService.clear();
+      await userApi.register(user);
+      storedUserService.init();
     },
     async getUserById(id: number): Promise<User> {
       return await userApi.getUserById(id);
