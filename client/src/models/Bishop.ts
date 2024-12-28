@@ -1,11 +1,11 @@
 import { Piece, Color } from "./Piece";
-import { Position } from "@/models/Position";
-import type {Chessboard} from "@/models/Chessboard";
+import { Position } from "./Position";
+import type {Chessboard} from "./Chessboard";
 export class Bishop extends Piece {
     constructor(color: Color) {
       super("Bishop", color);
     }
-    override getMoves(from: Position, board: Chessboard): Position[] {
+    protected override getAllMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       // move down right

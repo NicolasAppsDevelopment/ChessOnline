@@ -1,12 +1,12 @@
 import { Piece, Color } from "./Piece";
-import { Position } from "@/models/Position";
-import type {Chessboard} from "@/models/Chessboard";
+import { Position } from "./Position";
+import type {Chessboard} from "./Chessboard";
 export class Knight extends Piece {
     constructor(color: Color) {
       super("Knight", color);
     }
 
-    override getMoves(from: Position, board: Chessboard): Position[] {
+    protected override getAllMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       if (from.x-2 >= 0 && from.y-1 >= 0) {

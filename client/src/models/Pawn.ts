@@ -1,6 +1,6 @@
 import { Piece, Color } from "./Piece";
-import { Position } from "@/models/Position";
-import type { Chessboard } from "@/models/Chessboard";
+import { Position } from "./Position";
+import type { Chessboard } from "./Chessboard";
 export class Pawn extends Piece {
     private firstMove: boolean;
 
@@ -9,7 +9,7 @@ export class Pawn extends Piece {
       this.firstMove = true;
     }
 
-    override getMoves(from: Position, board: Chessboard): Position[] {
+    protected override getAllMoves(from: Position, board: Chessboard): Position[] {
       let moves: Position[] = [];
 
       // move forward
