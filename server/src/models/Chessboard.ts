@@ -157,19 +157,30 @@ export class Chessboard {
     return king.isInCheck(kingPosition, simulatedBoard);
   }
 
-  isCheckMate(): boolean {
-    console.log("=============");
+  isOpponentCanMove(): boolean {
     const opponentColor = this.turnIndex === 0 ? Color.Black : Color.White;
     for (let cell of this.board) {
       if (cell.piece !== null && cell.piece.getColor() === opponentColor) {
         const moves = cell.piece.getValidMoves(cell.position, this);
-        console.log(cell, moves);
         if (moves.length > 0) {
-          return false;
+          return true;
         }
       }
     }
-    return true;
+    return false;
+  }
+
+  isOpponentKingInCheck(): boolean {
+    const opponentColor = this.turnIndex === 0 ? Color.Black : Color.White;
+    for (let cell of this.board) {
+      if (cell.piece !== null && cell.piece.getColor() === opponentColor && cell.piece instanceof King) {
+        const kingPosition = cell.position;
+        if (cell.piece.isInCheck(kingPosition, this)) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   clone(): Chessboard {

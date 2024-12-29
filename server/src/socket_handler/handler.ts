@@ -56,9 +56,14 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 }
 
                 if (chessboard.movePiece(fromCellPosition, toCellPosition)) {
-                    if (chessboard.isCheckMate()) {
-                        io.to(roomUuid).emit("CHECKMATE", user.id);
+                    if (!chessboard.isOpponentCanMove()) {
+                        if (chessboard.isOpponentKingInCheck()) {
+                            io.to(roomUuid).emit("CHECKMATE", user.id);
+                        } else {
+                            io.to(roomUuid).emit("PAT");
+                        }
                     }
+                    // TODO: Check others draw conditions (threefold repetition, only kings left)
 
                     chessboard.switchTurn();
                     io.to(roomUuid).emit("MOVE_RESPONSE", chessboard);

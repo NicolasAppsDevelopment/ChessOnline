@@ -29,7 +29,11 @@
       <span>1</span>
     </div>
   </div>
-  <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
+  <div class="flex gap-1 p-1">
+    <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
+    <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
+    <Button label="Draw" icon="fa-solid fa-equals" @click="declareDraw()"></Button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -74,10 +78,15 @@ if (!socket.hasListeners('MOVES_RESPONSE')) {
 if (!socket.hasListeners('CHECKMATE')) {
   socket.on("CHECKMATE", (winnerId: number) => {
     if (winnerId == userId) {
-      alert('You won!');
+      alert('CHECKMATE: You won!');
     } else {
-      alert('You lost!');
+      alert('CHECKMATE: You lost!');
     }
+  });
+}
+if (!socket.hasListeners('PAT')) {
+  socket.on("PAT", () => {
+    alert('PAT: Draw');
   });
 }
 
@@ -119,6 +128,14 @@ function drop(event: DragEvent, destination: Cell) {
 
 function refresh() {
   socket.emit('GET_CHESSBOARD');
+}
+
+function declareDraw() {
+  socket.emit('DECLARE_DRAW');
+}
+
+function resign() {
+  socket.emit('RESIGN');
 }
 
 </script>

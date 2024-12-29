@@ -1,4 +1,4 @@
-const ApiIp = "localhost";
+const ApiIp = "82.66.53.246";
 const ApiPort = "8100";
 export const ApiUrl = `http://${ApiIp}:${ApiPort}`;
 
