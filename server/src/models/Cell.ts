@@ -13,4 +13,8 @@ export class Cell {
     this.isHighlighted = isHighlighted;
     this.id = String.fromCharCode(65 + this.position.x) + "" + (8 - this.position.y);
   }
+
+  clone(): Cell {
+    return new Cell(this.position, this.piece?.clone() ?? null, this.isHighlighted);
+  }
 }

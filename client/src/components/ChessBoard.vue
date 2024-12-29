@@ -71,6 +71,15 @@ if (!socket.hasListeners('MOVES_RESPONSE')) {
     }
   });
 }
+if (!socket.hasListeners('CHECKMATE')) {
+  socket.on("CHECKMATE", (winnerId: number) => {
+    if (winnerId == userId) {
+      alert('You won!');
+    } else {
+      alert('You lost!');
+    }
+  });
+}
 
 function pickUp(event: DragEvent, cell: Cell) {
   if (!isMyTurn.value){

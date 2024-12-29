@@ -12,6 +12,7 @@ export class Chessboard {
   public board: Cell[] = [];
   public turnIndex : number = 0;// true is White turn (first player), false is Black turn (second player)
   public playersId : number[] = [];
+  public isCloned: boolean = false;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
@@ -115,11 +116,68 @@ export class Chessboard {
     if (piece == null) {
       return [];
     }
-
     return piece.getValidMoves(from, this);
   }
 
   switchTurn() {
     this.turnIndex = (this.turnIndex + 1) % 2;
+  }
+
+
+  isInCheckAfterMove(from: Position, to: Position): boolean {
+    const color = this.getPiece(from)?.getColor();
+    if (color == null) {
+      return false;
+    }
+
+    if (this.isCloned) {
+      return false;
+    }
+
+    const simulatedBoard: Chessboard = this.clone();
+    simulatedBoard.movePiece(from, to);
+
+    let kingPosition: Position | null = null;
+    for (let cell of simulatedBoard.board) {
+      if (cell.piece instanceof King && cell.piece.getColor() === color) {
+        kingPosition = cell.position;
+        break;
+      }
+    }
+
+    if (kingPosition == null) {
+      return false;
+    }
+
+    const king = simulatedBoard.getPiece(kingPosition) as King;
+    if (!king) {
+      return false;
+    }
+
+    return king.isInCheck(kingPosition, simulatedBoard);
+  }
+
+  isCheckMate(): boolean {
+    console.log("=============");
+    const opponentColor = this.turnIndex === 0 ? Color.Black : Color.White;
+    for (let cell of this.board) {
+      if (cell.piece !== null && cell.piece.getColor() === opponentColor) {
+        const moves = cell.piece.getValidMoves(cell.position, this);
+        console.log(cell, moves);
+        if (moves.length > 0) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  clone(): Chessboard {
+    const newBoard = new Chessboard();
+    for (let i = 0; i < this.board.length; i++) {
+      newBoard.board[i].piece = this.board[i].piece?.clone() ?? null;
+    }
+    newBoard.isCloned = true;
+    return newBoard;
   }
 }

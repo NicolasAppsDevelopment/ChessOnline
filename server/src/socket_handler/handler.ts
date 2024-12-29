@@ -56,6 +56,10 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 }
 
                 if (chessboard.movePiece(fromCellPosition, toCellPosition)) {
+                    if (chessboard.isCheckMate()) {
+                        io.to(roomUuid).emit("CHECKMATE", user.id);
+                    }
+
                     chessboard.switchTurn();
                     io.to(roomUuid).emit("MOVE_RESPONSE", chessboard);
                 }
