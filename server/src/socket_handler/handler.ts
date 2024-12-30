@@ -2,7 +2,6 @@ import { Server, Socket } from 'socket.io'
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
 import {User} from "../models/user.model";
-import {Color} from "../models/Piece";
 
 export function createHandler(socket: Socket, user: User, io: Server) {
     return {
@@ -15,8 +14,8 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            if (chessboard.playersId.indexOf(user.id) == -1) {
-                chessboard.playersId.push(user.id);
+            if (!chessboard.joinGame(user.id)) {
+                socket.emit("JOIN_ROOM_RESPONSE", "Room full.");
             }
 
             io.to(roomUuid).emit("PLAYER_JOINED", user.username);
@@ -31,59 +30,39 @@ export function createHandler(socket: Socket, user: User, io: Server) {
         ) {
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
                 return;
             }
 
             const chessboard = roomsService.boards.get(roomUuid);
             if (!chessboard) {
-                return;
-            }
-
-            if (chessboard.playersId[chessboard.turnIndex] != user.id){
+                socket.emit("UPDATE_CHESSBOARD", null);
                 return;
             }
 
             const fromCellPosition = new Position(from.x,from.y);
             const toCellPosition = new Position(to.x, to.y);
-            const fromPositionPiece = chessboard.getPiece(fromCellPosition)
 
-            if (fromPositionPiece != null){
-                if (chessboard.turnIndex == 0 && fromPositionPiece.getColor() != Color.White) {
-                    return;
-                }
-                if (chessboard.turnIndex == 1 && fromPositionPiece.getColor() != Color.Black) {
-                    return;
-                }
-
-                if (chessboard.movePiece(fromCellPosition, toCellPosition)) {
-                    if (!chessboard.isOpponentCanMove()) {
-                        if (chessboard.isOpponentKingInCheck()) {
-                            io.to(roomUuid).emit("CHECKMATE", user.id);
-                        } else {
-                            io.to(roomUuid).emit("PAT");
-                        }
-                    }
-                    // TODO: Check others draw conditions (threefold repetition, only kings left)
-
-                    chessboard.switchTurn();
-                    io.to(roomUuid).emit("MOVE_RESPONSE", chessboard);
-                }
+            if (!chessboard.playMove(fromCellPosition, toCellPosition, user.id)){
+                return;
             }
+
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
         getChessboard: async function () {
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
-                socket.emit("GET_CHESSBOARD_RESPONSE", null);
+                socket.emit("UPDATE_CHESSBOARD", null);
                 return;
             }
 
             const chessboard = roomsService.boards.get(roomUuid);
             if (!chessboard) {
-                socket.emit("GET_CHESSBOARD_RESPONSE", null);
+                socket.emit("UPDATE_CHESSBOARD", null);
                 return;
             }
 
-            socket.emit("GET_CHESSBOARD_RESPONSE", chessboard);
+            socket.emit("UPDATE_CHESSBOARD", chessboard);
         },
         getMoves: async function (
             from: any
@@ -111,11 +90,7 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            const playerIndex = chessboard.playersId.indexOf(user.id);
-            if (playerIndex >= 0) {
-                chessboard.playersId.splice(playerIndex, 1);
-            }
-
+            chessboard.leaveGame(user.id);
             socket.leave(roomUuid);
 
             // room no longer exists

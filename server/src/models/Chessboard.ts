@@ -1,18 +1,21 @@
-import {Color, Piece} from "./Piece";
-import {Rook} from "./Rook";
-import {Knight} from "./Knight";
-import {Bishop} from "./Bishop";
-import {Queen} from "./Queen";
-import {King} from "./King";
-import {Pawn} from "./Pawn";
-import {Position} from "./Position";
-import {Cell} from "./Cell";
+import { Color, Piece } from './Piece'
+import { Rook } from './Rook'
+import { Knight } from './Knight'
+import { Bishop } from './Bishop'
+import { Queen } from './Queen'
+import { King } from './King'
+import { Pawn } from './Pawn'
+import { Position } from './Position'
+import { Cell } from './Cell'
 
 export class Chessboard {
   public board: Cell[] = [];
-  public turnIndex : number = 0;// true is White turn (first player), false is Black turn (second player)
-  public playersId : number[] = [];
+  public colorTurn : Color = Color.White;
+  public whitePlayerId : number | null = null;
+  public blackPlayerId : number | null = null;
   public isCloned: boolean = false;
+  public isEndGame: boolean = false;
+  public winnerPlayerId: number | null = null;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
@@ -46,6 +49,40 @@ export class Chessboard {
     for (let i = 0; i < 8; i++) {
       this.getCellFromXY(i, 1)!.piece = new Pawn(Color.Black);
     }
+  }
+
+  playMove(from: Position, to: Position, userId: number): boolean {
+    if (this.getCurrentTurnPlayerId() != userId){
+      return false;
+    }
+
+    const fromPositionPiece = this.getPiece(from)
+
+    if (fromPositionPiece == null) {
+      return false;
+    }
+
+    if (this.colorTurn == Color.White && fromPositionPiece.getColor() != Color.White) {
+      return false;
+    }
+    if (this.colorTurn == Color.Black && fromPositionPiece.getColor() != Color.Black) {
+      return false;
+    }
+
+    if (this.movePiece(from, to)) {
+      if (!this.isOpponentCanMove()) {
+        this.isEndGame = true;
+
+        if (this.isOpponentKingInCheck()) {
+          this.winnerPlayerId = userId; // checkmate
+        } // else pat
+      }
+      // TODO: Check others draw conditions (threefold repetition, only kings left)
+
+      this.switchTurn();
+    }
+
+    return true;
   }
 
   movePiece(from: Position, to: Position) {
@@ -120,9 +157,16 @@ export class Chessboard {
   }
 
   switchTurn() {
-    this.turnIndex = (this.turnIndex + 1) % 2;
+    this.colorTurn = this.colorTurn === Color.White ? Color.Black : Color.White;
   }
 
+  getCurrentTurnPlayerId(): number | null {
+    return this.colorTurn === Color.White ? this.whitePlayerId : this.blackPlayerId;
+  }
+
+  getNextTurnPlayerColor(): Color {
+    return this.colorTurn === Color.White ? Color.Black : Color.White;
+  }
 
   isInCheckAfterMove(from: Position, to: Position): boolean {
     const color = this.getPiece(from)?.getColor();
@@ -158,7 +202,7 @@ export class Chessboard {
   }
 
   isOpponentCanMove(): boolean {
-    const opponentColor = this.turnIndex === 0 ? Color.Black : Color.White;
+    const opponentColor = this.getNextTurnPlayerColor()
     for (let cell of this.board) {
       if (cell.piece !== null && cell.piece.getColor() === opponentColor) {
         const moves = cell.piece.getValidMoves(cell.position, this);
@@ -171,7 +215,7 @@ export class Chessboard {
   }
 
   isOpponentKingInCheck(): boolean {
-    const opponentColor = this.turnIndex === 0 ? Color.Black : Color.White;
+    const opponentColor = this.getNextTurnPlayerColor();
     for (let cell of this.board) {
       if (cell.piece !== null && cell.piece.getColor() === opponentColor && cell.piece instanceof King) {
         const kingPosition = cell.position;
@@ -190,5 +234,24 @@ export class Chessboard {
     }
     newBoard.isCloned = true;
     return newBoard;
+  }
+
+  joinGame(playerId: number): boolean {
+    if (this.whitePlayerId == null || this.whitePlayerId == playerId) {
+      this.whitePlayerId = playerId;
+      return true;
+    } else if (this.blackPlayerId == null || this.blackPlayerId == playerId) {
+      this.blackPlayerId = playerId;
+      return true;
+    }
+    return false;
+  }
+
+  leaveGame(playerId: number): void {
+    if (this.whitePlayerId == playerId) {
+      this.whitePlayerId = null;
+    } else if (this.blackPlayerId == playerId) {
+      this.blackPlayerId = null;
+    }
   }
 }

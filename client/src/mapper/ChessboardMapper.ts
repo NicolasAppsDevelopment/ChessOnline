@@ -14,7 +14,12 @@ export function getCellsFromRawBoard(board: any) {
 export function getChessboardFromRawBoard(rawChessboard: any) {
   let chessboard: Chessboard = new Chessboard();
   chessboard.board = getCellsFromRawBoard(rawChessboard.board);
-  chessboard.turnIndex = rawChessboard.turnIndex;
-  chessboard.playersId = rawChessboard.playersId;
+  chessboard.colorTurn = rawChessboard.colorTurn;
+  chessboard.whitePlayerId = rawChessboard.whitePlayerId;
+  chessboard.blackPlayerId = rawChessboard.blackPlayerId;
+  chessboard.isCloned = rawChessboard.isCloned;
+  chessboard.isEndGame = rawChessboard.isEndGame;
+  chessboard.winnerPlayerId = rawChessboard.winnerPlayerId;
+
   return chessboard;
 }

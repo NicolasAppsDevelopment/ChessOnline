@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
+import EndGameWindow from "@/components/EndGameWindow.vue";
 import {useRoomService} from "@/composables/room/roomService";
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
@@ -9,6 +10,7 @@ import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast';
+import { Button } from 'primevue'
 
 const toast = useToast();
 const route = useRoute()
@@ -26,8 +28,8 @@ if (!socket.hasListeners('JOIN_ROOM_RESPONSE')) {
     socket.emit('GET_CHESSBOARD');
   });
 }
-if (!socket.hasListeners('GET_CHESSBOARD_RESPONSE')) {
-  socket.on('GET_CHESSBOARD_RESPONSE', (board: any) => {
+if (!socket.hasListeners('UPDATE_CHESSBOARD')) {
+  socket.on('UPDATE_CHESSBOARD', (board: any) => {
     if (board === null) {
       toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
       router.push({ path: '/' });
@@ -60,13 +62,26 @@ onBeforeUnmount(() => {
   socket.emit('LEAVE_ROOM');
 });
 
+function refresh() {
+  socket.emit('GET_CHESSBOARD');
+}
+
+function declareDraw() {
+  socket.emit('DECLARE_DRAW');
+}
+
+function resign() {
+  socket.emit('RESIGN');
+}
 </script>
 
 <template>
   <Navbar></Navbar>
-  <ChessBoardComponent v-model:chessboard="chessboard"></ChessBoardComponent>
+  <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+  <div class="flex gap-1 p-1">
+    <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
+    <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
+    <Button label="Draw" icon="fa-solid fa-equals" @click="declareDraw()"></Button>
+  </div>
+  <EndGameWindow v-model="chessboard"></EndGameWindow>
 </template>
-
-<style scoped>
-
-</style>

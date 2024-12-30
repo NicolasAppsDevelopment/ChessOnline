@@ -10,8 +10,12 @@ import {Cell} from "./Cell";
 
 export class Chessboard {
   public board: Cell[] = [];
-  public turnIndex : number = 0;// true is White turn (first player), false is Black turn (second player)
-  public playersId : number[] = [];
+  public colorTurn : Color = Color.White;
+  public whitePlayerId : number | null = null;
+  public blackPlayerId : number | null = null;
+  public isCloned: boolean = false;
+  public isEndGame: boolean = false;
+  public winnerPlayerId: number | null = null;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
@@ -128,5 +132,9 @@ export class Chessboard {
     });
 
     return board;
+  }
+
+  getCurrentTurnPlayerId(): number | null {
+    return this.colorTurn === Color.White ? this.whitePlayerId : this.blackPlayerId;
   }
 }

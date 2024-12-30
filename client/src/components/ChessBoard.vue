@@ -1,5 +1,5 @@
 <template>
-  <div class="chessboard-container" :class="{ inversed: playerColor == Color.Black }">
+  <div class="chessboard-container" :class="{ inversed: chessboard.blackPlayerId == userId }">
     <div class="notation-top">
       <span>A</span>
       <span>B</span>
@@ -11,7 +11,7 @@
       <span>H</span>
     </div>
     <div class="chessboard" :class="{ disabled: !isMyTurn }">
-      <div v-for="column in chessBoard?.getBoard()">
+      <div v-for="column in chessboard.getBoard()">
         <div v-for="cell in column" class="square" :class="{ highlight: cell.isHighlighted }" @drop="drop($event, cell)" @dragover.prevent @dragenter.prevent>
           <img v-if="cell.piece" v-bind:src="cell.piece.getSprite()" v-bind:alt="cell.piece.getColor() + ' ' + cell.piece.getName()" draggable="true" @dragstart="pickUp($event, cell)"/>
           <div v-else> </div>
@@ -29,11 +29,6 @@
       <span>1</span>
     </div>
   </div>
-  <div class="flex gap-1 p-1">
-    <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
-    <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
-    <Button label="Draw" icon="fa-solid fa-equals" @click="declareDraw()"></Button>
-  </div>
 </template>
 
 <script setup lang="ts">
@@ -41,52 +36,26 @@ import type {Chessboard} from '@/models/Chessboard';
 import {Position} from "@/models/Position";
 import {socket} from "@/socket";
 import type {Cell} from "@/models/Cell";
-import {getChessboardFromRawBoard} from "@/mapper/ChessboardMapper";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
-import {Color} from "@/models/Piece";
 import {useStoredUserService} from "@/composables/user/storedUserService";
-import {Button} from 'primevue'
 import { computed } from 'vue'
 
-const chessBoard = defineModel<Chessboard>('chessboard', { required: true });
+const chessboard = defineModel<Chessboard>({ required: true });
 
 const storedUserService = useStoredUserService();
 const userId = storedUserService.storedUser.value.id;
 
-const playerColor = computed(() => {
-  return chessBoard.value?.playersId.indexOf(userId) == 0 ? Color.White : Color.Black;
-});
 const isMyTurn = computed(() => {
-  return chessBoard.value?.playersId[chessBoard.value.turnIndex] == userId;
+  return chessboard.value?.getCurrentTurnPlayerId() == userId;
 });
 
-if (!socket.hasListeners('MOVE_RESPONSE')) {
-  socket.on("MOVE_RESPONSE", (board: any) => {
-    const newChessBoard: Chessboard = getChessboardFromRawBoard(board);
-    if (chessBoard.value) chessBoard.value = newChessBoard;
-  });
-}
 if (!socket.hasListeners('MOVES_RESPONSE')) {
   socket.on("MOVES_RESPONSE", (moves: any[]) => {
     const positions: Position[] = getPositionArrayFromRaw(moves);
     for (const position of positions) {
-      const cell = chessBoard.value?.getCellFromPosition(position);
+      const cell = chessboard.value?.getCellFromPosition(position);
       if (cell) cell.isHighlighted = true;
     }
-  });
-}
-if (!socket.hasListeners('CHECKMATE')) {
-  socket.on("CHECKMATE", (winnerId: number) => {
-    if (winnerId == userId) {
-      alert('CHECKMATE: You won!');
-    } else {
-      alert('CHECKMATE: You lost!');
-    }
-  });
-}
-if (!socket.hasListeners('PAT')) {
-  socket.on("PAT", () => {
-    alert('PAT: Draw');
   });
 }
 
@@ -96,14 +65,14 @@ function pickUp(event: DragEvent, cell: Cell) {
     event.preventDefault();
     return;
   }
-  if (cell.piece?.getColor() != playerColor.value){
+  if (cell.piece?.getColor() != chessboard.value?.colorTurn) {
     event.preventDefault();
     console.log('player cannot move other color pieces');
     return;
   }
 
-  if (chessBoard.value) {
-    chessBoard.value.clearHighlights();
+  if (chessboard.value) {
+    chessboard.value.clearHighlights();
   }
 
   socket.emit('GET_MOVES', cell.position);
@@ -118,24 +87,12 @@ function drop(event: DragEvent, destination: Cell) {
     const from = new Position(fromRaw.x, fromRaw.y);
     const to = new Position(destination.position.x, destination.position.y);
 
-    if (chessBoard.value) {
-      chessBoard.value.movePiece(from, to);
-      chessBoard.value.clearHighlights();
+    if (chessboard.value) {
+      chessboard.value.movePiece(from, to);
+      chessboard.value.clearHighlights();
     }
     socket.emit('MOVE_PIECE', from, to);
   }
-}
-
-function refresh() {
-  socket.emit('GET_CHESSBOARD');
-}
-
-function declareDraw() {
-  socket.emit('DECLARE_DRAW');
-}
-
-function resign() {
-  socket.emit('RESIGN');
 }
 
 </script>
