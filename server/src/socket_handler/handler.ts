@@ -49,6 +49,101 @@ export function createHandler(socket: Socket, user: User, io: Server) {
 
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
+        askDraw: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            const chessboard = roomsService.boards.get(roomUuid);
+            if (!chessboard) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            chessboard.drawAskingOpponentPlayerId = chessboard.whitePlayerId == user.id ? chessboard.blackPlayerId : chessboard.whitePlayerId;
+
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
+        },
+        acceptDraw: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            const chessboard = roomsService.boards.get(roomUuid);
+            if (!chessboard) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            if (chessboard.drawAskingOpponentPlayerId == null || chessboard.drawAskingOpponentPlayerId != user.id) {
+                return;
+            }
+
+            chessboard.isEndGame = true;
+            chessboard.winnerPlayerId = null;
+            chessboard.drawAskingOpponentPlayerId = null;
+
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
+        },
+        denyDraw: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            const chessboard = roomsService.boards.get(roomUuid);
+            if (!chessboard) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            if (chessboard.drawAskingOpponentPlayerId == null || chessboard.drawAskingOpponentPlayerId != user.id) {
+                return;
+            }
+
+            chessboard.drawAskingOpponentPlayerId = null;
+
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
+        },
+        resign: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            const chessboard = roomsService.boards.get(roomUuid);
+            if (!chessboard) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            chessboard.isEndGame = true;
+            chessboard.winnerPlayerId = chessboard.whitePlayerId == user.id ? chessboard.blackPlayerId : chessboard.whitePlayerId;
+
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
+        },
+        reset: async function () {
+            const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
+            if (!roomUuid) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            const chessboard = roomsService.boards.get(roomUuid);
+            if (!chessboard) {
+                socket.emit("UPDATE_CHESSBOARD", null);
+                return;
+            }
+
+            chessboard.resetGame();
+            io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
+        },
         getChessboard: async function () {
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {

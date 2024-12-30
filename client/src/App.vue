@@ -2,6 +2,7 @@
 
 import { RouterView } from "vue-router";
 import Toast from 'primevue/toast';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 </script>
 
@@ -10,6 +11,7 @@ import Toast from 'primevue/toast';
     <RouterView />
   </div>
   <Toast />
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 

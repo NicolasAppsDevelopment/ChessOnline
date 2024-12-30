@@ -16,6 +16,7 @@ export class Chessboard {
   public isCloned: boolean = false;
   public isEndGame: boolean = false;
   public winnerPlayerId: number | null = null;
+  public drawAskingOpponentPlayerId: number | null = null;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
@@ -253,5 +254,42 @@ export class Chessboard {
     } else if (this.blackPlayerId == playerId) {
       this.blackPlayerId = null;
     }
+  }
+
+  resetGame(): void {
+    for (const cell of this.board) {
+      cell.piece = null;
+    }
+
+    //Create and place the whites pieces in the chessboard
+    this.getCellFromXY(0, 7)!.piece = new Rook(Color.White);
+    this.getCellFromXY(7, 7)!.piece = new Rook(Color.White);
+    this.getCellFromXY(1, 7)!.piece = new Knight(Color.White);
+    this.getCellFromXY(6, 7)!.piece = new Knight(Color.White);
+    this.getCellFromXY(2, 7)!.piece = new Bishop(Color.White);
+    this.getCellFromXY(5, 7)!.piece = new Bishop(Color.White);
+    this.getCellFromXY(3, 7)!.piece = new Queen(Color.White);
+    this.getCellFromXY(4, 7)!.piece = new King(Color.White);
+    for (let i = 0; i < 8; i++) {
+      this.getCellFromXY(i, 6)!.piece = new Pawn(Color.White);
+    }
+
+    //Create and place the blacks pieces in the chessboard
+    this.getCellFromXY(0, 0)!.piece = new Rook(Color.Black);
+    this.getCellFromXY(7, 0)!.piece = new Rook(Color.Black);
+    this.getCellFromXY(1, 0)!.piece = new Knight(Color.Black);
+    this.getCellFromXY(6, 0)!.piece = new Knight(Color.Black);
+    this.getCellFromXY(2, 0)!.piece = new Bishop(Color.Black);
+    this.getCellFromXY(5, 0)!.piece = new Bishop(Color.Black);
+    this.getCellFromXY(3, 0)!.piece = new Queen(Color.Black);
+    this.getCellFromXY(4, 0)!.piece = new King(Color.Black);
+    for (let i = 0; i < 8; i++) {
+      this.getCellFromXY(i, 1)!.piece = new Pawn(Color.Black);
+    }
+
+    this.isEndGame = false;
+    this.winnerPlayerId = null;
+    this.drawAskingOpponentPlayerId = null;
+    this.colorTurn = Color.White;
   }
 }

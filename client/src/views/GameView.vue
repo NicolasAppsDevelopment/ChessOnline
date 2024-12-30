@@ -2,7 +2,7 @@
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 import EndGameWindow from "@/components/EndGameWindow.vue";
 import {useRoomService} from "@/composables/room/roomService";
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
 import Navbar from "@/components/Navbar.vue";
 import { socket } from '@/socket'
@@ -11,11 +11,17 @@ import router from '@/router'
 import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast';
 import { Button } from 'primevue'
+import PromotionSelectorWindow from '@/components/PromotionSelectorWindow.vue'
+import { useConfirm } from "primevue/useconfirm";
+import { useStoredUserService } from '@/composables/user/storedUserService'
 
+const confirm = useConfirm();
 const toast = useToast();
 const route = useRoute()
 const roomsService = useRoomService();
 const chessboard = ref<Chessboard>(new Chessboard());
+const storedUserService = useStoredUserService();
+const userId = storedUserService.storedUser.value.id;
 
 if (!socket.hasListeners('JOIN_ROOM_RESPONSE')) {
   socket.on('JOIN_ROOM_RESPONSE', async (error: string) => {
@@ -66,13 +72,76 @@ function refresh() {
   socket.emit('GET_CHESSBOARD');
 }
 
-function declareDraw() {
-  socket.emit('DECLARE_DRAW');
+function askDraw() {
+  confirm.require({
+    header: 'Confirmation',
+    message: 'Are you sure you want to ask for a draw?',
+    icon: 'fa-solid fa-triangle-exclamation',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      icon: 'fa-solid fa-xmark',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Confirm',
+      icon: 'fa-solid fa-check',
+    },
+    accept: () => {
+      socket.emit('ASK_DRAW');
+      toast.add({ severity: 'success', summary: 'Confirmed', detail: 'Draw request send.', life: 4000 });
+    },
+  });
 }
 
 function resign() {
-  socket.emit('RESIGN');
+  confirm.require({
+    header: 'Confirmation',
+    message: 'Are you sure you want to resign?',
+    icon: 'fa-solid fa-triangle-exclamation',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      icon: 'fa-solid fa-xmark',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Confirm',
+      icon: 'fa-solid fa-check',
+    },
+    accept: () => {
+      socket.emit('RESIGN');
+    },
+  });
 }
+
+const drawAskingOpponentPlayerId = computed(() => chessboard.value.drawAskingOpponentPlayerId);
+watch(drawAskingOpponentPlayerId, async (newVal) => {
+  if (newVal == userId) {
+    confirm.require({
+      header: 'Draw request',
+      message: 'Your opponent asked for a draw. Do you accept?',
+      icon: 'fa-solid fa-triangle-exclamation',
+      rejectProps: {
+        label: 'Reject',
+        severity: 'secondary',
+        icon: 'fa-solid fa-xmark',
+        outlined: true
+      },
+      acceptProps: {
+        label: 'Accept',
+        icon: 'fa-solid fa-check',
+      },
+      accept: () => {
+        socket.emit('ACCEPT_DRAW');
+      },
+      reject: () => {
+        socket.emit('DENY_DRAW');
+      }
+    });
+  }
+})
+
 </script>
 
 <template>
@@ -81,7 +150,8 @@ function resign() {
   <div class="flex gap-1 p-1">
     <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
     <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
-    <Button label="Draw" icon="fa-solid fa-equals" @click="declareDraw()"></Button>
+    <Button label="Draw" icon="fa-solid fa-equals" @click="askDraw()"></Button>
   </div>
   <EndGameWindow v-model="chessboard"></EndGameWindow>
+  <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
 </template>

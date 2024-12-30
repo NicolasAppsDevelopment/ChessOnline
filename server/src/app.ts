@@ -47,14 +47,25 @@ io.on("connection", (socket) => {
     const {
         joinRoom,
         movePiece,
+        askDraw,
+        acceptDraw,
+        denyDraw,
+        reset,
+        resign,
         getMoves,
         getChessboard,
         leaveRoom,
         disconnected,
+
     } = createHandler(socket, user, io);
 
     socket.on("JOIN_ROOM", joinRoom);
     socket.on("MOVE_PIECE", movePiece);
+    socket.on("ASK_DRAW", askDraw);
+    socket.on("ACCEPT_DRAW", acceptDraw);
+    socket.on("DENY_DRAW", denyDraw);
+    socket.on("RESET", reset);
+    socket.on("RESIGN", resign);
     socket.on("GET_MOVES", getMoves);
     socket.on("GET_CHESSBOARD", getChessboard);
     socket.on("LEAVE_ROOM", leaveRoom);

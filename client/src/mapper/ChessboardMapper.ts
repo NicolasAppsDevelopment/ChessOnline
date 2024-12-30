@@ -20,6 +20,7 @@ export function getChessboardFromRawBoard(rawChessboard: any) {
   chessboard.isCloned = rawChessboard.isCloned;
   chessboard.isEndGame = rawChessboard.isEndGame;
   chessboard.winnerPlayerId = rawChessboard.winnerPlayerId;
+  chessboard.drawAskingOpponentPlayerId = rawChessboard.drawAskingOpponentPlayerId;
 
   return chessboard;
 }

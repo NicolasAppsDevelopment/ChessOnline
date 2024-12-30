@@ -16,6 +16,7 @@ export class Chessboard {
   public isCloned: boolean = false;
   public isEndGame: boolean = false;
   public winnerPlayerId: number | null = null;
+  public drawAskingOpponentPlayerId: number | null = null;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
