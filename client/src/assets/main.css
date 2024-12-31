@@ -115,12 +115,12 @@
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  border: 3px solid var(--p-button-primary-hover-border-color);
+  border: 3px solid var(--p-button-primary-border-color);
   color: var(--color-text);
 }
 .leaderboard th {
-  background: var(--p-button-primary-hover-background);
-  color: var(--p-button-primary-hover-color);
+  background: var(--p-button-primary-background);
+  color: var(--p-button-primary-color);
   font-weight: 600;
   text-align: left;
   padding: 1rem 1rem;
@@ -147,12 +147,12 @@
   width: 100%;
   border-collapse: collapse;
   overflow: hidden;
-  border: 3px solid var(--p-button-primary-hover-border-color);
+  border: 3px solid var(--p-button-primary-border-color);
   color: white;
 }
 .rooms th {
-  background: var(--p-button-primary-hover-background);
-  color: var(--p-button-primary-hover-color);
+  background: var(--p-button-primary-background);
+  color: var(--p-button-primary-color);
   font-weight: 600;
   text-align: left;
   padding: 1rem 1rem;
