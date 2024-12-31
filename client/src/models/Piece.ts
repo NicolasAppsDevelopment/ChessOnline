@@ -70,25 +70,4 @@ export abstract class Piece {
     getSprite() {
       return this.sprite;
     }
-    protected abstract getAllMoves(from: Position, board: Chessboard): Position[];
-    getValidMoves(from: Position, board: Chessboard): Position[] {
-      let moves: Position[] = [];
-      for (let move of this.getAllMoves(from, board)) {
-        const piece = board.getPiece(move);
-        if (
-          piece == null || piece.getColor() != this.color // can only eat a piece of the opposite color
-        ) {
-          moves.push(move);
-        }
-      }
-      return moves;
-    }
-    checkMove(from: Position, to: Position, board: Chessboard): boolean {
-      for (let move of this.getValidMoves(from, board)) {
-        if (move.equals(to)) {
-          return true;
-        }
-      }
-      return false;
-    }
   }

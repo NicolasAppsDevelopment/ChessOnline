@@ -60,19 +60,8 @@ export class Chessboard {
     const pieceToMove = fromCell.piece;
     if (!pieceToMove) return false;
 
-    if (!pieceToMove.checkMove(from, to, this)) {
+    if (!toCell.isHighlighted) {
       return false;
-    }
-
-    if (pieceToMove instanceof Pawn) {
-      pieceToMove.firstMoveDone(); // Pawn first move
-
-      // Promotion rule
-      if (pieceToMove.getColor() == Color.White && to.y == 0) {
-        fromCell.piece = new Queen(Color.White);
-      } else if (pieceToMove.getColor() == Color.Black && to.y == 7) {
-        fromCell.piece = new Queen(Color.Black);
-      }
     }
 
     toCell.piece = fromCell.piece;
@@ -85,15 +74,6 @@ export class Chessboard {
     this.board.forEach(function (cell) {
       cell.isHighlighted = false;
     });
-  }
-
-  getPiece(position: Position): Piece | null {
-    const cell = this.getCellFromPosition(position);
-    if (cell) {
-      return cell.piece;
-    }
-
-    return null;
   }
 
   getCellFromPosition(from: Position): Cell | null {
