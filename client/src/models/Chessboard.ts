@@ -1,4 +1,4 @@
-import {Color, Piece} from "./Piece";
+import {Color} from "./Piece";
 import {Rook} from "./Rook";
 import {Knight} from "./Knight";
 import {Bishop} from "./Bishop";
