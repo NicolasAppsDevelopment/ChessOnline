@@ -29,6 +29,9 @@ export function useStoredUserService() {
           localStorage.removeItem('token');
           router.push({ path: '/login' });
         }
+      } else if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+        // none logged user should be redirected to login page (except login and register pages)
+        router.push({ path: '/login' });
       }
     },
     async refresh(): Promise<void> {
