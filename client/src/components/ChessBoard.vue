@@ -38,7 +38,7 @@ import {socket} from "@/socket";
 import type {Cell} from "@/models/Cell";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
 import {useStoredUserService} from "@/composables/user/storedUserService";
-import { computed } from 'vue'
+import { computed, onBeforeUnmount } from 'vue'
 
 const chessboard = defineModel<Chessboard>({ required: true });
 
@@ -49,15 +49,13 @@ const isMyTurn = computed(() => {
   return chessboard.value?.getCurrentTurnPlayerId() == userId;
 });
 
-if (!socket.hasListeners('MOVES_RESPONSE')) {
-  socket.on("MOVES_RESPONSE", (moves: any[]) => {
-    const positions: Position[] = getPositionArrayFromRaw(moves);
-    for (const position of positions) {
-      const cell = chessboard.value?.getCellFromPosition(position);
-      if (cell) cell.isHighlighted = true;
-    }
-  });
-}
+socket.on("MOVES_RESPONSE", (moves: any[]) => {
+  const positions: Position[] = getPositionArrayFromRaw(moves);
+  for (const position of positions) {
+    const cell = chessboard.value?.getCellFromPosition(position);
+    if (cell) cell.isHighlighted = true;
+  }
+});
 
 function pickUp(event: DragEvent, cell: Cell) {
   if (!isMyTurn.value){
@@ -95,4 +93,7 @@ function drop(event: DragEvent, destination: Cell) {
   }
 }
 
+onBeforeUnmount(() => {
+  socket.off('MOVES_RESPONSE');
+});
 </script>

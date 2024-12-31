@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
+import Navbar from "@/components/Navbar.vue";
 import EndGameWindow from "@/components/EndGameWindow.vue";
 import {useRoomService} from "@/composables/room/roomService";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
-import Navbar from "@/components/Navbar.vue";
 import { socket } from '@/socket'
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
@@ -23,55 +23,49 @@ const chessboard = ref<Chessboard>(new Chessboard());
 const storedUserService = useStoredUserService();
 const userId = storedUserService.storedUser.value.id;
 
-if (!socket.hasListeners('JOIN_ROOM_RESPONSE')) {
-  socket.on('JOIN_ROOM_RESPONSE', async (error: string) => {
-    if (error) {
-      toast.add({ severity: 'error', summary: 'Error', detail: error, closable: false, life: 4000 });
-      router.push({ path: '/' });
-      return;
-    }
-    await roomsService.join(route.params.id as string);
-    socket.emit('GET_CHESSBOARD');
-  });
-}
-if (!socket.hasListeners('UPDATE_CHESSBOARD')) {
-  socket.on('UPDATE_CHESSBOARD', (board: any) => {
-    if (board === null) {
-      toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
-      router.push({ path: '/' });
-      return;
-    }
-    const newChessboard: Chessboard = getChessboardFromRawBoard(board);
-    if (chessboard.value) chessboard.value = newChessboard;
-  });
-}
-if (!socket.hasListeners('PLAYER_JOINED')) {
-  socket.on('PLAYER_JOINED', async (username: string) => {
-    toast.add({ severity: 'info', summary: 'Info', detail: username + " joined the room.", closable: false, life: 4000 });
-  });
-}
-if (!socket.hasListeners('PLAYER_LEFT')) {
-  socket.on('PLAYER_LEFT', async (username: string) => {
-    toast.add({ severity: 'info', summary: 'Info', detail: username + " left the room.", closable: false, life: 4000 });
-  });
-}
-if (!socket.hasListeners('PLAYER_DISCONNECTED')) {
-  socket.on('PLAYER_DISCONNECTED', async (username: string) => {
-    toast.add({ severity: 'warn', summary: 'Warning', detail: username + " lost connection with the room.", closable: false, life: 4000 });
-  });
-}
+socket.on('JOIN_ROOM_RESPONSE', async (error: string) => {
+  if (error) {
+    toast.add({ severity: 'error', summary: 'Error', detail: error, closable: false, life: 4000 });
+    router.push({ path: '/' });
+    return;
+  }
+  await roomsService.join(route.params.id as string);
+  socket.emit('GET_CHESSBOARD');
+});
+socket.on('UPDATE_CHESSBOARD', (board: any) => {
+  if (board === null) {
+    toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
+    router.push({ path: '/' });
+    return;
+  }
+  const newChessboard: Chessboard = getChessboardFromRawBoard(board);
+  if (chessboard.value) chessboard.value = newChessboard;
+});
+socket.on('PLAYER_JOINED', async (username: string) => {
+  toast.add({ severity: 'info', summary: 'Info', detail: username + " joined the room.", closable: false, life: 4000 });
+});
+socket.on('PLAYER_LEFT', async (username: string) => {
+  toast.add({ severity: 'info', summary: 'Info', detail: username + " left the room.", closable: false, life: 4000 });
+});
+socket.on('PLAYER_DISCONNECTED', async (username: string) => {
+  toast.add({ severity: 'warn', summary: 'Warning', detail: username + " lost connection with the room.", closable: false, life: 4000 });
+});
 
 onMounted(() => {
   socket.emit('JOIN_ROOM', route.params.id);
 });
 onBeforeUnmount(() => {
+  socket.off('JOIN_ROOM_RESPONSE');
+  socket.off('UPDATE_CHESSBOARD');
+  socket.off('PLAYER_JOINED');
+  socket.off('PLAYER_LEFT');
+  socket.off('PLAYER_DISCONNECTED');
   socket.emit('LEAVE_ROOM');
 });
 
 function refresh() {
   socket.emit('GET_CHESSBOARD');
 }
-
 function askDraw() {
   confirm.require({
     header: 'Confirmation',
@@ -93,7 +87,6 @@ function askDraw() {
     },
   });
 }
-
 function resign() {
   confirm.require({
     header: 'Confirmation',
@@ -154,4 +147,5 @@ watch(drawAskingOpponentPlayerId, async (newVal) => {
   </div>
   <EndGameWindow v-model="chessboard"></EndGameWindow>
   <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
+  <p>{{ tempTest }}</p>
 </template>

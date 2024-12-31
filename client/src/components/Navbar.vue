@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {Menubar} from "primevue";
 import { ref } from "vue";
 import { useRouter } from 'vue-router';
