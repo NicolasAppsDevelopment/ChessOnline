@@ -19,11 +19,9 @@
           <a :href="'/user/' + user.id">
             {{ user.username }}
           </a>
-          <RouterLink to="/logout" custom>
-            <a @click="storedUserService.clear()">
-              <span class="fa-solid fa-power-off" />
-            </a>
-          </RouterLink>
+          <a @click="storedUserService.clear()" class="cursor-pointer">
+            <span class="fa-solid fa-power-off" />
+          </a>
         </div>
       </template>
     </Menubar>
