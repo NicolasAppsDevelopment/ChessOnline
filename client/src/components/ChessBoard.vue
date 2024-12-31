@@ -39,7 +39,11 @@ import type {Cell} from "@/models/Cell";
 import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
 import {useStoredUserService} from "@/composables/user/storedUserService";
 import { computed, onBeforeUnmount } from 'vue'
+import type { ExtraDataMove } from '@/models/ExtraDataMove'
+import { Color } from '@/models/Piece'
+import { useModal } from '@/composables/modal'
 
+const { show } = useModal();
 const chessboard = defineModel<Chessboard>({ required: true });
 
 const storedUserService = useStoredUserService();
@@ -77,19 +81,34 @@ function pickUp(event: DragEvent, cell: Cell) {
   event.dataTransfer?.setData('position', JSON.stringify(cell.position));
 }
 
-function drop(event: DragEvent, destination: Cell) {
+async function drop(event: DragEvent, destination: Cell) {
   event.preventDefault();
   const fromData = event.dataTransfer?.getData('position');
   if (fromData) {
     const fromRaw = JSON.parse(fromData);
     const from = new Position(fromRaw.x, fromRaw.y);
     const to = new Position(destination.position.x, destination.position.y);
+    const extra: ExtraDataMove = {};
 
     if (chessboard.value) {
       chessboard.value.movePiece(from, to);
       chessboard.value.clearHighlights();
     }
-    socket.emit('MOVE_PIECE', from, to);
+
+    if (
+      chessboard.value?.colorTurn == Color.White && to.y == 0 ||
+      chessboard.value?.colorTurn == Color.Black && to.y == 7)
+    {
+      console.log('Promotion needed');
+      const choice = await show();
+      console.log('User choice:', choice);
+      if (choice !== null) {
+        extra.promotionPiece = choice;
+      } else {
+        return;
+      }
+    }
+    socket.emit('MOVE_PIECE', from, to, extra);
   }
 }
 

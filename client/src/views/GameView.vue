@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 import Navbar from "@/components/Navbar.vue";
-import EndGameWindow from "@/components/EndGameWindow.vue";
 import {useRoomService} from "@/composables/room/roomService";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
@@ -11,7 +10,7 @@ import router from '@/router'
 import { useRoute } from 'vue-router'
 import { useToast } from 'primevue/usetoast';
 import { Button } from 'primevue'
-import PromotionSelectorWindow from '@/components/PromotionSelectorWindow.vue'
+import PromotionSelectorWindow from '@/components/PromotionSelectorDialog.vue'
 import { useConfirm } from "primevue/useconfirm";
 import { useStoredUserService } from '@/composables/user/storedUserService'
 
@@ -141,6 +140,5 @@ watch(drawAskingOpponentPlayerId, async (newVal) => {
     <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
     <Button label="Draw" icon="fa-solid fa-equals" @click="askDraw()"></Button>
   </div>
-  <EndGameWindow v-model="chessboard"></EndGameWindow>
   <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
 </template>

@@ -7,6 +7,7 @@ import { King } from './King'
 import { Pawn } from './Pawn'
 import { Position } from './Position'
 import { Cell } from './Cell'
+import { ExtraDataMove } from './ExtraDataMove'
 
 export class Chessboard {
   public board: Cell[] = [];
@@ -52,7 +53,7 @@ export class Chessboard {
     }
   }
 
-  playMove(from: Position, to: Position, userId: number): boolean {
+  playMove(from: Position, to: Position, userId: number, extra: ExtraDataMove | null = null): boolean {
     if (this.getCurrentTurnPlayerId() != userId){
       return false;
     }
@@ -70,7 +71,7 @@ export class Chessboard {
       return false;
     }
 
-    if (this.movePiece(from, to)) {
+    if (this.movePiece(from, to, extra)) {
       if (!this.isOpponentCanMove()) {
         this.isEndGame = true;
 
@@ -86,7 +87,7 @@ export class Chessboard {
     return true;
   }
 
-  movePiece(from: Position, to: Position) {
+  movePiece(from: Position, to: Position, extra: ExtraDataMove | null = null): boolean {
     const fromCell = this.getCellFromPosition(from);
     const toCell = this.getCellFromPosition(to);
     if (!fromCell || !toCell) return false;
@@ -102,10 +103,26 @@ export class Chessboard {
       pieceToMove.firstMoveDone(); // Pawn first move
 
       // Promotion rule
-      if (pieceToMove.getColor() == Color.White && to.y == 0) {
-        fromCell.piece = new Queen(Color.White);
-      } else if (pieceToMove.getColor() == Color.Black && to.y == 7) {
-        fromCell.piece = new Queen(Color.Black);
+      if (
+        pieceToMove.getColor() == Color.White && to.y == 0 ||
+        pieceToMove.getColor() == Color.Black && to.y == 7
+      ) {
+        switch (extra?.promotionPiece) {
+          case "Queen":
+            fromCell.piece = new Queen(pieceToMove.getColor());
+            break;
+          case "Rook":
+            fromCell.piece = new Rook(pieceToMove.getColor());
+            break;
+          case "Knight":
+            fromCell.piece = new Knight(pieceToMove.getColor());
+            break;
+          case "Bishop":
+            fromCell.piece = new Bishop(pieceToMove.getColor());
+            break;
+          default:
+            return false;
+        }
       }
     }
 

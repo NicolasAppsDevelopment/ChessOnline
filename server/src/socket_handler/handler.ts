@@ -2,6 +2,7 @@ import { Server, Socket } from 'socket.io'
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
 import {User} from "../models/user.model";
+import { ExtraDataMove } from '../models/ExtraDataMove'
 
 export function createHandler(socket: Socket, user: User, io: Server) {
     return {
@@ -26,7 +27,8 @@ export function createHandler(socket: Socket, user: User, io: Server) {
         },
         movePiece: async function (
             from: any,
-            to: any
+            to: any,
+            extra: ExtraDataMove
         ) {
             const roomUuid = await roomsService.getJoinedRoomUuid(user.id);
             if (!roomUuid) {
@@ -43,7 +45,7 @@ export function createHandler(socket: Socket, user: User, io: Server) {
             const fromCellPosition = new Position(from.x,from.y);
             const toCellPosition = new Position(to.x, to.y);
 
-            if (!chessboard.playMove(fromCellPosition, toCellPosition, user.id)){
+            if (!chessboard.playMove(fromCellPosition, toCellPosition, user.id, extra)) {
                 return;
             }
 
