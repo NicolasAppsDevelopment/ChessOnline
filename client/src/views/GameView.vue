@@ -63,9 +63,6 @@ onBeforeUnmount(() => {
   socket.emit('LEAVE_ROOM');
 });
 
-function refresh() {
-  socket.emit('GET_CHESSBOARD');
-}
 function askDraw() {
   confirm.require({
     header: 'Confirmation',
@@ -141,11 +138,9 @@ watch(drawAskingOpponentPlayerId, async (newVal) => {
   <Navbar></Navbar>
   <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
   <div class="flex gap-1 p-1">
-    <Button label="Refresh" icon="fa-solid fa-arrows-rotate" @click="refresh()"></Button>
     <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
     <Button label="Draw" icon="fa-solid fa-equals" @click="askDraw()"></Button>
   </div>
   <EndGameWindow v-model="chessboard"></EndGameWindow>
   <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
-  <p>{{ tempTest }}</p>
 </template>
