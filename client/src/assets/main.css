@@ -194,15 +194,6 @@
   background: rgb(0, 96, 44) !important;
 }
 
-
-/* TOAST BG FOR LIGHT THEME */
-.p-toast-message {
-  --p-toast-info-background: rgba(236, 245, 255, 0.75);
-  --p-toast-success-background: rgba(226, 255, 230, 0.75);
-  --p-toast-error-background: rgb(255, 233, 233);
-  --p-toast-warn-background: rgba(255, 255, 228, 0.75);
-}
-
 /* TOAST BG FOR DARK THEME */
 @media (prefers-color-scheme: dark) {
   .p-toast-message {
