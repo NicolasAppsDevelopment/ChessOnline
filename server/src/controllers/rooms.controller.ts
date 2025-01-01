@@ -1,6 +1,7 @@
 
 import {Route, Controller, Post, Body, Security, Request, Get} from "tsoa";
 import { roomsService } from "../services/rooms.service";
+import { gameHistoryService } from "../services/gameHistory.service";
 import { CreateRoomInputDTO, JoinRoomInputDTO } from '../dto/room.dto'
 import express from "express";
 import { getUserIdFromJWT } from '../middlewares/authentication'
@@ -20,7 +21,9 @@ export class RoomsController extends Controller {
       @Request() request: express.Request
   ) {
     const { name, isPrivate } = body;
-    return await roomsService.create(name, isPrivate, (await getUserIdFromJWT(request)));
+    const room = await roomsService.create(name, isPrivate, (await getUserIdFromJWT(request)));
+    await gameHistoryService.createGameHistory(room);
+    return room;
   }
 
   @Security("jwt")
@@ -30,6 +33,18 @@ export class RoomsController extends Controller {
         @Request() request: express.Request
     ) {
     const { uuid } = body;
-    return await roomsService.join(uuid, (await getUserIdFromJWT(request)));
+    const joiningUserId = await getUserIdFromJWT(request);
+    let gameHistory = await gameHistoryService.getGameHistoriyByRoomId(uuid);
+    const room_uuid = await roomsService.join(uuid, (joiningUserId));
+
+    if (gameHistory.whitePlayer_id == null){
+      gameHistoryService.updateGameHistory(gameHistory.id,null,null,joiningUserId);
+      return room_uuid;
+    }
+    if (gameHistory.blackPlayer_id == null){
+      gameHistoryService.updateGameHistory(gameHistory.id,null,joiningUserId,null);
+      return room_uuid;
+    }
+    return room_uuid;
   }
 }
