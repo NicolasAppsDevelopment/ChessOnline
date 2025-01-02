@@ -23,25 +23,24 @@ onMounted(async () => {
 
   <div class="p1">
     <h1>Game Histories</h1>
-    <table>
+    <table class="gameHistory">
       <thead>
         <tr>
-          <th><i class="fa-solid fa-user"></i> Room Name</th>
-          <th><i class="fa-solid fa-user"></i> Date</th>
-          <th><i class="fa-solid fa-star"></i> Black Player</th>
-          <th><i class="fa-solid fa-star"></i> White Player</th>
-          <th><i class="fa-solid fa-star"></i> Winner</th>
+          <th><i class="fa-solid fa-chess-board"></i> Room Name</th>
+          <th><i class="fa-solid fa-calendar"></i> Date</th>
+          <th><i class="fa-solid fa-user"></i> Black Player</th>
+          <th><i class="fa-solid fa-user"></i> White Player</th>
+          <th><i class="fa-solid fa-chess-king"></i> Winner</th>
         </tr>
       </thead>
       <tbody>
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id">
-          <!--<td>{{ gameHistory.room.name }}</td>
+          <td>{{ gameHistory.room.name }}</td>
           <td>{{ gameHistory.date }}</td>
           <td>{{ gameHistory.blackPlayer?.username }}</td>
           <td>{{ gameHistory.whitePlayer?.username }}</td>
           <td>{{ gameHistory.winner?.username }}</td>
-          <td><RouterLink :to="'/user/' + gameHistory.id"><i class="fa-solid fa-star"></i></RouterLink></td>
-          -->
+          <td class="no-border"><RouterLink :to="'/gameHistory/' + gameHistory.id"><i class="fa-solid fa-angle-right"></i></RouterLink></td>
         </tr> 
       </tbody>
     </table>

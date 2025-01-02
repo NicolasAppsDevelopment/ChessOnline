@@ -3,6 +3,10 @@
 @import '@fortawesome/fontawesome-free/css/regular.css';
 @import '@fortawesome/fontawesome-free/css/solid.css';
 
+.no-border {
+  border: none !important;
+} 
+
 
 /* FOR CHESSBOARD COMPONENT */
 
@@ -137,6 +141,30 @@
 .leaderboard tbody tr:nth-child(3){
   background-color: rgb(205, 127, 50, 0.5);
 }
+
+/* GAME HISTORIES TABLE CSS */
+
+.gameHistory, .gameHistory th, .gameHistory td {
+  border: 1px solid rgba(136, 136, 136, 0.25);
+}
+.gameHistory {
+  width: 100%;
+  border-collapse: collapse;
+  overflow: hidden;
+  border: 3px solid var(--p-button-primary-border-color);
+  color: var(--color-text);
+}
+.gameHistory th {
+  background: var(--p-button-primary-background);
+  color: var(--p-button-primary-color);
+  font-weight: 600;
+  text-align: left;
+  padding: 1rem 1rem;
+}
+.gameHistory td {
+  padding: 0.5rem 1rem;
+}
+
 
 /* ROOMS TABLE CSS */
 

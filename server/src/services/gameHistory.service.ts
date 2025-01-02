@@ -6,6 +6,8 @@ import { Move } from "../models/move.model";
 import { Op } from "sequelize";
 import { DATE } from "sequelize";
 import { now } from "sequelize/types/utils";
+import { Room } from "../models/room.model";
+import { User } from "../models/user.model";
 
 export class GameHistoryService {
   // Récupère les historiques de parties liés à un utilisateur par ID
@@ -16,11 +18,27 @@ export class GameHistoryService {
             { blackPlayer_id: id },
             { whitePlayer_id: id },
         ],
-    },
+      },
       include: [
           {
-              model: Move,
-              as: "moves",
+            model: Room,
+            as: "room",
+          },
+          {
+            model: User,
+            as: "blackPlayer",
+          },
+          {
+            model: User,
+            as: "whitePlayer",
+          },
+          {
+            model: User,
+            as: "winner",
+          },
+          {
+            model: Move,
+            as: "moves",
           },
       ],
       order: [
