@@ -8,7 +8,7 @@ import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import cors from "cors";
 import {socketIoAuthentication} from "./middlewares/socketIoAuth";
-import {User} from "./models/user.model";
+import {User} from "./models/User";
 import { roomsService } from './services/rooms.service';
 
 const PORT = process.env.PORT ?? 8100;

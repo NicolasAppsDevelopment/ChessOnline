@@ -1,8 +1,8 @@
 import {notFound} from "../error/NotFoundError";
-import {Room} from "../models/room.model";
+import {Room} from "../models/Room";
 import {Chessboard} from "../models/Chessboard";
 import { v4 as uuidv4 } from 'uuid';
-import {User} from "../models/user.model";
+import {User} from "../models/User";
 import { ListRoomItemOutputDTO } from '../dto/room.dto'
 
 export class RoomsService {
@@ -10,7 +10,6 @@ export class RoomsService {
   public async create(
     roomName: string,
     isPrivate: boolean,
-    playerId: number,
   ): Promise<string> {
     if (roomName == "") {
       let error = new Error("Name is empty");

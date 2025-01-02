@@ -1,4 +1,4 @@
-import {User} from "../models/user.model"; // Modèle Sequelize
+import {User} from "../models/User"; // Modèle Sequelize
 import jwt from "jsonwebtoken"; // Pour générer le JWT
 import {notFound} from "../error/NotFoundError";
 import bcrypt from "bcrypt";

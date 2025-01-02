@@ -8,7 +8,7 @@ import { userService } from "../services/user.service";
 import {
   UserOutputDTO
 } from '../dto/user.dto'
-import {User} from "../models/user.model";
+import {User} from "../models/User";
 
 @Route("leaderboard")
 export class LeaderboardController extends Controller {

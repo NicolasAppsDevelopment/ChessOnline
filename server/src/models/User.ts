@@ -1,6 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import {Room} from "./room.model"; // Connexion à la base de données
+import {Room} from "./Room"; // Connexion à la base de données
 export interface UserAttributes {
     id?: number;
     username: string;

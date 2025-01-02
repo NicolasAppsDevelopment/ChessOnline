@@ -18,10 +18,9 @@ export class RoomsController extends Controller {
   @Security("jwt")
   public async createRoom(
       @Body() body: CreateRoomInputDTO,
-      @Request() request: express.Request
   ) {
     const { name, isPrivate } = body;
-    const room = await roomsService.create(name, isPrivate, (await getUserIdFromJWT(request)));
+    const room = await roomsService.create(name, isPrivate);
     await gameHistoryService.createGameHistory(room);
     return room;
   }

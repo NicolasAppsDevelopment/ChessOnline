@@ -1,8 +1,8 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import {User} from "./user.model";
-import {Room} from "./room.model"; 
-import {Move} from "./move.model"; // Connexion à la base de données
+import {User} from "./User";
+import {Room} from "./Room";
+import {Move} from "./Move"; // Connexion à la base de données
 //TODO mettre date de fin
 export interface GameHistoryAttributes {
     id?: number;
@@ -26,10 +26,10 @@ export class GameHistory
     public date!: Date;
     public room!: Room;
     public room_uuid!: string;
-    public blackPlayer!: User | null;;
-    public blackPlayer_id!: number | null;;
-    public whitePlayer!: User | null;;
-    public whitePlayer_id!: number | null;;
+    public blackPlayer!: User | null;
+    public blackPlayer_id!: number | null;
+    public whitePlayer!: User | null;
+    public whitePlayer_id!: number | null;
     public winner!: User | null;
     public winner_id!: number | null;
     public moves!: Move[];

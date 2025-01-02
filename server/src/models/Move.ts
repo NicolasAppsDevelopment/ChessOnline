@@ -1,6 +1,6 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import {GameHistory} from "./gameHistory.model"; // Connexion à la base de données
+import {GameHistory} from "./GameHistory"; // Connexion à la base de données
 export interface MoveAttributes {
     id?: number;
     gameHistory?: GameHistory | null;

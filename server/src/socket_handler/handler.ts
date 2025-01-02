@@ -3,7 +3,7 @@ import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
 import {moveService} from "../services/move.service";
 import {gameHistoryService} from "../services/gameHistory.service";
-import {User} from "../models/user.model";
+import {User} from "../models/User";
 import { ExtraDataMove } from '../models/ExtraDataMove'
 
 export function createHandler(socket: Socket, user: User, io: Server) {
@@ -51,15 +51,6 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
-            let isABlackPiece = false;
-            if (gameHistory.blackPlayer?.username == user.username){
-                isABlackPiece = true;
-            }
-
-            //TODO peut être virer l'attribut whichPiece && promotion
-            moveService.createMove(gameHistory.id,isABlackPiece,"",[from.x,from.y],[to.x,to.y]);
-
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
         askDraw: async function () {
@@ -92,13 +83,9 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            if (chessboard.drawAskingOpponentPlayerId == null || chessboard.drawAskingOpponentPlayerId != user.id) {
+            if (!chessboard.draw(user.id)) {
                 return;
             }
-
-            chessboard.isEndGame = true;
-            chessboard.winnerPlayerId = null;
-            chessboard.drawAskingOpponentPlayerId = null;
 
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
@@ -136,8 +123,7 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            chessboard.isEndGame = true;
-            chessboard.winnerPlayerId = chessboard.whitePlayerId == user.id ? chessboard.blackPlayerId : chessboard.whitePlayerId;
+            chessboard.resign(user.id);
 
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
@@ -154,7 +140,10 @@ export function createHandler(socket: Socket, user: User, io: Server) {
                 return;
             }
 
-            chessboard.resetGame();
+            if (!chessboard.resetGame()) {
+                io.to(roomUuid).emit("UPDATE_CHESSBOARD", null);
+            }
+
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },
         getChessboard: async function () {

@@ -1,5 +1,5 @@
 import { notFound } from "../error/NotFoundError";
-import { Move } from "../models/move.model";
+import { Move } from "../models/Move";
 
 export class MoveService {
   // Crée un déplacement de pièce

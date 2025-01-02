@@ -51,6 +51,8 @@ export class Chessboard {
     for (let i = 0; i < 8; i++) {
       this.getCellFromXY(i, 1)!.piece = new Pawn(Color.Black);
     }
+
+    this.onNewMatch();
   }
 
   playMove(from: Position, to: Position, userId: number, extra: ExtraDataMove | null = null): boolean {
@@ -78,12 +80,15 @@ export class Chessboard {
         if (this.isOpponentKingInCheck()) {
           this.winnerPlayerId = userId; // checkmate
         } // else pat
+
+        this.onMatchEnded();
       }
       // TODO: Check others draw conditions (threefold repetition, only kings left)
 
       this.switchTurn();
     }
 
+    this.onPlayed(from, to, userId, extra);
     return true;
   }
 
@@ -273,7 +278,11 @@ export class Chessboard {
     }
   }
 
-  resetGame(): void {
+  resetGame(): boolean {
+    if (!this.isEndGame) {
+      return false;
+    }
+
     for (const cell of this.board) {
       cell.piece = null;
     }
@@ -308,5 +317,38 @@ export class Chessboard {
     this.winnerPlayerId = null;
     this.drawAskingOpponentPlayerId = null;
     this.colorTurn = Color.White;
+
+    this.onNewMatch();
+    return true;
+  }
+
+  resign(fromUserId: number) {
+    this.isEndGame = true;
+    this.winnerPlayerId = this.whitePlayerId == fromUserId ? this.blackPlayerId : this.whitePlayerId;
+    this.onMatchEnded();
+  }
+
+  draw(fromUserId: number): boolean {
+    if (this.drawAskingOpponentPlayerId == null || this.drawAskingOpponentPlayerId != fromUserId) {
+      return false;
+    }
+
+    this.isEndGame = true;
+    this.winnerPlayerId = null;
+    this.drawAskingOpponentPlayerId = null;
+    this.onMatchEnded();
+    return true;
+  }
+
+  private onNewMatch() {
+
+  }
+
+  private onMatchEnded() {
+
+  }
+
+  private onPlayed(from: Position, to: Position, userId: number, extra: ExtraDataMove | null) {
+
   }
 }

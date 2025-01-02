@@ -1,7 +1,7 @@
 import { UserOutputDTO } from '../dto/user.dto'
 import { notFound } from "../error/NotFoundError";
 import { UserMapper } from "../mapper/user.mapper";
-import { User } from "../models/user.model";
+import { User } from "../models/User";
 import bcrypt from "bcrypt";
 
 export class UserService {
@@ -36,6 +36,43 @@ export class UserService {
     }
   }
 
+  public async updateElo(player: User, opponent: User, winner: User | null): Promise<void> {
+    let playerGap = opponent.elo - player.elo;
+    if (playerGap > 400) {
+      playerGap = 400;
+    } else if (playerGap < -400) {
+      playerGap = -400;
+    }
+    let opponentGap = -playerGap;
+
+    const expectedPlayerScore = 1 / (1 + Math.pow(10, playerGap / 400));
+    const expectedOpponentScore = 1 / (1 + Math.pow(10, opponentGap / 400));
+    const k = 20;
+
+    let playerResult = 0.5;
+    if (winner) {
+      if (winner.id == player.id) {
+        playerResult = 1;
+      } else {
+        playerResult = 0;
+      }
+    }
+    let opponentResult = 0.5;
+    if (winner) {
+      if (winner.id == opponent.id) {
+        opponentResult = 1;
+      } else {
+        opponentResult = 0;
+      }
+    }
+
+    player.elo = player.elo + k * (playerResult - expectedPlayerScore);
+    opponent.elo = opponent.elo + k * (opponentResult - expectedOpponentScore);
+
+    await player.save();
+    await opponent.save();
+  }
+
   // Crée un nouvel utilisateur
   public async createUser(
     username: string,
@@ -54,7 +91,7 @@ export class UserService {
 
     const hashedPassword = await bcrypt.hash(password, 10);
     return UserMapper.toOutputDto(
-      await User.create({ username: username, password: hashedPassword, elo: 0 }),
+      await User.create({ username: username, password: hashedPassword, elo: 400 }),
     );
   }
 

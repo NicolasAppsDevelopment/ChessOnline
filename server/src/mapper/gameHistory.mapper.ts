@@ -1,5 +1,5 @@
 import { GameHistoryOutputDTO } from "../dto/gameHistory.dto";
-import { GameHistory } from "../models/gameHistory.model";
+import { GameHistory } from "../models/GameHistory";
 
 export class GameHistoryMapper {
   public static toOutputDto(gameHistory: GameHistory): GameHistoryOutputDTO {

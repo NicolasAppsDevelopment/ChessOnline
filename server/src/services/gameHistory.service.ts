@@ -1,8 +1,8 @@
 import { notFound } from "../error/NotFoundError";
-import { GameHistory } from "../models/gameHistory.model";
+import { GameHistory } from "../models/GameHistory";
 import { GameHistoryOutputDTO } from '../dto/gameHistory.dto'
 import { GameHistoryMapper } from "../mapper/gameHistory.mapper";
-import { Move } from "../models/move.model";
+import { Move } from "../models/Move";
 import { Op } from "sequelize";
 import { DATE } from "sequelize";
 import { now } from "sequelize/types/utils";
