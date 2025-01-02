@@ -92,6 +92,15 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "UserRankOutputDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "username": {"dataType":"string","required":true},
+            "elo": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "MoveOutputDTO": {
         "dataType": "refObject",
         "properties": {
@@ -109,10 +118,11 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "id": {"dataType":"double","required":true},
-            "room_uuid": {"dataType":"string","required":true},
-            "blackPlayer_id": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},
-            "whitePlayer_id": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},
-            "winner_id": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"enum","enums":[null]}]},
+            "date": {"dataType":"datetime","required":true},
+            "room": {"ref":"ListRoomItemOutputDTO","required":true},
+            "blackPlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
+            "whitePlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
+            "winner": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "moves": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"MoveOutputDTO"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
@@ -122,6 +132,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "room_uuid": {"dataType":"string","required":true},
+            "date": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
     },
@@ -472,7 +483,7 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/gameHistories/user/:id',
+        app.get('/gameHistories/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(GameHistoryController)),
             ...(fetchMiddlewares<RequestHandler>(GameHistoryController.prototype.getGameHistoriesByUserId)),

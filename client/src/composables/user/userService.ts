@@ -1,4 +1,5 @@
 import type { User } from '@/models/User';
+import type { GameHistory } from '@/models/GameHistory'
 import { useUserApi } from './userApi';
 import { useStoredUserService } from './storedUserService';
 
@@ -19,6 +20,9 @@ export function useUserService() {
     },
     async getLeaderboard(): Promise<User[]> {
       return await userApi.getLeaderboard();
-    }
+    },
+    async getUserGameHistories(id: number): Promise<GameHistory[]> {
+      return await userApi.getUserGameHistories(id);
+    },
   };
 }

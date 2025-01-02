@@ -26,6 +26,7 @@ export class RoomsController extends Controller {
     return room;
   }
 
+  //TODO optimise ths function
   @Security("jwt")
   @Post("/join")
   public async joinRoom(
@@ -37,11 +38,11 @@ export class RoomsController extends Controller {
     let gameHistory = await gameHistoryService.getGameHistoriyByRoomId(uuid);
     const room_uuid = await roomsService.join(uuid, (joiningUserId));
 
-    if (gameHistory.whitePlayer_id == null){
+    if (gameHistory.whitePlayer == null){
       gameHistoryService.updateGameHistory(gameHistory.id,null,null,joiningUserId);
       return room_uuid;
     }
-    if (gameHistory.blackPlayer_id == null){
+    if (gameHistory.blackPlayer == null){
       gameHistoryService.updateGameHistory(gameHistory.id,null,joiningUserId,null);
       return room_uuid;
     }

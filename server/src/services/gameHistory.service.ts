@@ -4,6 +4,8 @@ import { GameHistoryOutputDTO } from '../dto/gameHistory.dto'
 import { GameHistoryMapper } from "../mapper/gameHistory.mapper";
 import { Move } from "../models/move.model";
 import { Op } from "sequelize";
+import { DATE } from "sequelize";
+import { now } from "sequelize/types/utils";
 
 export class GameHistoryService {
   // Récupère les historiques de parties liés à un utilisateur par ID
@@ -21,6 +23,9 @@ export class GameHistoryService {
               as: "moves",
           },
       ],
+      order: [
+        ['date', 'DESC'],
+    ]
     }));
 
     if (gameHistories) {
@@ -60,8 +65,8 @@ export class GameHistoryService {
         (error as any).status = 403;
         throw error;
     }
-
-    await GameHistory.create({ room_uuid: room_uuid });
+    //TODO mettre l'heure en france
+    await GameHistory.create({ room_uuid: room_uuid, date: new Date() });
   
     return "Game History created"
   }

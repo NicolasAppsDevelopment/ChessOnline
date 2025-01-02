@@ -5,8 +5,10 @@ import {
   ApiUrlRegister,
   ApiUrlGetUser,
   ApiUrlGetLeaderboard,
+  ApiUrlGetUserGameHistories,
 } from '@/constants/ApiUrl'
 import type { User } from '@/models/User';
+import type { GameHistory } from '@/models/GameHistory'
 
 export function useUserApi() {
   return {
@@ -35,6 +37,10 @@ export function useUserApi() {
     },
     async getLeaderboard(): Promise<User[]> {
       const res = await axiosInstance.get(`${ApiUrlGetLeaderboard}`);
+      return res.data;
+    },
+    async getUserGameHistories(id: number): Promise<GameHistory[]> {
+      const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}` + id);
       return res.data;
     },
   };

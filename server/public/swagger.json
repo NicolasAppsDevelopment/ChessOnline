@@ -142,6 +142,23 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UserRankOutputDTO": {
+				"properties": {
+					"username": {
+						"type": "string"
+					},
+					"elo": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"username",
+					"elo"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"MoveOutputDTO": {
 				"properties": {
 					"id": {
@@ -190,22 +207,35 @@
 						"type": "number",
 						"format": "double"
 					},
-					"room_uuid": {
-						"type": "string"
+					"date": {
+						"type": "string",
+						"format": "date-time"
 					},
-					"blackPlayer_id": {
-						"type": "number",
-						"format": "double",
+					"room": {
+						"$ref": "#/components/schemas/ListRoomItemOutputDTO"
+					},
+					"blackPlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
 						"nullable": true
 					},
-					"whitePlayer_id": {
-						"type": "number",
-						"format": "double",
+					"whitePlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
 						"nullable": true
 					},
-					"winner_id": {
-						"type": "number",
-						"format": "double",
+					"winner": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
 						"nullable": true
 					},
 					"moves": {
@@ -218,7 +248,8 @@
 				},
 				"required": [
 					"id",
-					"room_uuid"
+					"date",
+					"room"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -227,10 +258,15 @@
 				"properties": {
 					"room_uuid": {
 						"type": "string"
+					},
+					"date": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
-					"room_uuid"
+					"room_uuid",
+					"date"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -612,7 +648,7 @@
 				"parameters": []
 			}
 		},
-		"/gameHistories/user/{id}": {
+		"/gameHistories/{id}": {
 			"get": {
 				"operationId": "GetGameHistoriesByUserId",
 				"responses": {
@@ -649,76 +685,7 @@
 						}
 					}
 				]
-			}
-		},
-		"/gameHistories/room/{uuid}": {
-			"get": {
-				"operationId": "GetGameHistoriyByRoomId",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/GameHistoryOutputDTO"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"GameHistories"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "uuid",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/gameHistories": {
-			"post": {
-				"operationId": "CreateGameHistory",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"type": "string"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"GameHistories"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/GameHistoryInputDTO"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/gameHistories/{id}": {
+			},
 			"delete": {
 				"operationId": "DeleteGameHistory",
 				"responses": {
@@ -785,6 +752,73 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/GameHistoryInputPatchDTO"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/gameHistories/room/{uuid}": {
+			"get": {
+				"operationId": "GetGameHistoriyByRoomId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameHistoryOutputDTO"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"GameHistories"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "uuid",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/gameHistories": {
+			"post": {
+				"operationId": "CreateGameHistory",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"GameHistories"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GameHistoryInputDTO"
 							}
 						}
 					}

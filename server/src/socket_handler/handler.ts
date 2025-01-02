@@ -1,6 +1,8 @@
 import { Server, Socket } from 'socket.io'
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
+import {moveService} from "../services/move.service";
+import {gameHistoryService} from "../services/gameHistory.service";
 import {User} from "../models/user.model";
 import { ExtraDataMove } from '../models/ExtraDataMove'
 
@@ -48,6 +50,15 @@ export function createHandler(socket: Socket, user: User, io: Server) {
             if (!chessboard.playMove(fromCellPosition, toCellPosition, user.id, extra)) {
                 return;
             }
+
+            const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
+            let isABlackPiece = false;
+            if (gameHistory.blackPlayer?.username == user.username){
+                isABlackPiece = true;
+            }
+
+            //TODO peut être virer l'attribut whichPiece && promotion
+            moveService.createMove(gameHistory.id,isABlackPiece,"",[from.x,from.y],[to.x,to.y]);
 
             io.to(roomUuid).emit("UPDATE_CHESSBOARD", chessboard);
         },

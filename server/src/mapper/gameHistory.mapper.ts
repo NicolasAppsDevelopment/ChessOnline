@@ -5,10 +5,11 @@ export class GameHistoryMapper {
   public static toOutputDto(gameHistory: GameHistory): GameHistoryOutputDTO {
     return {
       id: gameHistory.id,
-      room_uuid: gameHistory.room_uuid,
-      blackPlayer_id: gameHistory.blackPlayer_id,
-      whitePlayer_id: gameHistory.whitePlayer_id,
-      winner_id: gameHistory.winner_id,
+      date : gameHistory.date,
+      room: gameHistory.room,
+      blackPlayer: gameHistory.blackPlayer,
+      whitePlayer: gameHistory.whitePlayer,
+      winner: gameHistory.winner,
       moves: gameHistory.moves
     };
   }

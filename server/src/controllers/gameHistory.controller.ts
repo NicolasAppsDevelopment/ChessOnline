@@ -21,7 +21,7 @@ import {
 @Tags("GameHistories")
 export class GameHistoryController extends Controller {
   // Récupère les historiques de parties liés à un utilisateur par ID
-  @Get("user/{id}")
+  @Get("{id}")
   @Security("jwt")
   public async getGameHistoriesByUserId(@Path() id: number): Promise<GameHistoryOutputDTO[]> {
     return gameHistoryService.getGameHistoriesByUserId(id);

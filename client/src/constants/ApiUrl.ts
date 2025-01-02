@@ -12,3 +12,5 @@ export const ApiUrlGetLeaderboard = `${ApiUrl}/leaderboard`;
 export const ApiUrlGetRooms = `${ApiUrl}/rooms/all`;
 export const ApiUrlCreateRoom = `${ApiUrl}/rooms`;
 export const ApiUrlAccessRoom = `${ApiUrl}/rooms/join`;
+
+export const ApiUrlGetUserGameHistories = `${ApiUrl}/gameHistories/`;

@@ -5,3 +5,8 @@ export interface User {
   elo?: number;
   id: number;
 }
+
+export interface UserRank {
+  username: string;
+  elo: number;
+}
