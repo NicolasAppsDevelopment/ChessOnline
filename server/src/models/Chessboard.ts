@@ -341,14 +341,14 @@ export class Chessboard {
   }
 
   private onNewMatch() {
-
+    // TODO: Complete this method
   }
 
   private onMatchEnded() {
-
+    // TODO: Complete this method
   }
 
   private onPlayed(from: Position, to: Position, userId: number, extra: ExtraDataMove | null) {
-
+    // TODO: Complete this method
   }
 }
