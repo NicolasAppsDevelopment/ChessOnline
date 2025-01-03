@@ -31,6 +31,8 @@ export class RoomsService {
     await Room.create({ uuid: roomUuid, name: roomName, isPrivate: isPrivate });
 
     let newChessboard = new Chessboard();
+
+    // set the callbacks for the chessboard
     newChessboard.onNewMatch = async () => {
       await gameHistoryService.createGameHistory(roomUuid);
     }
@@ -63,6 +65,7 @@ export class RoomsService {
       //TODO peut être virer l'attribut whichPiece && promotion
       await moveService.createMove(gameHistory.id, isABlackPiece, "", [from.x, from.y], [to.x, to.y]);
     }
+
     this.boards.set(roomUuid, newChessboard);
 
     return roomUuid;
