@@ -92,8 +92,8 @@ export class GameHistoryService {
   }
 
   // Récupère l'historique d'une partie par la room uuid
-  public async getGameHistoriyByRoomId(uuid: string): Promise<GameHistoryOutputDTO> {
-    const gameHistory = await GameHistory.findOne({
+  public async getGameHistoriyByRoomId(uuid: string): Promise<GameHistory | null> {
+    return await GameHistory.findOne({
       where: {
         room_uuid: uuid,
     },
@@ -115,7 +115,7 @@ export class GameHistoryService {
   // Crée un nouvel historique de partie
   public async createGameHistory(
     room_uuid: string,
-  ): Promise<string> {
+  ): Promise<void> {
     if (await GameHistory.findOne({ where: { room_uuid: room_uuid } })) {
         let error = new Error("A game history with this room_uuid already exists");
         (error as any).status = 403;
@@ -123,8 +123,6 @@ export class GameHistoryService {
     }
     //TODO mettre l'heure en france
     await GameHistory.create({ room_uuid: room_uuid, date: new Date() });
-  
-    return "Game History created"
   }
 
   // Supprime un historique de partie par ID

@@ -20,9 +20,7 @@ export class RoomsController extends Controller {
       @Body() body: CreateRoomInputDTO,
   ) {
     const { name, isPrivate } = body;
-    const room = await roomsService.create(name, isPrivate);
-    await gameHistoryService.createGameHistory(room);
-    return room;
+    return await roomsService.create(name, isPrivate);
   }
 
   //TODO optimise ths function
@@ -34,17 +32,6 @@ export class RoomsController extends Controller {
     ) {
     const { uuid } = body;
     const joiningUserId = await getUserIdFromJWT(request);
-    let gameHistory = await gameHistoryService.getGameHistoriyByRoomId(uuid);
-    const room_uuid = await roomsService.join(uuid, (joiningUserId));
-
-    if (gameHistory.whitePlayer == null){
-      gameHistoryService.updateGameHistory(gameHistory.id,null,null,joiningUserId);
-      return room_uuid;
-    }
-    if (gameHistory.blackPlayer == null){
-      gameHistoryService.updateGameHistory(gameHistory.id,null,joiningUserId,null);
-      return room_uuid;
-    }
-    return room_uuid;
+    return await roomsService.join(uuid, (joiningUserId));
   }
 }

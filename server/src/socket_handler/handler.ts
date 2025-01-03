@@ -1,8 +1,6 @@
 import { Server, Socket } from 'socket.io'
 import {Position} from "../models/Position";
 import {roomsService} from "../services/rooms.service";
-import {moveService} from "../services/move.service";
-import {gameHistoryService} from "../services/gameHistory.service";
 import {User} from "../models/User";
 import { ExtraDataMove } from '../models/ExtraDataMove'
 

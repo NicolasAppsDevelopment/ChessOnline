@@ -4,6 +4,10 @@ import {Chessboard} from "../models/Chessboard";
 import { v4 as uuidv4 } from 'uuid';
 import {User} from "../models/User";
 import { ListRoomItemOutputDTO } from '../dto/room.dto'
+import { Position } from '../models/Position'
+import { ExtraDataMove } from '../models/ExtraDataMove'
+import { gameHistoryService } from './gameHistory.service'
+import { moveService } from './move.service'
 
 export class RoomsService {
   public boards: Map<string, Chessboard> = new Map();
@@ -26,7 +30,43 @@ export class RoomsService {
     const roomUuid = uuidv4();
     await Room.create({ uuid: roomUuid, name: roomName, isPrivate: isPrivate });
 
-    this.boards.set(roomUuid, new Chessboard());
+    let newChessboard = new Chessboard();
+
+    // set the callbacks for the chessboard
+    newChessboard.onNewMatch = async () => {
+      await gameHistoryService.createGameHistory(roomUuid);
+    }
+    newChessboard.onMatchEnded = async () => {
+      const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
+      if (!gameHistory) {
+        return;
+      }
+
+      await gameHistoryService.updateGameHistory(gameHistory.id,newChessboard.winnerPlayerId,null,null);
+    }
+    newChessboard.onPlayed = async (from: Position, to: Position, userId: number, extra: ExtraDataMove | null) => {
+      const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
+      if (!gameHistory) {
+        return;
+      }
+
+      if (gameHistory.whitePlayer == null && newChessboard.whitePlayerId != null){
+        await gameHistoryService.updateGameHistory(gameHistory.id,null,null,newChessboard.whitePlayerId);
+      }
+      if (gameHistory.blackPlayer == null && newChessboard.blackPlayerId != null){
+        await gameHistoryService.updateGameHistory(gameHistory.id,null,newChessboard.blackPlayerId,null);
+      }
+
+      let isABlackPiece = false;
+      if (gameHistory.blackPlayer?.id == userId){
+        isABlackPiece = true;
+      }
+
+      //TODO peut être virer l'attribut whichPiece && promotion
+      await moveService.createMove(gameHistory.id, isABlackPiece, "", [from.x, from.y], [to.x, to.y]);
+    }
+
+    this.boards.set(roomUuid, newChessboard);
 
     return roomUuid;
   }
