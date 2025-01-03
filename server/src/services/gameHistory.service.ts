@@ -93,7 +93,7 @@ export class GameHistoryService {
 
   // Récupère l'historique d'une partie par la room uuid
   public async getGameHistoriyByRoomId(uuid: string): Promise<GameHistory | null> {
-    return await GameHistory.findOne({
+    return  await GameHistory.findOne({
       where: {
         room_uuid: uuid,
     },
@@ -104,12 +104,6 @@ export class GameHistoryService {
           },
       ],
     });
-
-    if (gameHistory) {
-      return GameHistoryMapper.toOutputDto(gameHistory);
-    } else {
-      notFound("game history of this room");
-    }
   }
 
   // Crée un nouvel historique de partie
