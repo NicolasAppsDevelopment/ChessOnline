@@ -26,29 +26,26 @@ const gameHistorId = parseInt(route.params.id as string);
 const gameHistory = ref<GameHistory>();
 
 let moveNumber = -1;
-let moves;
+let moves: any[] | null | undefined = null;
 
 onMounted(async () => {
   gameHistory.value = await userService.getGameHistoryById(gameHistorId);
-  const moves = gameHistory.value.moves;
-  console.log(gameHistory.value);
+  moves = gameHistory.value.moves;
+  console.log(moves);
 });
 
 
 function previous() {
-  console.log("prev");
-  if (moves != null){
-    chessboard.value.movePiece(moves[moveNumber][1], moves[moveNumber][0]) 
+  if (moves != null && moveNumber>=0){
+    chessboard.value.movePiece(moves[moveNumber][1], moves[moveNumber][0]);
     moveNumber --;
   } 
-  
 }
 
 function next() {
-  console.log("next");
-  if (moves != null){
+  if (moves != null && moveNumber<moves.length){
     moveNumber ++;
-    chessboard.value.movePiece(moves[moveNumber][0], moves[moveNumber][1]) 
+    chessboard.value.movePiece(moves[moveNumber][0], moves[moveNumber][1]);
   } 
 }
 

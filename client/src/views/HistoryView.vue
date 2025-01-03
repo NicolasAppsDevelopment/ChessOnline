@@ -14,7 +14,6 @@ const gameHistories = ref<GameHistory[]>([]);
 
 onMounted(async () => {
   gameHistories.value = await userService.getUserGameHistories(userId);
-  console.log(gameHistories.value);
 });
 
 </script>

@@ -55,9 +55,37 @@ export class GameHistoryService {
 
    // Récupère un utilisateur par ID
    public async getGameHistoryById(id: number): Promise<GameHistoryOutputDTO> {
-    let gameHistory = await GameHistory.findByPk(id);
+    const gameHistory = await GameHistory.findOne({
+      where: {
+        id: id,
+      },
+      include: [
+        {
+          model: Room,
+          as: "room",
+        },
+        {
+          model: User,
+          as: "blackPlayer",
+        },
+        {
+          model: User,
+          as: "whitePlayer",
+        },
+        {
+          model: User,
+          as: "winner",
+        },
+        {
+          model: Move,
+          as: "moves",
+        },
+      ],
+    });
+
+
     if (gameHistory) {
-      return gameHistory;
+      return GameHistoryMapper.toOutputDto(gameHistory);
     } else {
       notFound("Game History");
     }
@@ -78,7 +106,7 @@ export class GameHistoryService {
     });
 
     if (gameHistory) {
-      return gameHistory;
+      return GameHistoryMapper.toOutputDto(gameHistory);
     } else {
       notFound("game history of this room");
     }
