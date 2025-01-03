@@ -36,7 +36,15 @@ export class UserService {
     }
   }
 
-  public async updateElo(player: User, opponent: User, winner: User | null): Promise<void> {
+  public async updateElo(playerId: number | null, opponentId: number | null, winnerId: number | null): Promise<void> {
+    if (!playerId || !opponentId) {
+      return;
+    }
+
+    const player = await this.getUserById(playerId);
+    const opponent = await this.getUserById(opponentId);
+    const winner = winnerId == null ? null : await this.getUserById(winnerId);
+
     let playerGap = opponent.elo - player.elo;
     if (playerGap > 400) {
       playerGap = 400;

@@ -8,6 +8,7 @@ import { Position } from '../models/Position'
 import { ExtraDataMove } from '../models/ExtraDataMove'
 import { gameHistoryService } from './gameHistory.service'
 import { moveService } from './move.service'
+import { userService } from './user.service'
 
 export class RoomsService {
   public boards: Map<string, Chessboard> = new Map();
@@ -37,6 +38,8 @@ export class RoomsService {
       await gameHistoryService.createGameHistory(roomUuid);
     }
     newChessboard.onMatchEnded = async () => {
+      await userService.updateElo(newChessboard.whitePlayerId, newChessboard.blackPlayerId, newChessboard.winnerPlayerId);
+
       const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
       if (!gameHistory) {
         return;
