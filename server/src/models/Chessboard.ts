@@ -18,6 +18,9 @@ export class Chessboard {
   public isEndGame: boolean = false;
   public winnerPlayerId: number | null = null;
   public drawAskingOpponentPlayerId: number | null = null;
+  public onNewMatch: (() => Promise<void>) | null = null;
+  public onMatchEnded: (() => Promise<void>) | null = null;
+  public onPlayed: ((from: Position, to: Position, userId: number, extra: ExtraDataMove | null) => Promise<void>) | null = null;
 
   constructor() {
     for (let x = 0; x < 8; x++) {
@@ -52,7 +55,7 @@ export class Chessboard {
       this.getCellFromXY(i, 1)!.piece = new Pawn(Color.Black);
     }
 
-    this.onNewMatch();
+    this._onNewMatch();
   }
 
   playMove(from: Position, to: Position, userId: number, extra: ExtraDataMove | null = null): boolean {
@@ -81,14 +84,14 @@ export class Chessboard {
           this.winnerPlayerId = userId; // checkmate
         } // else pat
 
-        this.onMatchEnded();
+        this._onMatchEnded();
       }
       // TODO: Check others draw conditions (threefold repetition, only kings left)
 
       this.switchTurn();
     }
 
-    this.onPlayed(from, to, userId, extra);
+    this._onPlayed(from, to, userId, extra);
     return true;
   }
 
@@ -318,14 +321,14 @@ export class Chessboard {
     this.drawAskingOpponentPlayerId = null;
     this.colorTurn = Color.White;
 
-    this.onNewMatch();
+    this._onNewMatch();
     return true;
   }
 
   resign(fromUserId: number) {
     this.isEndGame = true;
     this.winnerPlayerId = this.whitePlayerId == fromUserId ? this.blackPlayerId : this.whitePlayerId;
-    this.onMatchEnded();
+    this._onMatchEnded();
   }
 
   draw(fromUserId: number): boolean {
@@ -336,19 +339,25 @@ export class Chessboard {
     this.isEndGame = true;
     this.winnerPlayerId = null;
     this.drawAskingOpponentPlayerId = null;
-    this.onMatchEnded();
+    this._onMatchEnded();
     return true;
   }
 
-  private onNewMatch() {
-    // TODO: Complete this method
+  private _onNewMatch() {
+    if (this.onNewMatch != null) {
+      this.onNewMatch();
+    }
   }
 
-  private onMatchEnded() {
-    // TODO: Complete this method
+  private _onMatchEnded() {
+    if (this.onMatchEnded != null) {
+      this.onMatchEnded();
+    }
   }
 
-  private onPlayed(from: Position, to: Position, userId: number, extra: ExtraDataMove | null) {
-    // TODO: Complete this method
+  private _onPlayed(from: Position, to: Position, userId: number, extra: ExtraDataMove | null) {
+    if (this.onPlayed != null) {
+      this.onPlayed(from, to, userId, extra);
+    }
   }
 }

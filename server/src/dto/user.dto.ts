@@ -17,5 +17,6 @@ export interface UserOutputDTO {
 
 export interface UserRankOutputDTO {
   username: string;
+  id: number;
   elo: number;
 }
