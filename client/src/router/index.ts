@@ -6,6 +6,7 @@ import UserView from "@/views/UserView.vue";
 import HistoryView from "@/views/HistoryView.vue";
 import HomeView from "@/views/HomeView.vue";
 import GameView from "@/views/GameView.vue";
+import GameReView from '@/views/GameReView.vue';
 const routes = [
   { path: '/', component: HomeView },
   { path: '/login', component: LoginPage },
@@ -13,6 +14,7 @@ const routes = [
   { path: '/leaderboard', component: LeaderboardView },
   { path: '/user/:id', component: UserView }, // ALSO STATISTICS PAGE
   { path: '/history', component: HistoryView },
+  { path: '/gameReview/:id', component: GameReView },
   { path: '/game/:id', component: GameView },
 ];
 

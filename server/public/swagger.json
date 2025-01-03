@@ -512,7 +512,7 @@
 				"parameters": []
 			}
 		},
-		"/gameHistories/{id}": {
+		"/gameHistories/user/{id}": {
 			"get": {
 				"operationId": "GetGameHistoriesByUserId",
 				"responses": {
@@ -525,6 +525,42 @@
 										"$ref": "#/components/schemas/GameHistoryOutputDTO"
 									},
 									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"GameHistories"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
+		"/gameHistories/{id}": {
+			"get": {
+				"operationId": "GetGameHistoryById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GameHistoryOutputDTO"
 								}
 							}
 						}

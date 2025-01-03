@@ -3,7 +3,7 @@
 import Navbar from "@/components/Navbar.vue";
 import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
-import { onMounted, onUpdated, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
 
 const storedUserService = useStoredUserService();
@@ -14,6 +14,7 @@ const gameHistories = ref<GameHistory[]>([]);
 
 onMounted(async () => {
   gameHistories.value = await userService.getUserGameHistories(userId);
+  console.log(gameHistories.value);
 });
 
 </script>
@@ -40,7 +41,7 @@ onMounted(async () => {
           <td>{{ gameHistory.blackPlayer?.username }}</td>
           <td>{{ gameHistory.whitePlayer?.username }}</td>
           <td>{{ gameHistory.winner?.username }}</td>
-          <td class="no-border"><RouterLink :to="'/gameHistory/' + gameHistory.id"><i class="fa-solid fa-angle-right"></i></RouterLink></td>
+          <td class="no-border"><RouterLink :to="'/gameReview/' + gameHistory.id"><i class="fa-solid fa-angle-right"></i></RouterLink></td>
         </tr> 
       </tbody>
     </table>

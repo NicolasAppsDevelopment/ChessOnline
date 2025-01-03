@@ -24,5 +24,8 @@ export function useUserService() {
     async getUserGameHistories(id: number): Promise<GameHistory[]> {
       return await userApi.getUserGameHistories(id);
     },
+    async getGameHistoryById(id: number): Promise<GameHistory> {
+      return await userApi.getGameHistoryById(id);
+    },
   };
 }

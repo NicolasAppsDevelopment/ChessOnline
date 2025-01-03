@@ -40,6 +40,10 @@ export function useUserApi() {
       return res.data;
     },
     async getUserGameHistories(id: number): Promise<GameHistory[]> {
+      const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}user/` + id);
+      return res.data;
+    },
+    async getGameHistoryById(id: number): Promise<GameHistory> {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}` + id);
       return res.data;
     },

@@ -6,8 +6,8 @@ import { Move } from "../models/Move";
 import { Op } from "sequelize";
 import { DATE } from "sequelize";
 import { now } from "sequelize/types/utils";
-import { Room } from "../models/room.model";
-import { User } from "../models/user.model";
+import { Room } from "../models/Room";
+import { User } from "../models/User";
 
 export class GameHistoryService {
   // Récupère les historiques de parties liés à un utilisateur par ID
@@ -50,6 +50,16 @@ export class GameHistoryService {
       return gameHistories;
     } else {
       notFound("game histories of this User");
+    }
+  }
+
+   // Récupère un utilisateur par ID
+   public async getGameHistoryById(id: number): Promise<GameHistoryOutputDTO> {
+    let gameHistory = await GameHistory.findByPk(id);
+    if (gameHistory) {
+      return gameHistory;
+    } else {
+      notFound("Game History");
     }
   }
 
