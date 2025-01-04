@@ -31,6 +31,7 @@ onMounted(async () => {
           <th><i class="fa-solid fa-user"></i> Black Player</th>
           <th><i class="fa-solid fa-user"></i> White Player</th>
           <th><i class="fa-solid fa-chess-king"></i> Winner</th>
+          <!--<th><i class="fa-solid fa-clapperboard"></i> Replay</th>-->
         </tr>
       </thead>
       <tbody>

@@ -110,6 +110,10 @@
 					"username": {
 						"type": "string"
 					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
 					"elo": {
 						"type": "number",
 						"format": "double"
@@ -117,6 +121,7 @@
 				},
 				"required": [
 					"username",
+					"id",
 					"elo"
 				],
 				"type": "object",
@@ -132,34 +137,38 @@
 						"type": "number",
 						"format": "double"
 					},
-					"isABlackPiece": {
+					"promotion": {
 						"type": "boolean"
 					},
-					"whichPiece": {
+					"promotionIntoWhichPiece": {
 						"type": "string"
 					},
-					"from": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
+					"from_x": {
+						"type": "number",
+						"format": "double"
 					},
-					"to": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
+					"from_y": {
+						"type": "number",
+						"format": "double"
+					},
+					"to_x": {
+						"type": "number",
+						"format": "double"
+					},
+					"to_y": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
 					"id",
 					"gameHistory_id",
-					"isABlackPiece",
-					"whichPiece",
-					"from",
-					"to"
+					"promotion",
+					"promotionIntoWhichPiece",
+					"from_x",
+					"from_y",
+					"to_x",
+					"to_y"
 				],
 				"type": "object",
 				"additionalProperties": false

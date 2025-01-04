@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar.vue";
 import {useRoomService} from "@/composables/room/roomService";
 import { useUserService } from '@/composables/user/userService';
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { Chessboard } from "@/models/Chessboard";
+
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
 import { useRoute } from 'vue-router'
@@ -13,6 +13,8 @@ import PromotionSelectorWindow from '@/components/PromotionSelectorDialog.vue'
 import { useConfirm } from "primevue/useconfirm";
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import type { GameHistory } from '@/models/GameHistory'
+import { Position } from '@/models/Position'
+import { Chessboard } from "@/models/Chessboard";
 
 const confirm = useConfirm();
 const roomsService = useRoomService();
@@ -30,14 +32,14 @@ let moves: any[] | null | undefined = null;
 
 onMounted(async () => {
   gameHistory.value = await userService.getGameHistoryById(gameHistorId);
+  console.log(gameHistory.value);
   moves = gameHistory.value.moves;
-  console.log(moves);
 });
 
 
 function previous() {
   if (moves != null && moveNumber>=0){
-    chessboard.value.movePiece(moves[moveNumber][1], moves[moveNumber][0]);
+    chessboard.value.movePiece(new Position(moves[moveNumber].to_x,moves[moveNumber].to_y), new Position(moves[moveNumber].from_x,moves[moveNumber].from_y));
     moveNumber --;
   } 
 }
@@ -45,7 +47,8 @@ function previous() {
 function next() {
   if (moves != null && moveNumber<moves.length){
     moveNumber ++;
-    chessboard.value.movePiece(moves[moveNumber][0], moves[moveNumber][1]);
+    console.log(typeof moves[0].from );
+    chessboard.value.movePiece(new Position(moves[moveNumber].from_x,moves[moveNumber].from_y), new Position(moves[moveNumber].to_x,moves[moveNumber].to_y));
   } 
 }
 
@@ -53,7 +56,14 @@ function next() {
 
 <template>
   <Navbar></Navbar>
-  <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+  <div class="flex gap-1 p-1" >
+    <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+    <div>
+      <p><i class="fa-solid fa-user"></i> Black Player : {{ gameHistory?.blackPlayer?.username }}</p>
+      <p><i class="fa-solid fa-user"></i> White Player : {{ gameHistory?.whitePlayer?.username }}</p>
+      <p><i class="fa-solid fa-chess-king"></i> Winner : {{ gameHistory?.winner?.username }}</p>
+    </div>
+  </div>
   <div class="flex gap-1 p-1">
     <Button label="Previous" icon="fa-solid fa-angle-left" @click="previous()"></Button>
     <Button label="Next" icon="fa-solid fa-angle-right" @click="next()"></Button>

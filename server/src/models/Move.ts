@@ -5,10 +5,12 @@ export interface MoveAttributes {
     id?: number;
     gameHistory?: GameHistory | null;
     gameHistory_id: number;
-    isABlackPiece: boolean;
-    whichPiece: string;
-    from: number[];
-    to: number[];
+    promotion: boolean;
+    promotionIntoWhichPiece: string;
+    from_x: number;
+    from_y: number;
+    to_x: number;
+    to_y: number;
 }
 
 export class Move
@@ -18,10 +20,12 @@ export class Move
     public id!: number;
     public gameHistory!: GameHistory | null;
     public gameHistory_id!: number;
-    public isABlackPiece!: boolean;
-    public whichPiece!: string;
-    public from!: number[];
-    public to!: number[];
+    public promotion!: boolean;
+    public promotionIntoWhichPiece!: string;
+    public from_x!: number;
+    public from_y!: number;
+    public to_x!: number;
+    public to_y!: number;
 }
 
 Move.init(
@@ -35,20 +39,28 @@ Move.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        isABlackPiece: {
+        promotion: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
         },
-        whichPiece: {
+        promotionIntoWhichPiece: {
             type: DataTypes.STRING,
             allowNull: false,
         },
-        from: {
-            type: DataTypes.ARRAY(DataTypes.INTEGER),
+        from_x: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
-        to: {
-            type: DataTypes.ARRAY(DataTypes.INTEGER),
+        from_y: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        to_x: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        to_y: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
     },

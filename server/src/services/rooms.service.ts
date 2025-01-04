@@ -60,13 +60,16 @@ export class RoomsService {
         await gameHistoryService.updateGameHistory(gameHistory.id,null,newChessboard.blackPlayerId,null);
       }
 
-      let isABlackPiece = false;
-      if (gameHistory.blackPlayer?.id == userId){
-        isABlackPiece = true;
+      let promotion = false;
+      let promotionIntoWhichPiece = "";
+      if (extra){
+        if (extra.promotionPiece){
+          promotion = true;
+          promotionIntoWhichPiece = extra.promotionPiece;
+        } 
       }
 
-      //TODO peut être virer l'attribut whichPiece && promotion
-      await moveService.createMove(gameHistory.id, isABlackPiece, "", [from.x, from.y], [to.x, to.y]);
+      await moveService.createMove(gameHistory.id, promotion, promotionIntoWhichPiece, from.x, from.y, to.x, to.y);
     }
 
     this.boards.set(roomUuid, newChessboard);

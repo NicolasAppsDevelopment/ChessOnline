@@ -5,12 +5,14 @@ export class MoveService {
   // Crée un déplacement de pièce
   public async createMove(
     gameHistory_id: number,
-    isABlackPiece: boolean,
-    whichPiece: string,
-    from: number[],
-    to: number[],
+    promotion: boolean,
+    promotionIntoWhichPiece: string,
+    from_x: number,
+    from_y: number,
+    to_x: number,
+    to_y: number,
   ): Promise<string> {
-    await Move.create({ gameHistory_id: gameHistory_id, isABlackPiece: isABlackPiece, whichPiece: whichPiece, from: from, to: to });
+    await Move.create({ gameHistory_id: gameHistory_id, promotion: promotion, promotionIntoWhichPiece: promotionIntoWhichPiece, from_x: from_x, from_y: from_y, to_x: to_x, to_y: to_y });
   
     return "Move created"
   }
