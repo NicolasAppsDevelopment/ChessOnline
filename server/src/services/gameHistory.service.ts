@@ -103,6 +103,9 @@ export class GameHistoryService {
               as: "moves",
           },
       ],
+      order: [
+        ['date', 'DESC'],
+      ]
     });
   }
 
@@ -110,12 +113,6 @@ export class GameHistoryService {
   public async createGameHistory(
     room_uuid: string,
   ): Promise<void> {
-    if (await GameHistory.findOne({ where: { room_uuid: room_uuid } })) {
-        let error = new Error("A game history with this room_uuid already exists");
-        (error as any).status = 403;
-        throw error;
-    }
-    //TODO mettre l'heure en france
     await GameHistory.create({ room_uuid: room_uuid, date: new Date() });
   }
 
