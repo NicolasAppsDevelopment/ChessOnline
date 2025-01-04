@@ -46,7 +46,7 @@ onMounted(async () => {
 
 
 function previous() {
-  if (moves != null && moveNumber>=0){
+  if (moves != null && moveNumber>0){
     moveNumber --;
     chessboard.value = chessboardStates[moveNumber];
   } 
@@ -78,12 +78,13 @@ function next() {
                 console.log("The promotion is not defined correctly");
             }
           }
-        } 
-    }
+        }
+      }
       chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
       return;
     }
     chessboard.value = chessboardStates[moveNumber];
+    
   } 
 }
 
