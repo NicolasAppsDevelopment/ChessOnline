@@ -17,7 +17,7 @@ import EndGameWindow from '@/components/EndGameWindow.vue'
 
 const confirm = useConfirm();
 const toast = useToast();
-const route = useRoute()
+const route = useRoute();
 const roomsService = useRoomService();
 const chessboard = ref<Chessboard>(new Chessboard());
 const storedUserService = useStoredUserService();

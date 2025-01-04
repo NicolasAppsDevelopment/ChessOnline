@@ -30,15 +30,8 @@ export class AuthenticationService {
     return this.generateToken(user);
   }
 
-    public async generateToken(data: User|UserJwtPayload): Promise<string> {
-      let jwtPayload: UserJwtPayload;
-
-      if (data instanceof User) {
-        jwtPayload = new UserJwtPayload(data.id, data.username) ;
-      } else {
-        jwtPayload = new UserJwtPayload(data.id, data.username) ;
-      }
-
+    public async generateToken(data: User): Promise<string> {
+      const jwtPayload: UserJwtPayload = new UserJwtPayload(data.id, data.username) ;
       return jwt.sign({jwtPayload}, JWT_SECRET, {
         expiresIn: "1h",
       });

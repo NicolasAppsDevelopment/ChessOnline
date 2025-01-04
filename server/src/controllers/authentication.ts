@@ -3,6 +3,9 @@ import { AuthenticationInputDTO } from "../dto/authentication.dto";
 import { authService } from "../services/authentication.service";
 import {jwtDecode} from "jwt-decode";
 import {UserJwtPayload} from "../models/UserJwtPayload";
+import { userService } from '../services/user.service'
+import { notFound } from '../error/NotFoundError'
+import { UserJwt } from '../models/UserJwt'
 
 @Route("auth")
 export class AuthenticationController extends Controller {
@@ -26,10 +29,9 @@ export class AuthenticationController extends Controller {
       @Header("Authorization") authorization: string,
   ) {
     const oldToken = authorization.split(" ")[1];
-    const data = jwtDecode(oldToken) as UserJwtPayload;
-
-
-    const token = await authService.generateToken(data);
+    const data = jwtDecode(oldToken) as UserJwt;
+    const user = await userService.getUserById(data.jwtPayload.id);
+    const token = await authService.generateToken(user);
     return { token };
   }
 }

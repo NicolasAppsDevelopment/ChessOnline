@@ -8,14 +8,16 @@ import {
   Body,
   Tags,
   Patch,
-  Security,
-} from "tsoa";
+  Security, Header, Request
+} from 'tsoa'
 import { userService } from "../services/user.service";
 import {
   UserInputDTO,
   UserInputPatchDTO,
   UserOutputDTO
 } from '../dto/user.dto'
+import { getUserIdFromJWT } from '../middlewares/authentication'
+import express from 'express'
 
 @Route("users")
 @Tags("Users")
@@ -39,8 +41,18 @@ export class UserController extends Controller {
   // Supprime un utilisateur par ID
   @Delete("{id}")
   @Security("jwt")
-  public async deleteUser(@Path() id: number): Promise<void> {
-    await userService.deleteUser(id);
+  public async deleteUser(
+    @Path() id: number,
+    @Request() request: express.Request,
+  ): Promise<void> {
+    // For the moment we can only delete the logged user
+    const userId = await getUserIdFromJWT(request);
+    if (userId !== id) {
+      let error = new Error("You can only delete your own account");
+      (error as any).status = 403;
+      throw error;
+    }
+    await userService.deleteUser(userId);
   }
 
   // Met à jour un utilisateur par ID

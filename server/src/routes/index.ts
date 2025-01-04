@@ -94,7 +94,7 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"double","required":true},
             "gameHistory_id": {"dataType":"double","required":true},
             "promotion": {"dataType":"boolean","required":true},
-            "whicpromotionIntoWhichPiecehPiece": {"dataType":"string","required":true},
+            "promotionIntoWhichPiece": {"dataType":"string","required":true},
             "from_x": {"dataType":"double","required":true},
             "from_y": {"dataType":"double","required":true},
             "to_x": {"dataType":"double","required":true},
@@ -213,6 +213,7 @@ export function RegisterRoutes(app: Router) {
             async function UserController_deleteUser(request: ExRequest, response: ExResponse, next: any) {
             const args: Record<string, TsoaRoute.ParameterSchema> = {
                     id: {"in":"path","name":"id","required":true,"dataType":"double"},
+                    request: {"in":"request","name":"request","required":true,"dataType":"object"},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa

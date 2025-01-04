@@ -31,6 +31,16 @@ export function useUserApi() {
       });
       await this.authenticate(user);
     },
+    async delete(userId: number): Promise<void> {
+      await axiosInstance.delete(`${ApiUrlGetUser}` + userId);
+    },
+    async update(user: User): Promise<void> {
+      await axiosInstance.patch(`${ApiUrlGetUser}` + user.id, {
+        username: user.username,
+        password: user.password,
+      });
+      await this.refresh();
+    },
     async getUserById(id: number): Promise<User> {
       const res = await axiosInstance.get(`${ApiUrlGetUser}`+ id);
       return res.data;

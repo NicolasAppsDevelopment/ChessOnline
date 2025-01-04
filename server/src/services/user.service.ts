@@ -120,14 +120,32 @@ export class UserService {
     password?: string,
   ): Promise<UserOutputDTO> {
     const user = await User.findByPk(id);
-    if (user) {
-      if (username) user.username = username;
-      if (password) user.password = password;
-      await user.save();
-      return UserMapper.toOutputDto(user);
-    } else {
+    if (!user) {
       notFound("User");
     }
+
+    if (username == "" || username == null) {
+      let error = new Error("Username couldn't be empty");
+      (error as any).status = 403;
+      throw error;
+    }
+
+    if (user.username !== username) {
+      if (await User.findOne({ where: { username: username } })) {
+        let error = new Error("A user with this username already exists");
+        (error as any).status = 403;
+        throw error;
+      }
+
+      user.username = username;
+    }
+
+    if (password != "" && password != null) {
+      user.password = await bcrypt.hash(password, 10);
+    }
+
+    await user.save();
+    return UserMapper.toOutputDto(user);
   }
 }
 

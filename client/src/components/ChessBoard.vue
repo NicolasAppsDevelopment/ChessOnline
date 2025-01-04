@@ -91,24 +91,23 @@ async function drop(event: DragEvent, destination: Cell) {
     const extra: ExtraDataMove = {};
 
     if (chessboard.value) {
-      chessboard.value.movePiece(from, to);
+      if (chessboard.value.movePiece(from, to)) {
+        if (
+          chessboard.value?.getCellFromPosition(to)?.piece?.getName() == 'Pawn' &&
+          (chessboard.value?.colorTurn == Color.White && to.y == 0 ||
+            chessboard.value?.colorTurn == Color.Black && to.y == 7))
+        {
+          const choice = await show();
+          if (choice !== null) {
+            extra.promotionPiece = choice;
+          } else {
+            return;
+          }
+        }
+      }
       chessboard.value.clearHighlights();
     }
 
-    if (
-      chessboard.value?.getCellFromPosition(to)?.piece?.getName() == 'Pawn' &&
-      (chessboard.value?.colorTurn == Color.White && to.y == 0 ||
-      chessboard.value?.colorTurn == Color.Black && to.y == 7))
-    {
-      console.log('Promotion needed');
-      const choice = await show();
-      console.log('User choice:', choice);
-      if (choice !== null) {
-        extra.promotionPiece = choice;
-      } else {
-        return;
-      }
-    }
     socket.emit('MOVE_PIECE', from, to, extra);
   }
 }

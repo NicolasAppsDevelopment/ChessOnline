@@ -15,6 +15,13 @@ export function useUserService() {
       await userApi.register(user);
       storedUserService.init();
     },
+    async delete(userId: number): Promise<void> {
+      await userApi.delete(userId);
+    },
+    async update(user: User): Promise<void> {
+      await userApi.update(user);
+      storedUserService.init();
+    },
     async getUserById(id: number): Promise<User> {
       return await userApi.getUserById(id);
     },
