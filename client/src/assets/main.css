@@ -153,6 +153,7 @@
   overflow: hidden;
   border: 3px solid var(--p-button-primary-border-color);
   color: var(--color-text);
+  cursor: default;
 }
 .gameHistory th {
   background: var(--p-button-primary-background);
@@ -164,10 +165,10 @@
 .gameHistory td {
   padding: 0.5rem 1rem;
 }
-.gameHistory tr {
+.gameHistory tbody tr {
   cursor: pointer;
 }
-.gameHistory tr:hover {
+.gameHistory tbody tr:hover {
   background-color: rgba(100, 100, 100, 0.25);
 }
 
