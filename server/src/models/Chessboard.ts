@@ -59,6 +59,10 @@ export class Chessboard {
   }
 
   playMove(from: Position, to: Position, userId: number, extra: ExtraDataMove | null = null): boolean {
+    if (this.isEndGame) {
+      return false;
+    }
+
     if (this.getCurrentTurnPlayerId() != userId){
       return false;
     }
@@ -175,6 +179,10 @@ export class Chessboard {
   }
 
   getValidMoves(from: Position): Position[] {
+    if (this.isEndGame) {
+      return [];
+    }
+
     const piece = this.getPiece(from);
     if (piece == null) {
       return [];

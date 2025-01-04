@@ -16,6 +16,7 @@ import { Chessboard } from '@/models/Chessboard';
 import router from '@/router/index';
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import { socket } from '@/socket'
+
 const chessboard = defineModel<Chessboard>({ required: true });
 const storedUserService = useStoredUserService();
 const userId = storedUserService.storedUser.value.id;
