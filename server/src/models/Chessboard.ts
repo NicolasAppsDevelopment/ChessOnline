@@ -54,8 +54,6 @@ export class Chessboard {
     for (let i = 0; i < 8; i++) {
       this.getCellFromXY(i, 1)!.piece = new Pawn(Color.Black);
     }
-
-    this._onNewMatch();
   }
 
   playMove(from: Position, to: Position, userId: number, extra: ExtraDataMove | null = null): boolean {

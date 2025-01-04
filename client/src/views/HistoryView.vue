@@ -5,6 +5,7 @@ import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
 import { onMounted, ref } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
+import router from '@/router'
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
@@ -16,6 +17,10 @@ onMounted(async () => {
   console.log(await userService.getUserGameHistories(userId));
   gameHistories.value = await userService.getUserGameHistories(userId);
 });
+
+function goToGameHistory(id: number) {
+  router.push({ path: '/gameReview/' + id });
+}
 
 </script>
 
@@ -32,24 +37,17 @@ onMounted(async () => {
           <th><i class="fa-solid fa-user"></i> Black Player</th>
           <th><i class="fa-solid fa-user"></i> White Player</th>
           <th><i class="fa-solid fa-chess-king"></i> Winner</th>
-          <!--<th><i class="fa-solid fa-clapperboard"></i> Replay</th>-->
         </tr>
       </thead>
       <tbody>
-        <tr v-for="gameHistory in gameHistories" :key="gameHistory.id">
+        <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
           <td>{{ gameHistory.room.name }}</td>
           <td>{{ gameHistory.date }}</td>
           <td>{{ gameHistory.blackPlayer?.username }}</td>
           <td>{{ gameHistory.whitePlayer?.username }}</td>
           <td>{{ gameHistory.winner?.username }}</td>
-          <td class="no-border"><RouterLink :to="'/gameReview/' + gameHistory.id"><i class="fa-solid fa-angle-right"></i></RouterLink></td>
-        </tr> 
+        </tr>
       </tbody>
     </table>
   </div>
 </template>
-
-
-<style scoped>
-
-</style>

@@ -96,8 +96,9 @@ async function drop(event: DragEvent, destination: Cell) {
     }
 
     if (
-      chessboard.value?.colorTurn == Color.White && to.y == 0 ||
-      chessboard.value?.colorTurn == Color.Black && to.y == 7)
+      chessboard.value?.getCellFromPosition(to)?.piece?.getName() == 'Pawn' &&
+      (chessboard.value?.colorTurn == Color.White && to.y == 0 ||
+      chessboard.value?.colorTurn == Color.Black && to.y == 7))
     {
       console.log('Promotion needed');
       const choice = await show();
