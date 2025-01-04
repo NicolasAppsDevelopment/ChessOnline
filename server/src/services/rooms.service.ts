@@ -72,6 +72,7 @@ export class RoomsService {
       await moveService.createMove(gameHistory.id, promotion, promotionIntoWhichPiece, from.x, from.y, to.x, to.y);
     }
 
+    await newChessboard.onNewMatch();
     this.boards.set(roomUuid, newChessboard);
 
     return roomUuid;
