@@ -13,6 +13,7 @@ import { Button } from 'primevue'
 import PromotionSelectorWindow from '@/components/PromotionSelectorDialog.vue'
 import { useConfirm } from "primevue/useconfirm";
 import { useStoredUserService } from '@/composables/user/storedUserService'
+import EndGameWindow from '@/components/EndGameWindow.vue'
 
 const confirm = useConfirm();
 const toast = useToast();
@@ -140,5 +141,6 @@ watch(drawAskingOpponentPlayerId, async (newVal) => {
     <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
     <Button label="Draw" icon="fa-solid fa-equals" @click="askDraw()"></Button>
   </div>
-  <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
+  <EndGameWindow v-model="chessboard"></EndGameWindow>
+  <PromotionSelectorWindow></PromotionSelectorWindow>
 </template>

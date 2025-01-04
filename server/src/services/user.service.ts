@@ -74,8 +74,8 @@ export class UserService {
       }
     }
 
-    player.elo = player.elo + k * (playerResult - expectedPlayerScore);
-    opponent.elo = opponent.elo + k * (opponentResult - expectedOpponentScore);
+    player.elo = Math.round(player.elo + k * (playerResult - expectedPlayerScore));
+    opponent.elo = Math.round(opponent.elo + k * (opponentResult - expectedOpponentScore));
 
     await player.save();
     await opponent.save();

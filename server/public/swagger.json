@@ -110,6 +110,10 @@
 					"username": {
 						"type": "string"
 					},
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
 					"elo": {
 						"type": "number",
 						"format": "double"
@@ -117,6 +121,7 @@
 				},
 				"required": [
 					"username",
+					"id",
 					"elo"
 				],
 				"type": "object",
