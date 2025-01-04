@@ -164,6 +164,12 @@
 .gameHistory td {
   padding: 0.5rem 1rem;
 }
+.gameHistory tr {
+  cursor: pointer;
+}
+.gameHistory tr:hover {
+  background-color: rgba(100, 100, 100, 0.25);
+}
 
 
 /* ROOMS TABLE CSS */
