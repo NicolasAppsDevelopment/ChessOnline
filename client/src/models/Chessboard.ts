@@ -70,6 +70,20 @@ export class Chessboard {
     return true;
   }
 
+  replayMovePiece(from: Position, to: Position) {
+    const fromCell = this.getCellFromPosition(from);
+    const toCell = this.getCellFromPosition(to);
+    if (!fromCell || !toCell) return false;
+
+    const pieceToMove = fromCell.piece;
+    if (!pieceToMove) return false;
+
+    toCell.piece = fromCell.piece;
+    fromCell.piece = null;
+
+    return true;
+  }
+
   clearHighlights() {
     this.board.forEach(function (cell) {
       cell.isHighlighted = false;

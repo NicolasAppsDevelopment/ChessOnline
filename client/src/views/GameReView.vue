@@ -15,6 +15,12 @@ import { useStoredUserService } from '@/composables/user/storedUserService'
 import type { GameHistory } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
 import { Chessboard } from "@/models/Chessboard";
+import type { Move } from "@/models/Move";
+import { Piece } from "@/models/Piece";
+import { Rook } from "@/models/Rook";
+import { Queen } from "@/models/Queen";
+import { Knight } from "@/models/Knight";
+import { Bishop } from "@/models/Bishop";
 
 const confirm = useConfirm();
 const roomsService = useRoomService();
@@ -27,28 +33,57 @@ const userService = useUserService();
 const gameHistorId = parseInt(route.params.id as string);
 const gameHistory = ref<GameHistory>();
 
-let moveNumber = -1;
-let moves: any[] | null | undefined = null;
+let moveNumber = 0;
+let moves: Move[] | null | undefined = null;
+
+let chessboardStates: Chessboard[] = [] ; 
 
 onMounted(async () => {
   gameHistory.value = await userService.getGameHistoryById(gameHistorId);
-  console.log(gameHistory.value);
   moves = gameHistory.value.moves;
+  chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
 });
 
 
 function previous() {
   if (moves != null && moveNumber>=0){
-    chessboard.value.movePiece(new Position(moves[moveNumber].to_x,moves[moveNumber].to_y), new Position(moves[moveNumber].from_x,moves[moveNumber].from_y));
     moveNumber --;
+    chessboard.value = chessboardStates[moveNumber];
   } 
 }
 
 function next() {
   if (moves != null && moveNumber<moves.length){
     moveNumber ++;
-    console.log(typeof moves[0].from );
-    chessboard.value.movePiece(new Position(moves[moveNumber].from_x,moves[moveNumber].from_y), new Position(moves[moveNumber].to_x,moves[moveNumber].to_y));
+    if (!chessboardStates[moveNumber]){
+      chessboard.value.replayMovePiece(new Position(moves[moveNumber-1].from_x, moves[moveNumber-1].from_y), new Position(moves[moveNumber-1].to_x, moves[moveNumber-1].to_y));
+      if (moves[moveNumber-1].promotion){
+        let cellToModify = chessboard.value.getCellFromXY(moves[moveNumber-1].to_x,moves[moveNumber-1].to_y);
+        if (cellToModify != null){
+          if (cellToModify.piece != null){
+            switch (moves[moveNumber-1].promotionIntoWhichPiece) {
+              case "Queen":
+                cellToModify.piece = new Queen(cellToModify.piece.getColor());
+                break;
+              case "Knight":
+                cellToModify.piece = new Knight(cellToModify.piece.getColor());
+                break;
+              case "Rook":
+                cellToModify.piece = new Rook(cellToModify.piece.getColor());
+                break;
+              case "Bishop":
+                cellToModify.piece = new Bishop(cellToModify.piece.getColor());
+                break;
+              default:
+                console.log("The promotion is not defined correctly");
+            }
+          }
+        } 
+    }
+      chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
+      return;
+    }
+    chessboard.value = chessboardStates[moveNumber];
   } 
 }
 
@@ -68,5 +103,4 @@ function next() {
     <Button label="Previous" icon="fa-solid fa-angle-left" @click="previous()"></Button>
     <Button label="Next" icon="fa-solid fa-angle-right" @click="next()"></Button>
   </div>
-  <PromotionSelectorWindow v-model="chessboard"></PromotionSelectorWindow>
 </template>

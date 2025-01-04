@@ -13,6 +13,7 @@ const userId = storedUserService.storedUser.value.id;
 const gameHistories = ref<GameHistory[]>([]);
 
 onMounted(async () => {
+  console.log(await userService.getUserGameHistories(userId));
   gameHistories.value = await userService.getUserGameHistories(userId);
 });
 
