@@ -33,4 +33,11 @@ export class GameHistoryController extends Controller {
   public async getGameHistoryById(@Path() id: number): Promise<GameHistoryOutputDTO> {
     return gameHistoryService.getGameHistoryById(id);
   }
+
+  // Récupère le pourcentage de victoire d'un utilisateur par son ID
+  @Get("/percentage/win/{id}")
+  @Security("jwt")
+  public async getWinPercentageByUserId(@Path() id: number): Promise<number> {
+    return gameHistoryService.getWinPercentageByUserId(id);
+  }
 }

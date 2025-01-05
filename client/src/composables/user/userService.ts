@@ -34,5 +34,8 @@ export function useUserService() {
     async getGameHistoryById(id: number): Promise<GameHistory> {
       return await userApi.getGameHistoryById(id);
     },
+    async getWinPercentageByUserId(id: number): Promise<number> {
+      return await userApi.getWinPercentageByUserId(id);
+    },
   };
 }

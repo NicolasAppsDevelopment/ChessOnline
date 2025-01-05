@@ -53,7 +53,7 @@ export class GameHistoryService {
     }
   }
 
-   // Récupère un utilisateur par ID
+   // Récupère un historique de partie par son ID
    public async getGameHistoryById(id: number): Promise<GameHistoryOutputDTO> {
     const gameHistory = await GameHistory.findOne({
       where: {
@@ -142,6 +142,34 @@ export class GameHistoryService {
       return "Game History updated";
     } else {
       notFound("Game History");
+    }
+  }
+
+  // Récupère le pourcentage de victoire d'un utilisateur par son ID
+  public async getWinPercentageByUserId(id: number): Promise<number> {
+    const gamesPlayed = GameHistoryMapper.toOutputDtoList(await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+            { blackPlayer_id: id },
+            { whitePlayer_id: id },
+        ],
+      },
+    }));
+
+    const gamesWinned = GameHistoryMapper.toOutputDtoList(await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+            { blackPlayer_id: id },
+            { whitePlayer_id: id },
+        ],
+        winner_id: id,
+      },
+    }));
+
+    if (gamesPlayed.length > 0) {
+      return Math.round((gamesWinned.length/gamesPlayed.length)*100);
+    } else {
+      notFound("game histories played by this User");
     }
   }
 }

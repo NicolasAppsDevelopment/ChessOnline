@@ -23,6 +23,8 @@ let processing = ref(false);
 
 const user = ref<User>({ username: "", password: "", id: -1, elo: 0 });
 
+let winPercentage = ref<number>(0);
+
 onMounted(async () => {
   if (!route.params.id || route.params.id !instanceof String) {
     return;
@@ -34,6 +36,8 @@ onMounted(async () => {
 
   user.value = await userService.getUserById(id);
   user.value.password = "";
+
+  winPercentage.value = await userService.getWinPercentageByUserId(id) 
 });
 
 function requestDeletion() {
@@ -98,43 +102,51 @@ function requestUpdate() {
 
 <template>
   <Navbar></Navbar>
+  <div class="flex">
+    <div>
+      <h1 class="text-center">User profile</h1>
 
-  <h1 class="text-center">User profile</h1>
+      <Message v-if="lastError" severity="error" icon="fa-solid fa-circle-exclamation" class="mb-2">{{ lastError }}</Message>
 
-  <Message v-if="lastError" severity="error" icon="fa-solid fa-circle-exclamation" class="mb-2">{{ lastError }}</Message>
+      <InputGroup class="mb-2">
+        <InputGroupAddon>
+          <i class="fa-solid fa-user"></i>
+        </InputGroupAddon>
+        <InputText v-model="user.username" placeholder="Username" :readonly="!isOwner"></InputText>
+      </InputGroup>
 
-  <InputGroup class="mb-2">
-    <InputGroupAddon>
-      <i class="fa-solid fa-user"></i>
-    </InputGroupAddon>
-    <InputText v-model="user.username" placeholder="Username" :readonly="!isOwner"></InputText>
-  </InputGroup>
+      <InputGroup class="mb-2" v-if="isOwner">
+        <InputGroupAddon>
+          <i class="fa-solid fa-key"></i>
+        </InputGroupAddon>
+        <Password v-model="user.password" :feedback="false" placeholder="Change password" toggleMask></Password>
+      </InputGroup>
 
-  <InputGroup class="mb-2" v-if="isOwner">
-    <InputGroupAddon>
-      <i class="fa-solid fa-key"></i>
-    </InputGroupAddon>
-    <Password v-model="user.password" :feedback="false" placeholder="Change password" toggleMask></Password>
-  </InputGroup>
+      <InputGroup class="mb-2">
+        <InputGroupAddon>
+          <i class="fa-solid fa-star"></i>
+        </InputGroupAddon>
+        <InputNumber v-model="user.elo" readonly fluid />
+      </InputGroup>
 
-  <InputGroup class="mb-2">
-    <InputGroupAddon>
-      <i class="fa-solid fa-star"></i>
-    </InputGroupAddon>
-    <InputNumber v-model="user.elo" readonly fluid />
-  </InputGroup>
+      <div class="flex gap-1 p-1">
+        <RouterLink to="" v-if="isOwner">
+          <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" />
+        </RouterLink>
+        <Button label="Logout" icon="fa-solid fa-power-off" v-if="isOwner" @click="storedUserService.clear()" />
+        <Button label="Delete account" icon="fa-solid fa-trash" v-if="isOwner" @click="requestDeletion()" />
+        <RouterLink :to="'/history/' + route.params.id">
+          <Button label="View game history" icon="fa-solid fa-clock" />
+        </RouterLink>
+      </div>
+    </div>
 
-  <div class="flex gap-1 p-1">
-    <RouterLink to="" v-if="isOwner">
-      <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" />
-    </RouterLink>
-    <Button label="Logout" icon="fa-solid fa-power-off" v-if="isOwner" @click="storedUserService.clear()" />
-    <Button label="Delete account" icon="fa-solid fa-trash" v-if="isOwner" @click="requestDeletion()" />
-    <RouterLink :to="'/history/' + route.params.id">
-      <Button label="View game history" icon="fa-solid fa-clock" />
-    </RouterLink>
+    <div>
+      <h1 class="text-center">User Statistics</h1>
+      <p><i class="fa-solid fa-chess-king"></i> Percentage of win :  {{ winPercentage }}%</p>
+
+    </div>
   </div>
-
 
 </template>
 
