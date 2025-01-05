@@ -7,11 +7,9 @@ export interface GameHistoryInputDTO {
   startDate: Date;
 }
 
-export interface GameHistoryInputPatchDTO {
-  endDate?: Date | null;
-  winner_id?: number | null;
-  blackPlayer_id?: number |  null;
-  whitePlayer_id?: number | null;
+export interface GameHistoryVisibilityInputPutDTO {
+  id: number;
+  isPublic: boolean;
 }
 
 export interface GameHistoryOutputDTO {

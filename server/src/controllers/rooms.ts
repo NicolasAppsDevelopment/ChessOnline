@@ -23,7 +23,6 @@ export class RoomsController extends Controller {
     return await roomsService.create(name, isPrivate);
   }
 
-  //TODO optimise ths function
   @Security("jwt")
   @Post("/join")
   public async joinRoom(
