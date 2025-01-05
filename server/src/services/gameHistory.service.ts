@@ -25,18 +25,17 @@ export class GameHistoryService {
           {
             model: User,
             as: "blackPlayer",
+            attributes: ['id', 'username'],
           },
           {
             model: User,
             as: "whitePlayer",
+            attributes: ['id', 'username'],
           },
           {
             model: User,
             as: "winner",
-          },
-          {
-            model: Move,
-            as: "moves",
+            attributes: ['id', 'username'],
           },
       ],
       order: [
@@ -61,18 +60,22 @@ export class GameHistoryService {
         {
           model: User,
           as: "blackPlayer",
+          attributes: ['id', 'username'],
         },
         {
           model: User,
           as: "whitePlayer",
+          attributes: ['id', 'username'],
         },
         {
           model: User,
           as: "winner",
+          attributes: ['id', 'username'],
         },
         {
           model: Move,
           as: "moves",
+          attributes: ['promotion', 'promotionIntoWhichPiece', 'from_x', 'from_y', 'to_x', 'to_y'],
         },
       ],
     });
@@ -95,6 +98,7 @@ export class GameHistoryService {
           {
               model: Move,
               as: "moves",
+              attributes: ['promotion', 'promotionIntoWhichPiece', 'from_x', 'from_y', 'to_x', 'to_y'],
           },
       ],
       order: [

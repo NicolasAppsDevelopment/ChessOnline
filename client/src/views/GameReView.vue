@@ -15,7 +15,7 @@ import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import type { GameReplay } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
 import { Chessboard } from "@/models/Chessboard";
-import type { Move } from "@/models/Move";
+import type { MoveReplay } from "@/models/Move";
 import { Rook } from "@/models/Rook";
 import { Queen } from "@/models/Queen";
 import { Knight } from "@/models/Knight";
@@ -33,7 +33,7 @@ const gameHistorId = parseInt(route.params.id as string);
 const gameHistory = ref<GameReplay>();
 
 const moveNumber = ref<number>(0);
-let moves: Move[] | null | undefined = null;
+let moves: MoveReplay[] | null | undefined = null;
 
 let chessboardStates: Chessboard[] = [] ;
 const processing = ref<boolean>(true);

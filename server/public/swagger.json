@@ -127,48 +127,19 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"MoveOutputDTO": {
+			"UserReplayOutputDTO": {
 				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"gameHistory_id": {
-						"type": "number",
-						"format": "double"
-					},
-					"promotion": {
-						"type": "boolean"
-					},
-					"promotionIntoWhichPiece": {
+					"username": {
 						"type": "string"
 					},
-					"from_x": {
-						"type": "number",
-						"format": "double"
-					},
-					"from_y": {
-						"type": "number",
-						"format": "double"
-					},
-					"to_x": {
-						"type": "number",
-						"format": "double"
-					},
-					"to_y": {
+					"id": {
 						"type": "number",
 						"format": "double"
 					}
 				},
 				"required": [
-					"id",
-					"gameHistory_id",
-					"promotion",
-					"promotionIntoWhichPiece",
-					"from_x",
-					"from_y",
-					"to_x",
-					"to_y"
+					"username",
+					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -194,7 +165,7 @@
 					"blackPlayer": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
 						"nullable": true
@@ -202,7 +173,7 @@
 					"whitePlayer": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
 						"nullable": true
@@ -210,16 +181,9 @@
 					"winner": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
-						"nullable": true
-					},
-					"moves": {
-						"items": {
-							"$ref": "#/components/schemas/MoveOutputDTO"
-						},
-						"type": "array",
 						"nullable": true
 					},
 					"isPublic": {
@@ -235,12 +199,48 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"MoveReplayOutputDTO": {
+				"properties": {
+					"promotion": {
+						"type": "boolean"
+					},
+					"promotionIntoWhichPiece": {
+						"type": "string"
+					},
+					"from_x": {
+						"type": "number",
+						"format": "double"
+					},
+					"from_y": {
+						"type": "number",
+						"format": "double"
+					},
+					"to_x": {
+						"type": "number",
+						"format": "double"
+					},
+					"to_y": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"promotion",
+					"promotionIntoWhichPiece",
+					"from_x",
+					"from_y",
+					"to_x",
+					"to_y"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"GameReplayOutputDTO": {
 				"properties": {
 					"blackPlayer": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
 						"nullable": true
@@ -248,7 +248,7 @@
 					"whitePlayer": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
 						"nullable": true
@@ -256,14 +256,14 @@
 					"winner": {
 						"allOf": [
 							{
-								"$ref": "#/components/schemas/UserRankOutputDTO"
+								"$ref": "#/components/schemas/UserReplayOutputDTO"
 							}
 						],
 						"nullable": true
 					},
 					"moves": {
 						"items": {
-							"$ref": "#/components/schemas/MoveOutputDTO"
+							"$ref": "#/components/schemas/MoveReplayOutputDTO"
 						},
 						"type": "array",
 						"nullable": true

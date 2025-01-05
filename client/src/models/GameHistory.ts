@@ -1,22 +1,21 @@
-import type { Move } from "./Move";
+import type { MoveReplay } from "./Move";
 import type { ListRoomItem } from "./Room";
-import type { UserRank } from "./User";
+import type { UserReplay } from "./User";
 
 export interface GameHistory {
   id: number;
   startDate: Date;
   room?: ListRoomItem | null;
-  blackPlayer?: UserRank |  null;
-  whitePlayer?: UserRank |  null;
-  winner?: UserRank | null;
-  moves?: Move[] | null;
+  blackPlayer?: UserReplay |  null;
+  whitePlayer?: UserReplay |  null;
+  winner?: UserReplay | null;
   isPublic: boolean;
 }
 
 export interface GameReplay {
-  blackPlayer?: UserRank |  null;
-  whitePlayer?: UserRank |  null;
-  winner?: UserRank | null;
-  moves?: Move[] | null;
+  blackPlayer?: UserReplay |  null;
+  whitePlayer?: UserReplay |  null;
+  winner?: UserReplay | null;
+  moves?: MoveReplay[] | null;
 }
 

@@ -11,3 +11,9 @@ export interface UserRank {
   username: string;
   elo: number;
 }
+
+export interface UserReplay {
+  username: string;
+  id: number;
+}
+

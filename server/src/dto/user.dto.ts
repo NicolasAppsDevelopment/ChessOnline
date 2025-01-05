@@ -20,3 +20,8 @@ export interface UserRankOutputDTO {
   id: number;
   elo: number;
 }
+
+export interface UserReplayOutputDTO {
+  username: string;
+  id: number;
+}
