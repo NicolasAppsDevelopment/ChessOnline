@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 import Navbar from "@/components/Navbar.vue";
+
 import {useRoomService} from "@/composables/room/roomService";
 import { useUserService } from '@/composables/user/userService';
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { useStoredUserService } from '@/composables/user/storedUserService'
 
-import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
-import router from '@/router'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Button } from 'primevue'
-import PromotionSelectorWindow from '@/components/PromotionSelectorDialog.vue'
 import { useConfirm } from "primevue/useconfirm";
-import { useStoredUserService } from '@/composables/user/storedUserService'
+
+import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import type { GameHistory } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
 import { Chessboard } from "@/models/Chessboard";
 import type { Move } from "@/models/Move";
-import { Piece } from "@/models/Piece";
 import { Rook } from "@/models/Rook";
 import { Queen } from "@/models/Queen";
 import { Knight } from "@/models/Knight";
@@ -84,7 +83,7 @@ function next() {
       return;
     }
     chessboard.value = chessboardStates[moveNumber];
-    
+
   } 
 }
 
