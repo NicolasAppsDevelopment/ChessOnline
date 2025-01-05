@@ -3,9 +3,11 @@ import ChessBoardComponent from '@/components/ChessBoard.vue'
 import Navbar from '@/components/Navbar.vue'
 
 import { useGameHistoryService } from '@/composables/history/historyService'
+
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Button, Tag } from 'primevue'
+
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import type { GameReplay } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
