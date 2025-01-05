@@ -6,7 +6,8 @@ import {Move} from "./Move"; // Connexion à la base de données
 //TODO mettre date de fin
 export interface GameHistoryAttributes {
     id?: number;
-    date: Date;
+    startDate?: Date;
+    endDate?: Date | null;
     room?: Room | null;
     room_uuid?: string | null;
     blackPlayer?: User | null;
@@ -23,7 +24,8 @@ export class GameHistory
     implements GameHistoryAttributes
 {
     public id!: number;
-    public date!: Date;
+    public startDate!: Date;
+    public endDate!: Date | null ;
     public room!: Room;
     public room_uuid!: string;
     public blackPlayer!: User | null;
@@ -42,9 +44,13 @@ GameHistory.init(
             autoIncrement: true,
             primaryKey: true,
         },
-        date: {
+        startDate: {
             type: DataTypes.DATE,
             allowNull: false,
+        },
+        endDate: {
+            type: DataTypes.DATE,
+            allowNull: true,
         },
         room_uuid: {
             type: DataTypes.STRING,

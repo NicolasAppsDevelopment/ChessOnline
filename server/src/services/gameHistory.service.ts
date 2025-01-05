@@ -113,7 +113,7 @@ export class GameHistoryService {
   public async createGameHistory(
     room_uuid: string,
   ): Promise<void> {
-    await GameHistory.create({ room_uuid: room_uuid, date: new Date() });
+    await GameHistory.create({ room_uuid: room_uuid, startDate: new Date() });
   }
 
   // Supprime un historique de partie par ID
@@ -129,12 +129,14 @@ export class GameHistoryService {
   // Met à jour un historique de partie
   public async updateGameHistory(
     id: number,
+    endDate?: Date | null,
     winner_id?: number | null,
     blackPlayer_id?: number |  null,
     whitePlayer_id?: number | null,
   ): Promise<string> {
     const gameHistory = await GameHistory.findByPk(id);
     if (gameHistory) {
+      if (endDate) gameHistory.endDate = endDate;
       if (winner_id) gameHistory.winner_id = winner_id;
       if (blackPlayer_id) gameHistory.blackPlayer_id = blackPlayer_id;
       if (whitePlayer_id) gameHistory.whitePlayer_id = whitePlayer_id;

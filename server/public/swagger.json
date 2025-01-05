@@ -179,9 +179,14 @@
 						"type": "number",
 						"format": "double"
 					},
-					"date": {
+					"startDate": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true
 					},
 					"room": {
 						"$ref": "#/components/schemas/ListRoomItemOutputDTO"
@@ -220,7 +225,7 @@
 				},
 				"required": [
 					"id",
-					"date",
+					"startDate",
 					"room"
 				],
 				"type": "object",

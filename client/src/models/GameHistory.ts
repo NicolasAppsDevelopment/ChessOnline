@@ -4,7 +4,8 @@ import type { UserRank } from "./User";
 
 export interface GameHistory {
   id: number;
-  date: Date;
+  startDate: Date;
+  endDate?: Date | null;
   room: ListRoomItem;
   blackPlayer?: UserRank |  null;
   whitePlayer?: UserRank |  null;

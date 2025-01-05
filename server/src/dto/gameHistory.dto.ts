@@ -4,10 +4,11 @@ import { MoveOutputDTO } from '../dto/move.dto'
 
 export interface GameHistoryInputDTO {
   room_uuid: string;
-  date: Date;
+  startDate: Date;
 }
 
 export interface GameHistoryInputPatchDTO {
+  endDate?: Date | null;
   winner_id?: number | null;
   blackPlayer_id?: number |  null;
   whitePlayer_id?: number | null;
@@ -15,7 +16,8 @@ export interface GameHistoryInputPatchDTO {
 
 export interface GameHistoryOutputDTO {
   id: number;
-  date: Date;
+  startDate: Date;
+  endDate?: Date | null;
   room: ListRoomItemOutputDTO;
   blackPlayer?: UserRankOutputDTO |  null;
   whitePlayer?: UserRankOutputDTO |  null;

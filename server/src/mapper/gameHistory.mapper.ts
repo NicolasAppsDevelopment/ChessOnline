@@ -5,7 +5,8 @@ export class GameHistoryMapper {
   public static toOutputDto(gameHistory: GameHistory): GameHistoryOutputDTO {
     return {
       id: gameHistory.id,
-      date : gameHistory.date,
+      startDate : gameHistory.startDate,
+      endDate : gameHistory.endDate,
       room: gameHistory.room,
       blackPlayer: gameHistory.blackPlayer,
       whitePlayer: gameHistory.whitePlayer,

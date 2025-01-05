@@ -45,7 +45,7 @@ export class RoomsService {
         return;
       }
 
-      await gameHistoryService.updateGameHistory(gameHistory.id,newChessboard.winnerPlayerId,null,null);
+      await gameHistoryService.updateGameHistory(gameHistory.id,null,newChessboard.winnerPlayerId,null,null);
     }
     newChessboard.onPlayed = async (from: Position, to: Position, userId: number, extra: ExtraDataMove | null) => {
       const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);
@@ -54,10 +54,10 @@ export class RoomsService {
       }
 
       if (gameHistory.whitePlayer == null && newChessboard.whitePlayerId != null){
-        await gameHistoryService.updateGameHistory(gameHistory.id,null,null,newChessboard.whitePlayerId);
+        await gameHistoryService.updateGameHistory(gameHistory.id,null,null,null,newChessboard.whitePlayerId);
       }
       if (gameHistory.blackPlayer == null && newChessboard.blackPlayerId != null){
-        await gameHistoryService.updateGameHistory(gameHistory.id,null,newChessboard.blackPlayerId,null);
+        await gameHistoryService.updateGameHistory(gameHistory.id,null,null,newChessboard.blackPlayerId,null);
       }
 
       let promotion = false;
