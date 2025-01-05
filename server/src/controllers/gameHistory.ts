@@ -47,4 +47,10 @@ export class GameHistoryController extends Controller {
   public async getAverageGameDurationByUserId(@Path() id: number): Promise<number> {
     return gameHistoryService.getAverageGameDurationByUserId(id);
   }
+  // Récupère le nombre moyen de déplacements d'un utilisateur dans ses parties par son ID
+  @Get("/average/moves/{id}")
+  @Security("jwt")
+  public async getAverageGameMoveByUserId(@Path() id: number): Promise<number> {
+    return gameHistoryService.getAverageGameMoveByUserId(id);
+  }
 }

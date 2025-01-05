@@ -40,5 +40,8 @@ export function useUserService() {
     async getAverageGameDurationByUserId(id: number): Promise<number> {
       return await userApi.getAverageGameDurationByUserId(id);
     },
+    async getAverageGameMoveByUserId(id: number): Promise<number> {
+      return await userApi.getAverageGameMoveByUserId(id);
+    },
   };
 }

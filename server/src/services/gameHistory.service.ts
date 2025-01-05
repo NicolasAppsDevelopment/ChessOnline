@@ -94,7 +94,7 @@ export class GameHistoryService {
     return  await GameHistory.findOne({
       where: {
         room_uuid: uuid,
-    },
+      },
       include: [
           {
               model: Move,
@@ -194,7 +194,7 @@ export class GameHistoryService {
     let totalDuration = 0;
     gamesPlayed.forEach(function (game) {
       if (game.endDate) {
-        totalDuration = totalDuration + (game.endDate.getTime() - game.startDate.getTime())/60000;
+        totalDuration = totalDuration + ((game.endDate.getTime() - game.startDate.getTime())/1000)/60;
       }
     }); 
 
@@ -212,6 +212,12 @@ export class GameHistoryService {
             { whitePlayer_id: id },
         ],
       },
+      include: [
+        {
+            model: Move,
+            as: "moves",
+        },
+      ],
     });
 
     if (!gamesPlayed.length) {
@@ -220,10 +226,12 @@ export class GameHistoryService {
 
     let totalMove = 0;
     gamesPlayed.forEach(function (game) {
-      totalMove = totalMove + game.moves.length;
+      if (game.moves) {
+        totalMove = totalMove + game.moves.length;
+      }
     }); 
 
-    const averageMove = totalMove / gamesPlayed.length * 2;
+    const averageMove = (totalMove / gamesPlayed.length)/2;
 
     return Math.round(averageMove); 
   }

@@ -24,6 +24,7 @@ const user = ref<User>({ username: "", password: "", id: -1, elo: 0 });
 
 let winPercentage = ref<number>(0);
 let averageGameDuraion = ref<number>(0);
+let averageGameMoves = ref<number>(0);
 
 onMounted(async () => {
   if (!route.params.id || route.params.id !instanceof String) {
@@ -39,6 +40,7 @@ onMounted(async () => {
 
   winPercentage.value = await userService.getWinPercentageByUserId(id);
   averageGameDuraion.value = await userService.getAverageGameDurationByUserId(id);
+  averageGameMoves.value = await userService.getAverageGameMoveByUserId(id);
 
 });
 
@@ -162,6 +164,7 @@ function requestUpdate() {
       <h1 class="text-center">User Statistics</h1>
       <p><i class="fa-solid fa-chess-king"></i> Percentage of win :  {{ winPercentage }}%</p>
       <p><i class="fa-solid fa-stopwatch"></i> Average Game Duration :  {{ averageGameDuraion }} minutes</p>
+      <p><i class="fa-solid fa-up-down-left-right"></i> Average Game Moves  :  {{ averageGameMoves }} </p>
 
     </div>
   </div>
