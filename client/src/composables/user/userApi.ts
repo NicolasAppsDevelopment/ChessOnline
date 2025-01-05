@@ -69,5 +69,9 @@ export function useUserApi() {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}average/moves/` + id);
       return res.data;
     },
+    async getTotalGametimeByUserId(id: number): Promise<number> {
+      const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}total/gameTime/` + id);
+      return res.data;
+    },
   };
 }

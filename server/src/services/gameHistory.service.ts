@@ -173,7 +173,7 @@ export class GameHistoryService {
     }
   }
 
-  // Récupère la durée moyenne des parties d'un utilisateur par son ID
+  // Récupère la durée moyenne des parties d'un utilisateur par son ID (en minutes)
   public async getAverageGameDurationByUserId(id: number): Promise<number> {
     const gamesPlayed = await GameHistory.findAll({
       where: {
@@ -201,6 +201,34 @@ export class GameHistoryService {
     const averageDuration = totalDuration / gamesPlayed.length;
 
     return Math.round(averageDuration); 
+  }
+
+  // Récupère le temps de jeu d'un utilisateur par son ID (en minutes)
+  public async getTotalGametimeByUserId(id: number): Promise<number> {
+    const gamesPlayed = await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+            { blackPlayer_id: id },
+            { whitePlayer_id: id },
+        ],
+        endDate: {
+          [Op.ne]: null, 
+        },
+      },
+    });
+
+    if (!gamesPlayed.length) {
+        throw new Error("No game histories found for this user.");
+    }
+
+    let totalDuration = 0;
+    gamesPlayed.forEach(function (game) {
+      if (game.endDate) {
+        totalDuration = totalDuration + ((game.endDate.getTime() - game.startDate.getTime())/1000)/60;
+      }
+    });
+
+    return Math.round(totalDuration); 
   }
 
   // Récupère le nombre moyen de déplacements d'un utilisateur dans ses parties par son ID

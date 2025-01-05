@@ -53,4 +53,12 @@ export class GameHistoryController extends Controller {
   public async getAverageGameMoveByUserId(@Path() id: number): Promise<number> {
     return gameHistoryService.getAverageGameMoveByUserId(id);
   }
+
+  // Récupère le temps de jeu d'un utilisateur par son ID (en minutes)
+  @Get("/total/gameTime/{id}")
+  @Security("jwt")
+  public async getTotalGametimeByUserId(@Path() id: number): Promise<number> {
+    return gameHistoryService.getTotalGametimeByUserId(id);
+  }
+
 }
