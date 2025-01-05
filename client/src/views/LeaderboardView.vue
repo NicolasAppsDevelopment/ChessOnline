@@ -3,17 +3,16 @@ import Navbar from "@/components/Navbar.vue";
 import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
 import { onMounted, onUpdated, ref } from 'vue'
-import type { User } from '@/models/User'
+import type { UserRank } from '@/models/User'
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
 
 const userId = storedUserService.storedUser.value.id;
-const users = ref<User[]>([]);
+const users = ref<UserRank[]>([]);
 
 onMounted(async () => {
   users.value = await userService.getLeaderboard();
-  console.log(users.value);
 });
 
 onUpdated(async () => {
