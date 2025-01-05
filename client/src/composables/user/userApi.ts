@@ -61,5 +61,9 @@ export function useUserApi() {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}percentage/win/` + id);
       return res.data;
     },
+    async getAverageGameDurationByUserId(id: number): Promise<number> {
+      const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}average/duration/` + id);
+      return res.data;
+    },
   };
 }

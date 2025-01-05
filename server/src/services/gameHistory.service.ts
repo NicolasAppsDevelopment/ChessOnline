@@ -172,6 +172,61 @@ export class GameHistoryService {
       notFound("game histories played by this User");
     }
   }
+
+  // Récupère la durée moyenne des parties d'un utilisateur par son ID
+  public async getAverageGameDurationByUserId(id: number): Promise<number> {
+    const gamesPlayed = await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+            { blackPlayer_id: id },
+            { whitePlayer_id: id },
+        ],
+        endDate: {
+          [Op.ne]: null, 
+        },
+      },
+    });
+
+    if (!gamesPlayed.length) {
+        throw new Error("No game histories found for this user.");
+    }
+
+    let totalDuration = 0;
+    gamesPlayed.forEach(function (game) {
+      if (game.endDate) {
+        totalDuration = totalDuration + (game.endDate.getTime() - game.startDate.getTime())/60000;
+      }
+    }); 
+
+    const averageDuration = totalDuration / gamesPlayed.length;
+
+    return Math.round(averageDuration); 
+  }
+
+  // Récupère le nombre moyen de déplacements d'un utilisateur dans ses parties par son ID
+  public async getAverageGameMoveByUserId(id: number): Promise<number> {
+    const gamesPlayed = await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+            { blackPlayer_id: id },
+            { whitePlayer_id: id },
+        ],
+      },
+    });
+
+    if (!gamesPlayed.length) {
+        throw new Error("No game histories found for this user.");
+    }
+
+    let totalMove = 0;
+    gamesPlayed.forEach(function (game) {
+      totalMove = totalMove + game.moves.length;
+    }); 
+
+    const averageMove = totalMove / gamesPlayed.length * 2;
+
+    return Math.round(averageMove); 
+  }
 }
 
 export const gameHistoryService = new GameHistoryService();

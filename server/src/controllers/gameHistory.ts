@@ -40,4 +40,11 @@ export class GameHistoryController extends Controller {
   public async getWinPercentageByUserId(@Path() id: number): Promise<number> {
     return gameHistoryService.getWinPercentageByUserId(id);
   }
+
+  // Récupère la durée moyenne des parties d'un utilisateur par son ID
+  @Get("/average/duration/{id}")
+  @Security("jwt")
+  public async getAverageGameDurationByUserId(@Path() id: number): Promise<number> {
+    return gameHistoryService.getAverageGameDurationByUserId(id);
+  }
 }

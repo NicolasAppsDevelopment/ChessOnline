@@ -45,7 +45,7 @@ export class RoomsService {
         return;
       }
 
-      await gameHistoryService.updateGameHistory(gameHistory.id,null,newChessboard.winnerPlayerId,null,null);
+      await gameHistoryService.updateGameHistory(gameHistory.id,new Date(),newChessboard.winnerPlayerId,null,null);
     }
     newChessboard.onPlayed = async (from: Position, to: Position, userId: number, extra: ExtraDataMove | null) => {
       const gameHistory = await gameHistoryService.getGameHistoriyByRoomId(roomUuid);

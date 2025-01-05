@@ -642,6 +642,43 @@
 				]
 			}
 		},
+		"/gameHistories/average/duration/{id}": {
+			"get": {
+				"operationId": "GetAverageGameDurationByUserId",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "number",
+									"format": "double"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"GameHistories"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					}
+				]
+			}
+		},
 		"/auth": {
 			"post": {
 				"operationId": "Authenticate",
