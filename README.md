@@ -19,6 +19,7 @@ http://localhost:5173/
 ## Specificities
 - We used Socket.IO for real-time, bidirectional and event-based communication during a game.
 - All the others network communications are made with HTTP requests to an Express based API.
+- Socket.IO communication and API requests are secured with JWT tokens.
 
 ## Gameplay
 - In a game :
