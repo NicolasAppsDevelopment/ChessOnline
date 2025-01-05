@@ -108,13 +108,23 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"double","required":true},
             "startDate": {"dataType":"datetime","required":true},
-            "endDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
             "room": {"dataType":"union","subSchemas":[{"ref":"ListRoomItemOutputDTO"},{"dataType":"enum","enums":[null]}],"required":true},
             "blackPlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "whitePlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "winner": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "moves": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"MoveOutputDTO"}},{"dataType":"enum","enums":[null]}]},
             "isPublic": {"dataType":"boolean","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GameReplayOutputDTO": {
+        "dataType": "refObject",
+        "properties": {
+            "blackPlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
+            "whitePlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
+            "winner": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
+            "moves": {"dataType":"union","subSchemas":[{"dataType":"array","array":{"dataType":"refObject","ref":"MoveOutputDTO"}},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },
