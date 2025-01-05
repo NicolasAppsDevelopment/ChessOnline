@@ -15,6 +15,11 @@ export class UserService {
     }
   }
 
+  public async getPublicUserById(id: number): Promise<UserOutputDTO> {
+    let user = await this.getUserById(id);
+    return UserMapper.toOutputDto(user);
+  }
+
   public async getLeaderboard(): Promise<UserRankOutputDTO[]> {
     const users = await User.findAll({
       attributes: ['id', 'username', 'elo'],

@@ -11,7 +11,7 @@ export class UserController extends Controller {
   @Get("{id}")
   @Security("jwt")
   public async getUserById(@Path() id: number): Promise<UserOutputDTO> {
-    return userService.getUserById(id);
+    return userService.getPublicUserById(id);
   }
 
   // Crée un nouvel utilisateur

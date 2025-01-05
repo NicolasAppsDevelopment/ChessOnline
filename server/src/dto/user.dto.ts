@@ -11,7 +11,6 @@ export interface UserInputPatchDTO {
 export interface UserOutputDTO {
   id: number;
   username: string;
-  password: string;
   elo: number;
 }
 

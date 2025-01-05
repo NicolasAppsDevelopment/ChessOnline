@@ -16,9 +16,6 @@
 					"username": {
 						"type": "string"
 					},
-					"password": {
-						"type": "string"
-					},
 					"elo": {
 						"type": "number",
 						"format": "double"
@@ -27,7 +24,6 @@
 				"required": [
 					"id",
 					"username",
-					"password",
 					"elo"
 				],
 				"type": "object",
