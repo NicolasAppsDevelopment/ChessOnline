@@ -4,8 +4,6 @@ import { GameHistoryOutputDTO } from '../dto/gameHistory.dto'
 import { GameHistoryMapper } from "../mapper/gameHistory.mapper";
 import { Move } from "../models/Move";
 import { Op } from "sequelize";
-import { DATE } from "sequelize";
-import { now } from "sequelize/types/utils";
 import { Room } from "../models/Room";
 import { User } from "../models/User";
 
@@ -113,7 +111,7 @@ export class GameHistoryService {
   public async createGameHistory(
     room_uuid: string,
   ): Promise<void> {
-    await GameHistory.create({ room_uuid: room_uuid, startDate: new Date() });
+    await GameHistory.create({ room_uuid: room_uuid, startDate: new Date(), isPublic: true });
   }
 
   // Supprime un historique de partie par ID

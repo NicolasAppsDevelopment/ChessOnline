@@ -6,9 +6,9 @@ import {useRoomService} from "@/composables/room/roomService";
 import { useUserService } from '@/composables/user/userService';
 import { useStoredUserService } from '@/composables/user/storedUserService'
 
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { Button } from 'primevue'
+import { Button, Tag } from 'primevue'
 import { useConfirm } from "primevue/useconfirm";
 
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
@@ -32,75 +32,109 @@ const userService = useUserService();
 const gameHistorId = parseInt(route.params.id as string);
 const gameHistory = ref<GameHistory>();
 
-let moveNumber = 0;
+const moveNumber = ref<number>(0);
 let moves: Move[] | null | undefined = null;
 
-let chessboardStates: Chessboard[] = [] ; 
+let chessboardStates: Chessboard[] = [] ;
+const processing = ref<boolean>(true);
 
 onMounted(async () => {
   gameHistory.value = await userService.getGameHistoryById(gameHistorId);
   moves = gameHistory.value.moves;
+
+  if (!moves) {
+    return;
+  }
+
   chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
-});
 
-
-function previous() {
-  if (moves != null && moveNumber>0){
-    moveNumber --;
-    chessboard.value = chessboardStates[moveNumber];
-  } 
-}
-
-function next() {
-  if (moves != null && moveNumber<moves.length){
-    moveNumber ++;
-    if (!chessboardStates[moveNumber]){
-      chessboard.value.replayMovePiece(new Position(moves[moveNumber-1].from_x, moves[moveNumber-1].from_y), new Position(moves[moveNumber-1].to_x, moves[moveNumber-1].to_y));
-      if (moves[moveNumber-1].promotion){
-        let cellToModify = chessboard.value.getCellFromXY(moves[moveNumber-1].to_x,moves[moveNumber-1].to_y);
-        if (cellToModify != null){
-          if (cellToModify.piece != null){
-            switch (moves[moveNumber-1].promotionIntoWhichPiece) {
-              case "Queen":
-                cellToModify.piece = new Queen(cellToModify.piece.getColor());
-                break;
-              case "Knight":
-                cellToModify.piece = new Knight(cellToModify.piece.getColor());
-                break;
-              case "Rook":
-                cellToModify.piece = new Rook(cellToModify.piece.getColor());
-                break;
-              case "Bishop":
-                cellToModify.piece = new Bishop(cellToModify.piece.getColor());
-                break;
-              default:
-                console.log("The promotion is not defined correctly");
-            }
+  for (const move of moves) {
+    chessboard.value.replayMovePiece(new Position(move.from_x, move.from_y), new Position(move.to_x, move.to_y))
+    if (move.promotion) {
+      let cellToModify = chessboard.value.getCellFromXY(move.to_x, move.to_y)
+      if (cellToModify != null) {
+        if (cellToModify.piece != null) {
+          switch (move.promotionIntoWhichPiece) {
+            case "Queen":
+              cellToModify.piece = new Queen(cellToModify.piece.getColor());
+              break;
+            case "Knight":
+              cellToModify.piece = new Knight(cellToModify.piece.getColor());
+              break;
+            case "Rook":
+              cellToModify.piece = new Rook(cellToModify.piece.getColor());
+              break;
+            case "Bishop":
+              cellToModify.piece = new Bishop(cellToModify.piece.getColor());
+              break;
+            default:
+              console.log("The promotion is not defined correctly");
           }
         }
       }
-      chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
-      return;
     }
-    chessboard.value = chessboardStates[moveNumber];
+    chessboardStates.push(getChessboardFromRawBoard(chessboard.value));
+  }
+  begin();
+  processing.value = false;
+});
 
-  } 
+function begin() {
+  moveNumber.value = 0;
+  chessboard.value = chessboardStates[moveNumber.value];
+}
+
+function end() {
+  if (moves != null){
+    moveNumber.value = moves.length;
+    chessboard.value = chessboardStates[moveNumber.value];
+  }
+}
+
+function previous() {
+  if (moves != null && moveNumber.value>0){
+    moveNumber.value--;
+    chessboard.value = chessboardStates[moveNumber.value];
+  }
+}
+
+function next() {
+  if (moves != null && moveNumber.value<moves.length){
+    moveNumber.value++;
+    chessboard.value = chessboardStates[moveNumber.value];
+  }
 }
 
 </script>
 
 <template>
   <Navbar></Navbar>
-  <div class="flex gap-1 p-1" >
-    <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
-    <div>
-      <p><i class="fa-solid fa-user"></i> Black Player : {{ gameHistory?.blackPlayer?.username }}</p>
-      <p><i class="fa-solid fa-user"></i> White Player : {{ gameHistory?.whitePlayer?.username }}</p>
-      <p><i class="fa-solid fa-chess-king"></i> Winner : {{ gameHistory?.winner?.username }}</p>
-    </div>
+
+  <div>
+    <p><i class="fa-solid fa-crown"></i> Winner : {{ gameHistory?.winner?.username }}</p>
   </div>
+
+  <div class="flex flex-column gap-1 p-1" >
+    <Tag class="player-tag text-center" severity="danger">
+      <div class="flex items-center gap-2 px-1">
+        <i class="fa-solid fa-user "></i>
+        <span class="text-base">{{ gameHistory?.blackPlayer?.username }}</span>
+      </div>
+    </Tag>
+    <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+    <Tag class="player-tag text-center" severity="success">
+      <div class="flex items-center gap-2 px-1">
+        <i class="fa-solid fa-user "></i>
+        <span class="text-base">{{ gameHistory?.whitePlayer?.username }}</span>
+      </div>
+    </Tag>
+  </div>
+
   <div class="flex gap-1 p-1">
-    <Button label="Previous" icon="fa-solid fa-angle-left" @click="previous()"></Button>
-    <Button label="Next" icon="fa-solid fa-angle-right" @click="next()"></Button>
+    <Button label="Begin" icon="fa-solid fa-backward-step" @click="begin()" :disabled="processing"></Button>
+    <Button label="Previous" icon="fa-solid fa-angle-left" @click="previous()" :disabled="processing"></Button>
+    <Button label="Next" icon-pos="right" icon="fa-solid fa-angle-right" @click="next()" :disabled="processing"></Button>
+    <Button label="End" icon-pos="right" icon="fa-solid fa-forward-step" @click="end()" :disabled="processing"></Button>
+    <span>{{ moveNumber }}/{{ moves?.length }}</span>
   </div>
 </template>

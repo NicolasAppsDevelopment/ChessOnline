@@ -9,7 +9,6 @@ import type { User } from '@/models/User'
 import { onMounted, ref } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
-import router from '@/router'
 import { AxiosError } from 'axios'
 const userService = useUserService();
 const storedUserService = useStoredUserService();
@@ -37,7 +36,7 @@ onMounted(async () => {
   user.value = await userService.getUserById(id);
   user.value.password = "";
 
-  winPercentage.value = await userService.getWinPercentageByUserId(id) 
+  winPercentage.value = await userService.getWinPercentageByUserId(id)
 });
 
 function requestDeletion() {
@@ -57,9 +56,22 @@ function requestDeletion() {
       icon: 'fa-solid fa-check',
     },
     accept: async () => {
-      await userService.delete(userId);
-      storedUserService.clear();
-      toast.add({ severity: 'success', summary: 'Success', detail: 'Account deleted successfully.', life: 4000 });
+      lastError.value = "";
+      processing.value = true;
+
+      try {
+        await userService.delete(userId);
+        storedUserService.clear();
+        toast.add({ severity: 'success', summary: 'Success', detail: 'Account deleted successfully.', life: 4000 });
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          lastError.value = error.response?.data.message ?? error.message;
+        } else {
+          lastError.value = "Unknown error";
+        }
+      } finally {
+        processing.value = false;
+      }
     },
   });
 }
@@ -81,8 +93,10 @@ function requestUpdate() {
       icon: 'fa-solid fa-check',
     },
     accept: async () => {
+      lastError.value = "";
+      processing.value = true;
+
       try {
-        processing.value = true;
         await userService.update(user.value);
         toast.add({ severity: 'success', summary: 'Success', detail: 'Account updated successfully.', life: 4000 });
       } catch (error) {
@@ -131,10 +145,10 @@ function requestUpdate() {
 
       <div class="flex gap-1 p-1">
         <RouterLink to="" v-if="isOwner">
-          <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" />
+          <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" :disabled="processing" />
         </RouterLink>
         <Button label="Logout" icon="fa-solid fa-power-off" v-if="isOwner" @click="storedUserService.clear()" />
-        <Button label="Delete account" icon="fa-solid fa-trash" v-if="isOwner" @click="requestDeletion()" />
+        <Button label="Delete account" icon="fa-solid fa-trash" v-if="isOwner" @click="requestDeletion()" :disabled="processing" />
         <RouterLink :to="'/history/' + route.params.id">
           <Button label="View game history" icon="fa-solid fa-clock" />
         </RouterLink>

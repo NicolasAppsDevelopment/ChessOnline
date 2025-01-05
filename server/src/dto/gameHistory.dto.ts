@@ -22,5 +22,6 @@ export interface GameHistoryOutputDTO {
   blackPlayer?: UserRankOutputDTO |  null;
   whitePlayer?: UserRankOutputDTO |  null;
   winner?: UserRankOutputDTO | null;
-  moves?: MoveOutputDTO[] | null; 
+  moves?: MoveOutputDTO[] | null;
+  isPublic: boolean;
 }

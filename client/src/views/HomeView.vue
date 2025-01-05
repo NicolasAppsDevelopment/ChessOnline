@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { Button, InputText, ToggleButton, InputGroup, InputGroupAddon, Message } from 'primevue'
+import { Button, InputText, ToggleButton, InputGroup, InputGroupAddon, Message, Badge } from 'primevue'
 import {AxiosError} from "axios";
 import {ref, onMounted} from "vue";
 import {useRoomService} from "@/composables/room/roomService";
@@ -58,7 +58,7 @@ async function createRoom() {
     <table class="rooms mb-2">
       <thead>
       <tr>
-        <th><i class="fa-solid fa-door-open"></i> Rooms <span class="tag">{{ rooms.length }}</span></th>
+        <th><i class="fa-solid fa-door-open"></i> Rooms <Badge :value="rooms.length" severity="contrast" size="small"></Badge></th>
       </tr>
       </thead>
       <tbody>

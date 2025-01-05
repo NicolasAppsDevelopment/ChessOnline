@@ -10,5 +10,6 @@ export interface GameHistory {
   blackPlayer?: UserRank |  null;
   whitePlayer?: UserRank |  null;
   winner?: UserRank | null;
-  moves?: Move[] | null; 
+  moves?: Move[] | null;
+  isPublic: boolean;
 }

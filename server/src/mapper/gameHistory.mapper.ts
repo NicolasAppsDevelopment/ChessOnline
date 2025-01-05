@@ -11,7 +11,8 @@ export class GameHistoryMapper {
       blackPlayer: gameHistory.blackPlayer,
       whitePlayer: gameHistory.whitePlayer,
       winner: gameHistory.winner,
-      moves: gameHistory.moves
+      moves: gameHistory.moves,
+      isPublic: gameHistory.isPublic,
     };
   }
 

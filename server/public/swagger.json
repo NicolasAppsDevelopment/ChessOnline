@@ -221,12 +221,16 @@
 						},
 						"type": "array",
 						"nullable": true
+					},
+					"isPublic": {
+						"type": "boolean"
 					}
 				},
 				"required": [
 					"id",
 					"startDate",
-					"room"
+					"room",
+					"isPublic"
 				],
 				"type": "object",
 				"additionalProperties": false

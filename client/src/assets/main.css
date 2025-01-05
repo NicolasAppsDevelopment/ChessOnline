@@ -202,19 +202,14 @@
   text-decoration: none;
   color: var(--color-text);
 }
-
-
-
-
-
-
-.tag {
-  background-color: black;
-  color: white;
-  padding: 1px 5px;
-  border-radius: 100px;
-  font-size: small;
+.rooms tbody tr:hover {
+  background-color: rgba(100, 100, 100, 0.25);
 }
+
+
+
+
+
 
 /* TOGGLE ON-OFF BUTTON CSS */
 .on-off-custom.p-togglebutton, .on-off-custom.p-togglebutton span {
@@ -238,4 +233,8 @@
     --p-toast-error-background: rgba(47, 14, 14, 0.75);
     --p-toast-warn-background: rgba(47, 43, 14, 0.75);
   }
+}
+
+.player-tag i {
+  align-self: center;
 }

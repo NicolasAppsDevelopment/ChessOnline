@@ -16,7 +16,8 @@ export interface GameHistoryAttributes {
     whitePlayer_id?: number | null;
     winner?: User | null;
     winner_id?: number | null;
-    moves?: Move[]; 
+    moves?: Move[];
+    isPublic: boolean;
 }
 
 export class GameHistory
@@ -35,6 +36,7 @@ export class GameHistory
     public winner!: User | null;
     public winner_id!: number | null;
     public moves!: Move[];
+    public isPublic!: boolean;
 }
 
 GameHistory.init(
@@ -67,6 +69,10 @@ GameHistory.init(
         winner_id: {
             type: DataTypes.INTEGER,
             allowNull: true,
+        },
+        isPublic: {
+            type: DataTypes.BOOLEAN,
+            allowNull: false,
         },
     },
     {
