@@ -22,6 +22,9 @@ export function useGameHistoryService() {
     async getTotalGametimeByUserId(id: number): Promise<number> {
       return await gameHistoryApi.getTotalGametimeByUserId(id);
     },
+    async updateGameHistoryVisibility(id: number, isPublic: boolean): Promise<void> {
+      await gameHistoryApi.updateGameHistoryVisibility(id, isPublic);
+    }
   };
 }
 

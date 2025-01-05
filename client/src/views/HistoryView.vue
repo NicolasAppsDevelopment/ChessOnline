@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import Navbar from "@/components/Navbar.vue";
-import { Button, Checkbox } from 'primevue'
+import { Button, Checkbox, Message } from 'primevue'
 import { useStoredUserService } from "@/composables/user/storedUserService"
 import { useGameHistoryService } from '@/composables/history/historyService'
 import { onMounted, ref, watch } from 'vue'
@@ -19,12 +19,10 @@ watch(() => route.params.id, async () => {
 
 const storedUserService = useStoredUserService();
 const gameHistoryService = useGameHistoryService();
-//const historyService = useHistoryService();
 
 const confirm = useConfirm();
 const toast = useToast();
 const lastError = ref("");
-const processing = ref(false);
 
 const gameHistories = ref<GameHistory[]>([]);
 const userId = storedUserService.storedUser.value.id;
@@ -55,10 +53,11 @@ function stopPropagation(event: Event) {
   event.stopPropagation();
 }
 
-function requestUpdate() {
+function requestUpdate(gameHistory: GameHistory, event: Event) {
+  event.stopPropagation();
   confirm.require({
     header: 'Confirmation',
-    message: 'Are you sure you want to update your history visibility?',
+    message: 'Are you sure you want to change this game visibility?',
     icon: 'fa-solid fa-triangle-exclamation',
     rejectProps: {
       label: 'Cancel',
@@ -72,10 +71,9 @@ function requestUpdate() {
     },
     accept: async () => {
       lastError.value = "";
-      processing.value = true;
 
       try {
-        //await gameHistoryService.update(user.value);
+        await gameHistoryService.updateGameHistoryVisibility(gameHistory.id, gameHistory.isPublic);
         toast.add({ severity: 'success', summary: 'Success', detail: 'History visibility updated successfully.', life: 4000 });
       } catch (error) {
         if (error instanceof AxiosError) {
@@ -83,10 +81,12 @@ function requestUpdate() {
         } else {
           lastError.value = "Unknown error";
         }
-      } finally {
-        processing.value = false;
       }
     },
+    reject: () => {
+      lastError.value = "";
+      gameHistory.isPublic = !gameHistory.isPublic;
+    }
   });
 }
 
@@ -97,10 +97,10 @@ function requestUpdate() {
 
   <div class="p1">
     <h1>Game Histories</h1>
+    <Message v-if="lastError" severity="error" icon="fa-solid fa-circle-exclamation" class="mb-2">{{ lastError }}</Message>
     <table class="gameHistory">
       <thead>
         <tr>
-          <th><i class="fa-solid fa-chess-board"></i> Room Name</th>
           <th><i class="fa-solid fa-calendar"></i> Date</th>
           <th><i class="fa-solid fa-user"></i> Black Player</th>
           <th><i class="fa-solid fa-user"></i> White Player</th>
@@ -110,7 +110,6 @@ function requestUpdate() {
       </thead>
       <tbody>
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
-          <td>{{ gameHistory.room?.name }}</td>
           <td>{{ gameHistory.startDate }}</td>
           <td>
             <RouterLink :to="'/user/' + gameHistory.blackPlayer?.id" @click="stopPropagation">
@@ -127,12 +126,9 @@ function requestUpdate() {
               {{ gameHistory.winner?.username }}
             </RouterLink>
           </td>
-          <td v-if="isOwner"><Checkbox v-model="gameHistory.isPublic" binary @click="stopPropagation" /></td>
+          <td v-if="isOwner"><Checkbox v-model="gameHistory.isPublic" binary @click="requestUpdate(gameHistory, $event)" /></td>
         </tr>
       </tbody>
     </table>
-    <div class="flex gap-1 p-1">
-      <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" :disabled="processing" v-if="isOwner"/>
-    </div>
   </div>
 </template>

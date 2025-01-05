@@ -4,13 +4,16 @@ import {
   Route,
   Path,
   Tags,
-  Security,
-} from "tsoa";
+  Security, Request, Put, Body
+} from 'tsoa'
 import { gameHistoryService } from "../services/gameHistory.service";
 import {
+  GameHistoryVisibilityInputPutDTO,
   GameReplayOutputDTO,
   GameHistoryOutputDTO
 } from '../dto/gameHistory.dto'
+import express from 'express'
+import { getUserIdFromJWT } from '../middlewares/authentication'
 
 @Route("gameHistories")
 @Tags("GameHistories")
@@ -18,8 +21,16 @@ export class GameHistoryController extends Controller {
   // Récupère les historiques de parties liés à un utilisateur par ID
   @Get("/user/{id}")
   @Security("jwt")
-  public async getGameHistoriesByUserId(@Path() id: number): Promise<GameHistoryOutputDTO[]> {
-    return gameHistoryService.getGameHistoriesByUserId(id);
+  public async getGameHistoriesByUserId(
+    @Path() id: number,
+    @Request() request: express.Request,
+  ): Promise<GameHistoryOutputDTO[]> {
+    const fromUserId = await getUserIdFromJWT(request);
+    if (fromUserId == id) {
+      return gameHistoryService.getMyGameHistoriesByUserId(id);
+    } else {
+      return gameHistoryService.getPublicGameHistoriesByUserId(id);
+    }
   }
 
   // Récupère l'historique d'une partie par son id
@@ -56,4 +67,14 @@ export class GameHistoryController extends Controller {
     return gameHistoryService.getTotalGametimeByUserId(id);
   }
 
+  @Put("visibility")
+  @Security("jwt")
+  public async updateGameHistory(
+    @Body() requestBody: GameHistoryVisibilityInputPutDTO,
+    @Request() request: express.Request
+  ): Promise<void> {
+    const { id, isPublic } = requestBody;
+    const fromUserId = await getUserIdFromJWT(request);
+    await gameHistoryService.updateGameHistoryVisibility(fromUserId, id, isPublic);
+  }
 }

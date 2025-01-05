@@ -9,12 +9,15 @@ import { User } from "../models/User";
 
 export class GameHistoryService {
   // Récupère les historiques de parties liés à un utilisateur par ID
-  public async getGameHistoriesByUserId(id: number): Promise<GameHistoryOutputDTO[]> {
+  public async getPublicGameHistoriesByUserId(id: number): Promise<GameHistoryOutputDTO[]> {
     const gameHistories = GameHistoryMapper.toOutputDtoList(await GameHistory.findAll({
       where: {
         [Op.or]: [
             { blackPlayer_id: id },
             { whitePlayer_id: id },
+        ],
+        [Op.and]: [
+          { isPublic: true },
         ],
       },
       include: [
@@ -41,6 +44,48 @@ export class GameHistoryService {
       order: [
         ['startDate', 'DESC'],
     ]
+    }));
+
+    if (gameHistories) {
+      return gameHistories;
+    } else {
+      notFound("game histories of this User");
+    }
+  }
+
+  public async getMyGameHistoriesByUserId(id: number): Promise<GameHistoryOutputDTO[]> {
+    const gameHistories = GameHistoryMapper.toOutputDtoList(await GameHistory.findAll({
+      where: {
+        [Op.or]: [
+          { blackPlayer_id: id },
+          { whitePlayer_id: id },
+        ],
+      },
+      include: [
+        {
+          model: Room,
+          as: "room",
+        },
+        {
+          model: User,
+          as: "blackPlayer",
+        },
+        {
+          model: User,
+          as: "whitePlayer",
+        },
+        {
+          model: User,
+          as: "winner",
+        },
+        {
+          model: Move,
+          as: "moves",
+        },
+      ],
+      order: [
+        ['startDate', 'DESC'],
+      ]
     }));
 
     if (gameHistories) {
@@ -131,7 +176,7 @@ export class GameHistoryService {
     winner_id?: number | null,
     blackPlayer_id?: number |  null,
     whitePlayer_id?: number | null,
-  ): Promise<string> {
+  ): Promise<void> {
     const gameHistory = await GameHistory.findByPk(id);
     if (gameHistory) {
       if (endDate) gameHistory.endDate = endDate;
@@ -139,7 +184,24 @@ export class GameHistoryService {
       if (blackPlayer_id) gameHistory.blackPlayer_id = blackPlayer_id;
       if (whitePlayer_id) gameHistory.whitePlayer_id = whitePlayer_id;
       await gameHistory.save();
-      return "Game History updated";
+    } else {
+      notFound("Game History");
+    }
+  }
+
+  public async updateGameHistoryVisibility(
+    fromUserId: number,
+    id: number,
+    isPublic: boolean,
+  ): Promise<void> {
+    const gameHistory = await GameHistory.findByPk(id);
+    if (gameHistory) {
+      if (gameHistory.blackPlayer_id !== fromUserId && gameHistory.whitePlayer_id !== fromUserId) {
+        throw new Error("You are not authorized to update this game history.");
+      }
+
+      gameHistory.isPublic = isPublic;
+      await gameHistory.save();
     } else {
       notFound("Game History");
     }

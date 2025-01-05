@@ -30,6 +30,12 @@ export function useGameHistoryApi() {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}total/gameTime/` + id);
       return res.data;
     },
+    async updateGameHistoryVisibility(id: number, isPublic: boolean) {
+      await axiosInstance.put(`${ApiUrlGetUserGameHistories}visibility`, {
+        id: id,
+        isPublic: isPublic
+      });
+    }
   };
 }
 
