@@ -183,11 +183,6 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"endDate": {
-						"type": "string",
-						"format": "date-time",
-						"nullable": true
-					},
 					"room": {
 						"allOf": [
 							{
@@ -237,6 +232,43 @@
 					"room",
 					"isPublic"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GameReplayOutputDTO": {
+				"properties": {
+					"blackPlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"whitePlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"winner": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"moves": {
+						"items": {
+							"$ref": "#/components/schemas/MoveOutputDTO"
+						},
+						"type": "array",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -583,7 +615,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GameHistoryOutputDTO"
+									"$ref": "#/components/schemas/GameReplayOutputDTO"
 								}
 							}
 						}

@@ -17,11 +17,17 @@ export interface GameHistoryInputPatchDTO {
 export interface GameHistoryOutputDTO {
   id: number;
   startDate: Date;
-  endDate?: Date | null;
   room: ListRoomItemOutputDTO | null;
   blackPlayer?: UserRankOutputDTO | null;
   whitePlayer?: UserRankOutputDTO | null;
   winner?: UserRankOutputDTO | null;
   moves?: MoveOutputDTO[] | null;
   isPublic: boolean;
+}
+
+export interface GameReplayOutputDTO {
+  blackPlayer?: UserRankOutputDTO |  null;
+  whitePlayer?: UserRankOutputDTO |  null;
+  winner?: UserRankOutputDTO | null;
+  moves?: MoveOutputDTO[] | null;
 }

@@ -5,7 +5,6 @@ import type { UserRank } from "./User";
 export interface GameHistory {
   id: number;
   startDate: Date;
-  endDate?: Date | null;
   room?: ListRoomItem | null;
   blackPlayer?: UserRank |  null;
   whitePlayer?: UserRank |  null;
@@ -13,3 +12,11 @@ export interface GameHistory {
   moves?: Move[] | null;
   isPublic: boolean;
 }
+
+export interface GameReplay {
+  blackPlayer?: UserRank |  null;
+  whitePlayer?: UserRank |  null;
+  winner?: UserRank | null;
+  moves?: Move[] | null;
+}
+

@@ -1,7 +1,7 @@
 import { notFound } from "../error/NotFoundError";
 import { GameHistory } from "../models/GameHistory";
-import { GameHistoryOutputDTO } from '../dto/gameHistory.dto'
-import { GameHistoryMapper } from "../mapper/gameHistory.mapper";
+import { GameHistoryOutputDTO, GameReplayOutputDTO } from '../dto/gameHistory.dto'
+import { GameHistoryMapper, GameReplayMapper } from "../mapper/gameHistory.mapper";
 import { Move } from "../models/Move";
 import { Op } from "sequelize";
 import { Room } from "../models/Room";
@@ -52,16 +52,12 @@ export class GameHistoryService {
   }
 
    // Récupère un historique de partie par son ID
-   public async getGameHistoryById(id: number): Promise<GameHistoryOutputDTO> {
+   public async getGameHistoryById(id: number): Promise<GameReplayOutputDTO> {
     const gameHistory = await GameHistory.findOne({
       where: {
         id: id,
       },
       include: [
-        {
-          model: Room,
-          as: "room",
-        },
         {
           model: User,
           as: "blackPlayer",
@@ -83,7 +79,7 @@ export class GameHistoryService {
 
 
     if (gameHistory) {
-      return GameHistoryMapper.toOutputDto(gameHistory);
+      return GameReplayMapper.toOutputDto(gameHistory);
     } else {
       notFound("Game History");
     }
@@ -144,6 +140,8 @@ export class GameHistoryService {
       notFound("Game History");
     }
   }
+
+  //Les fonctions suivantes traitants de statisiques sont séparées car si le projects venait à évoluer
 
   // Récupère le pourcentage de victoire d'un utilisateur par son ID
   public async getWinPercentageByUserId(id: number): Promise<number> {
