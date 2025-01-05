@@ -551,7 +551,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/UserOutputDTO"
+										"$ref": "#/components/schemas/UserRankOutputDTO"
 									},
 									"type": "array"
 								}

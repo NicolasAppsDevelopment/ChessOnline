@@ -13,6 +13,7 @@ const users = ref<User[]>([]);
 
 onMounted(async () => {
   users.value = await userService.getLeaderboard();
+  console.log(users.value);
 });
 
 onUpdated(async () => {

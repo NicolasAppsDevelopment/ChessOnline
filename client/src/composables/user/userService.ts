@@ -1,4 +1,4 @@
-import type { User } from '@/models/User';
+import type { User, UserRank } from '@/models/User';
 import { useUserApi } from './userApi';
 import { useStoredUserService } from './storedUserService';
 
@@ -24,7 +24,7 @@ export function useUserService() {
     async getUserById(id: number): Promise<User> {
       return await userApi.getUserById(id);
     },
-    async getLeaderboard(): Promise<User[]> {
+    async getLeaderboard(): Promise<UserRank[]> {
       return await userApi.getLeaderboard();
     },
   };

@@ -6,7 +6,7 @@ import {
   ApiUrlGetUser,
   ApiUrlGetLeaderboard,
 } from '@/constants/ApiUrl'
-import type { User } from '@/models/User';
+import type { User, UserRank } from '@/models/User';
 
 export function useUserApi() {
   return {
@@ -43,7 +43,7 @@ export function useUserApi() {
       const res = await axiosInstance.get(`${ApiUrlGetUser}`+ id);
       return res.data;
     },
-    async getLeaderboard(): Promise<User[]> {
+    async getLeaderboard(): Promise<UserRank[]> {
       const res = await axiosInstance.get(`${ApiUrlGetLeaderboard}`);
       return res.data;
     },
