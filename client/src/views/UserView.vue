@@ -116,7 +116,7 @@ function requestUpdate() {
 
 <template>
   <Navbar></Navbar>
-  <div class="flex">
+  <div class="">
     <div>
       <h1 class="text-center">User profile</h1>
 

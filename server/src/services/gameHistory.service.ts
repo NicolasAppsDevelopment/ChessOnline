@@ -40,7 +40,7 @@ export class GameHistoryService {
           },
       ],
       order: [
-        ['date', 'DESC'],
+        ['startDate', 'DESC'],
     ]
     }));
 
@@ -102,7 +102,7 @@ export class GameHistoryService {
           },
       ],
       order: [
-        ['date', 'DESC'],
+        ['startDate', 'DESC'],
       ]
     });
   }

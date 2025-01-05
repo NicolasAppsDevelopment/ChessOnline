@@ -54,7 +54,7 @@ function goToGameHistory(id: number) {
       <tbody>
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
           <td>{{ gameHistory.room.name }}</td>
-          <td>{{ gameHistory.date }}</td>
+          <td>{{ gameHistory.startDate }}</td>
           <td>{{ gameHistory.blackPlayer?.username }}</td>
           <td>{{ gameHistory.whitePlayer?.username }}</td>
           <td>{{ gameHistory.winner?.username }}</td>
