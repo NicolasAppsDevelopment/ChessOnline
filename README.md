@@ -16,6 +16,10 @@
 ## Access to the website
 http://localhost:5173/
 
+## Specificities
+- We used Socket.IO for real-time, bidirectional and event-based communication during a game.
+- All the others network communications are made with HTTP requests to an Express based API.
+
 ## Gameplay
 - In a game :
     - Drag and drop a piece to move it
