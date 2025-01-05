@@ -1,9 +1,8 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/database";
-import {User} from "./User";
-import {Room} from "./Room";
-import {Move} from "./Move"; // Connexion à la base de données
-//TODO mettre date de fin
+import { DataTypes, Model } from 'sequelize'
+import sequelize from '../config/database'
+import { User } from './User'
+import { Room } from './Room'
+import { Move } from './Move' // Connexion à la base de données
 export interface GameHistoryAttributes {
     id?: number;
     startDate?: Date;

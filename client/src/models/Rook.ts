@@ -1,6 +1,5 @@
-import { Piece, Color } from "./Piece";
-import {Position} from "./Position";
-import type {Chessboard} from "./Chessboard";
+import { Color, Piece } from './Piece'
+
 export class Rook extends Piece {
     constructor(color: Color) {
       super("Rook", color);

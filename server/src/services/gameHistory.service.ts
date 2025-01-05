@@ -1,11 +1,10 @@
-import { notFound } from "../error/NotFoundError";
-import { GameHistory } from "../models/GameHistory";
+import { notFound } from '../error/NotFoundError'
+import { GameHistory } from '../models/GameHistory'
 import { GameHistoryOutputDTO, GameReplayOutputDTO } from '../dto/gameHistory.dto'
-import { GameHistoryMapper, GameReplayMapper } from "../mapper/gameHistory.mapper";
-import { Move } from "../models/Move";
-import { Op } from "sequelize";
-import { Room } from "../models/Room";
-import { User } from "../models/User";
+import { GameHistoryMapper, GameReplayMapper } from '../mapper/gameHistory.mapper'
+import { Move } from '../models/Move'
+import { Op } from 'sequelize'
+import { User } from '../models/User'
 
 export class GameHistoryService {
   // Récupère les historiques de parties liés à un utilisateur par ID
@@ -148,16 +147,6 @@ export class GameHistoryService {
     room_uuid: string,
   ): Promise<void> {
     await GameHistory.create({ room_uuid: room_uuid, startDate: new Date(), isPublic: true });
-  }
-
-  // Supprime un historique de partie par ID
-  public async deleteGameHistory(id: number): Promise<void> {
-    const gameHistory = await GameHistory.findByPk(id);
-    if (gameHistory) {
-      gameHistory.destroy();
-    } else {
-      notFound("Game History");
-    }
   }
 
   // Met à jour un historique de partie

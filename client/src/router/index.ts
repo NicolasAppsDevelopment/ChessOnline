@@ -1,12 +1,13 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import LoginPage from '@/views/LoginView.vue';
-import RegisterView from "@/views/RegisterView.vue";
-import LeaderboardView from "@/views/LeaderboardView.vue";
-import UserView from "@/views/UserView.vue";
-import HistoryView from "@/views/HistoryView.vue";
-import HomeView from "@/views/HomeView.vue";
-import GameView from "@/views/GameView.vue";
-import GameReView from '@/views/GameReView.vue';
+import { createRouter, createWebHistory } from 'vue-router'
+import LoginPage from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import LeaderboardView from '@/views/LeaderboardView.vue'
+import UserView from '@/views/UserView.vue'
+import HistoryView from '@/views/HistoryView.vue'
+import HomeView from '@/views/HomeView.vue'
+import GameView from '@/views/GameView.vue'
+import GameReView from '@/views/GameReView.vue'
+
 const routes = [
   { path: '/', component: HomeView },
   { path: '/login', component: LoginPage },

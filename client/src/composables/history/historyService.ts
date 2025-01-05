@@ -1,5 +1,5 @@
 import type { GameHistory, GameReplay } from '@/models/GameHistory'
-import { useGameHistoryApi } from './historyApi';
+import { useGameHistoryApi } from './historyApi'
 
 const gameHistoryApi = useGameHistoryApi();
 export function useGameHistoryService() {

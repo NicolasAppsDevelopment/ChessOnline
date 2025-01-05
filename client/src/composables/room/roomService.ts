@@ -1,5 +1,5 @@
 import type { CreateRoom, ListRoomItem } from '@/models/Room'
-import { useRoomApi } from '@/composables/room/roomApi';
+import { useRoomApi } from '@/composables/room/roomApi'
 
 const roomApi = useRoomApi();
 export function useRoomService() {

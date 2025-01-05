@@ -1,15 +1,14 @@
-import {notFound} from "../error/NotFoundError";
-import {Room} from "../models/Room";
-import {Chessboard} from "../models/Chessboard";
-import { v4 as uuidv4 } from 'uuid';
-import {User} from "../models/User";
+import { notFound } from '../error/NotFoundError'
+import { Room } from '../models/Room'
+import { Chessboard } from '../models/Chessboard'
+import { v4 as uuidv4 } from 'uuid'
+import { User } from '../models/User'
 import { ListRoomItemOutputDTO } from '../dto/room.dto'
 import { Position } from '../models/Position'
 import { ExtraDataMove } from '../models/ExtraDataMove'
 import { gameHistoryService } from './gameHistory.service'
 import { moveService } from './move.service'
 import { userService } from './user.service'
-import { GameHistory } from '../models/GameHistory'
 
 export class RoomsService {
   public boards: Map<string, Chessboard> = new Map();

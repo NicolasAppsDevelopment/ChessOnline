@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Button, InputText, ToggleButton, InputGroup, InputGroupAddon, Message, Badge } from 'primevue'
-import {AxiosError} from "axios";
-import {ref, onMounted} from "vue";
-import {useRoomService} from "@/composables/room/roomService";
+import { Badge, Button, InputGroup, InputGroupAddon, InputText, Message, ToggleButton } from 'primevue'
+import { AxiosError } from 'axios'
+import { onMounted, ref } from 'vue'
+import { useRoomService } from '@/composables/room/roomService'
 
-import type {CreateRoom, ListRoomItem} from "@/models/Room";
-import Navbar from "@/components/Navbar.vue";
+import type { CreateRoom, ListRoomItem } from '@/models/Room'
+import Navbar from '@/components/Navbar.vue'
+
 const roomService = useRoomService();
 
 const newRoom = ref<CreateRoom>({ name: "", isPrivate: true });

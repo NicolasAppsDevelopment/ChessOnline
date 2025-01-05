@@ -1,6 +1,6 @@
-import type { User, UserRank } from '@/models/User';
-import { useUserApi } from './userApi';
-import { useStoredUserService } from './storedUserService';
+import type { User, UserRank } from '@/models/User'
+import { useUserApi } from './userApi'
+import { useStoredUserService } from './storedUserService'
 
 const userApi = useUserApi();
 const storedUserService = useStoredUserService();

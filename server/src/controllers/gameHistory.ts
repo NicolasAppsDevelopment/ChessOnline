@@ -1,17 +1,6 @@
-import {
-  Controller,
-  Get,
-  Route,
-  Path,
-  Tags,
-  Security, Request, Put, Body
-} from 'tsoa'
-import { gameHistoryService } from "../services/gameHistory.service";
-import {
-  GameHistoryVisibilityInputPutDTO,
-  GameReplayOutputDTO,
-  GameHistoryOutputDTO
-} from '../dto/gameHistory.dto'
+import { Body, Controller, Get, Path, Put, Request, Route, Security, Tags } from 'tsoa'
+import { gameHistoryService } from '../services/gameHistory.service'
+import { GameHistoryOutputDTO, GameHistoryVisibilityInputPutDTO, GameReplayOutputDTO } from '../dto/gameHistory.dto'
 import express from 'express'
 import { getUserIdFromJWT } from '../middlewares/authentication'
 

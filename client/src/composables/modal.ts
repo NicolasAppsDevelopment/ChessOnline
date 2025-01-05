@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref } from 'vue'
 
 const visible = ref(false);
 let resolvePromise: (value: string | null) => void;

@@ -1,7 +1,5 @@
-import axiosInstance from '@/config/AxiosConfig';
-import {
-  ApiUrlGetUserGameHistories,
-} from '@/constants/ApiUrl'
+import axiosInstance from '@/config/AxiosConfig'
+import { ApiUrlGetUserGameHistories } from '@/constants/ApiUrl'
 import type { GameHistory, GameReplay } from '@/models/GameHistory'
 
 export function useGameHistoryApi() {

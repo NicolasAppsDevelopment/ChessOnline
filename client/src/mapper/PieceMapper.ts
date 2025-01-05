@@ -1,11 +1,9 @@
-import {Position} from "@/models/Position";
-import {Piece} from "@/models/Piece";
-import {Rook} from "@/models/Rook";
-import {Knight} from "@/models/Knight";
-import {Bishop} from "@/models/Bishop";
-import {Queen} from "@/models/Queen";
-import {King} from "@/models/King";
-import {Pawn} from "@/models/Pawn";
+import { Rook } from '@/models/Rook'
+import { Knight } from '@/models/Knight'
+import { Bishop } from '@/models/Bishop'
+import { Queen } from '@/models/Queen'
+import { King } from '@/models/King'
+import { Pawn } from '@/models/Pawn'
 
 export function getPieceFromRaw(piece: any) {
   if (piece == null) {

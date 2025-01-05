@@ -32,12 +32,12 @@
 </template>
 
 <script setup lang="ts">
-import type {Chessboard} from '@/models/Chessboard';
-import {Position} from "@/models/Position";
-import {socket} from "@/socket";
-import type {Cell} from "@/models/Cell";
-import {getPositionArrayFromRaw} from "@/mapper/PositionMapper";
-import {useStoredUserService} from "@/composables/user/storedUserService";
+import { Chessboard } from '@/models/Chessboard'
+import { Position } from '@/models/Position'
+import { socket } from '@/socket'
+import type { Cell } from '@/models/Cell'
+import { getPositionArrayFromRaw } from '@/mapper/PositionMapper'
+import { useStoredUserService } from '@/composables/user/storedUserService'
 import { computed, onBeforeUnmount } from 'vue'
 import type { ExtraDataMove } from '@/models/ExtraDataMove'
 import { Color } from '@/models/Piece'

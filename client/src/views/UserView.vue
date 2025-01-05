@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
-import Navbar from "@/components/Navbar.vue";
-import { Button, InputGroup, InputGroupAddon, InputText, InputNumber, Message, Password } from 'primevue'
+import Navbar from '@/components/Navbar.vue'
+import { Button, InputGroup, InputGroupAddon, InputNumber, InputText, Message, Password } from 'primevue'
 import { useRoute } from 'vue-router'
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import { useUserService } from '@/composables/user/userService'
@@ -50,10 +50,12 @@ async function getData() {
   user.value = await userService.getUserById(id);
   user.value.password = "";
 
-  winPercentage.value = await gameHistoryService.getWinPercentageByUserId(id);
-  averageGameDuraion.value = await gameHistoryService.getAverageGameDurationByUserId(id);
-  averageGameMoves.value = await gameHistoryService.getAverageGameMoveByUserId(id);
-  totalGameTime.value = await gameHistoryService.getTotalGametimeByUserId(id);
+  try {
+    winPercentage.value = await gameHistoryService.getWinPercentageByUserId(id);
+    averageGameDuraion.value = await gameHistoryService.getAverageGameDurationByUserId(id);
+    averageGameMoves.value = await gameHistoryService.getAverageGameMoveByUserId(id);
+    totalGameTime.value = await gameHistoryService.getTotalGametimeByUserId(id);
+  } catch {}
 
   isOwner.value = route.params.id == userId.toString();
 }

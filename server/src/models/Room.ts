@@ -1,5 +1,5 @@
-import { Model, DataTypes } from "sequelize";
-import sequelize from "../config/database"; // Connexion à la base de données
+import { DataTypes, Model } from 'sequelize'
+import sequelize from '../config/database' // Connexion à la base de données
 export interface RoomAttributes {
   uuid: string;
   name: string;

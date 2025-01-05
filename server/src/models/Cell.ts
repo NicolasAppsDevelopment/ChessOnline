@@ -1,5 +1,5 @@
-import type {Position} from "./Position";
-import type {Piece} from "./Piece";
+import type { Position } from './Position'
+import type { Piece } from './Piece'
 
 export class Cell {
   public piece: Piece | null;

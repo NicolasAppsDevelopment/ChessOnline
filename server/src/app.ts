@@ -1,15 +1,15 @@
-import express from 'express';
-import {createServer} from 'node:http';
-import {createHandler} from './socket_handler/handler';
-import {Server} from 'socket.io';
-import {RegisterRoutes} from "./routes";
-import errorHandler from "./middlewares/errorHandler";
-import morgan from "morgan";
-import swaggerUi from "swagger-ui-express";
-import cors from "cors";
-import {socketIoAuthentication} from "./middlewares/socketIoAuth";
-import {User} from "./models/User";
-import { roomsService } from './services/rooms.service';
+import express from 'express'
+import { createServer } from 'node:http'
+import { createHandler } from './socket_handler/handler'
+import { Server } from 'socket.io'
+import { RegisterRoutes } from './routes'
+import errorHandler from './middlewares/errorHandler'
+import morgan from 'morgan'
+import swaggerUi from 'swagger-ui-express'
+import cors from 'cors'
+import { socketIoAuthentication } from './middlewares/socketIoAuth'
+import { User } from './models/User'
+import { roomsService } from './services/rooms.service'
 
 roomsService.clear();
 

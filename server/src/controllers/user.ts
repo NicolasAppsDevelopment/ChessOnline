@@ -1,21 +1,6 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Delete,
-  Route,
-  Path,
-  Body,
-  Tags,
-  Patch,
-  Security, Header, Request
-} from 'tsoa'
-import { userService } from "../services/user.service";
-import {
-  UserInputDTO,
-  UserInputPatchDTO,
-  UserOutputDTO
-} from '../dto/user.dto'
+import { Body, Controller, Delete, Get, Patch, Path, Post, Request, Route, Security, Tags } from 'tsoa'
+import { userService } from '../services/user.service'
+import { UserInputDTO, UserInputPatchDTO, UserOutputDTO } from '../dto/user.dto'
 import { getUserIdFromJWT } from '../middlewares/authentication'
 import express from 'express'
 

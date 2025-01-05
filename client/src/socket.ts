@@ -1,6 +1,6 @@
-import { reactive } from "vue";
-import { io } from "socket.io-client";
-import { ApiUrl } from "@/constants/ApiUrl";
+import { reactive } from 'vue'
+import { io } from 'socket.io-client'
+import { ApiUrl } from '@/constants/ApiUrl'
 
 export const state = reactive({
   connected: false,

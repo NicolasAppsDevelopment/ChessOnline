@@ -1,32 +1,23 @@
 <script setup lang="ts">
-import ChessBoardComponent from "@/components/ChessBoard.vue";
-import Navbar from "@/components/Navbar.vue";
+import ChessBoardComponent from '@/components/ChessBoard.vue'
+import Navbar from '@/components/Navbar.vue'
 
-import { useRoomService } from "@/composables/room/roomService";
 import { useGameHistoryService } from '@/composables/history/historyService'
-import { useStoredUserService } from '@/composables/user/storedUserService'
-
 import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { Button, Tag } from 'primevue'
-import { useConfirm } from "primevue/useconfirm";
-
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import type { GameReplay } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
-import { Chessboard } from "@/models/Chessboard";
-import type { MoveReplay } from "@/models/Move";
-import { Rook } from "@/models/Rook";
-import { Queen } from "@/models/Queen";
-import { Knight } from "@/models/Knight";
-import { Bishop } from "@/models/Bishop";
+import { Chessboard } from '@/models/Chessboard'
+import type { MoveReplay } from '@/models/MoveReplay'
+import { Rook } from '@/models/Rook'
+import { Queen } from '@/models/Queen'
+import { Knight } from '@/models/Knight'
+import { Bishop } from '@/models/Bishop'
 
-const confirm = useConfirm();
-const roomsService = useRoomService();
 const route = useRoute();
-let chessboard = ref<Chessboard>(new Chessboard());//TODO props
-const storedUserService = useStoredUserService();
-const userId = storedUserService.storedUser.value.id;
+const chessboard = ref<Chessboard>(new Chessboard());
 
 const gameHistoryService = useGameHistoryService();
 const gameHistorId = parseInt(route.params.id as string);

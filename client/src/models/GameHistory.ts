@@ -1,6 +1,5 @@
-import type { MoveReplay } from "./Move";
-import type { ListRoomItem } from "./Room";
-import type { UserReplay } from "./User";
+import type { MoveReplay } from './MoveReplay'
+import type { UserReplay } from './User'
 
 export interface GameHistory {
   id: number;

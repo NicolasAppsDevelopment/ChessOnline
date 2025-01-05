@@ -1,8 +1,8 @@
 import { UserOutputDTO, UserRankOutputDTO } from '../dto/user.dto'
-import { notFound } from "../error/NotFoundError";
-import { UserMapper } from "../mapper/user.mapper";
-import { User } from "../models/User";
-import bcrypt from "bcrypt";
+import { notFound } from '../error/NotFoundError'
+import { UserMapper } from '../mapper/user.mapper'
+import { User } from '../models/User'
+import bcrypt from 'bcrypt'
 
 export class UserService {
   // Récupère un utilisateur par ID

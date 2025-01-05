@@ -26,9 +26,9 @@
 </template>
 
 <script setup lang="ts">
-import { Menubar } from "primevue";
-import { ref } from "vue";
-import {useStoredUserService} from "@/composables/user/storedUserService";
+import { Menubar } from 'primevue'
+import { ref } from 'vue'
+import { useStoredUserService } from '@/composables/user/storedUserService'
 
 const storedUserService = useStoredUserService();
 const user = storedUserService.storedUser.value;

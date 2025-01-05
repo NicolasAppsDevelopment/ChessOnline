@@ -1,12 +1,12 @@
-import {Color} from "./Piece";
-import {Rook} from "./Rook";
-import {Knight} from "./Knight";
-import {Bishop} from "./Bishop";
-import {Queen} from "./Queen";
-import {King} from "./King";
-import {Pawn} from "./Pawn";
-import {Position} from "./Position";
-import {Cell} from "./Cell";
+import { Color } from './Piece'
+import { Rook } from './Rook'
+import { Knight } from './Knight'
+import { Bishop } from './Bishop'
+import { Queen } from './Queen'
+import { King } from './King'
+import { Pawn } from './Pawn'
+import { Position } from './Position'
+import { Cell } from './Cell'
 
 export class Chessboard {
   public board: Cell[] = [];

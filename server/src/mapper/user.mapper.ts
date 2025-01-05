@@ -1,5 +1,5 @@
-import { UserOutputDTO } from "../dto/user.dto";
-import { User } from "../models/User";
+import { UserOutputDTO } from '../dto/user.dto'
+import { User } from '../models/User'
 
 export class UserMapper {
   public static toOutputDto(user: User): UserOutputDTO {
@@ -9,9 +9,5 @@ export class UserMapper {
       password: user.password,
       elo: user.elo
     };
-  }
-
-  public static toOutputDtoList(userList: User[]): UserOutputDTO[] {
-    return userList.map((user) => UserMapper.toOutputDto(user));
   }
 }

@@ -1,11 +1,5 @@
-import { UserReplayOutputDTO } from '../dto/user.dto'
-import { ListRoomItemOutputDTO } from '../dto/room.dto'
-import { MoveReplayOutputDTO } from '../dto/move.dto'
-
-export interface GameHistoryInputDTO {
-  room_uuid: string;
-  startDate: Date;
-}
+import { UserReplayOutputDTO } from './user.dto'
+import { MoveReplayOutputDTO } from './move.dto'
 
 export interface GameHistoryVisibilityInputPutDTO {
   id: number;

@@ -1,8 +1,8 @@
-import {User} from "../models/User"; // Modèle Sequelize
-import jwt from "jsonwebtoken"; // Pour générer le JWT
-import {notFound} from "../error/NotFoundError";
-import bcrypt from "bcrypt";
-import {UserJwtPayload} from "../models/UserJwtPayload";
+import { User } from '../models/User' // Modèle Sequelize
+import jwt from 'jsonwebtoken' // Pour générer le JWT
+import { notFound } from '../error/NotFoundError'
+import bcrypt from 'bcrypt'
+import { UserJwtPayload } from '../models/UserJwtPayload'
 
 export const JWT_SECRET = process.env.JWT_SECRET ?? "your_jwt_secret_key"; // Clé secrète pour signer le token
 

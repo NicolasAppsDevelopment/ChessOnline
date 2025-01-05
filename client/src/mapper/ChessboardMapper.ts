@@ -1,7 +1,7 @@
-import { Cell } from "@/models/Cell";
-import { getPositionFromRaw } from "@/mapper/PositionMapper";
-import {getPieceFromRaw} from "@/mapper/PieceMapper";
-import {Chessboard} from "@/models/Chessboard";
+import { Cell } from '@/models/Cell'
+import { getPositionFromRaw } from '@/mapper/PositionMapper'
+import { getPieceFromRaw } from '@/mapper/PieceMapper'
+import { Chessboard } from '@/models/Chessboard'
 
 export function getCellsFromRawBoard(board: any) {
   let cells: Cell[] = [];

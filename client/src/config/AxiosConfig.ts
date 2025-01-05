@@ -1,5 +1,5 @@
-import { useStoredUserService } from '@/composables/user/storedUserService';
-import axios, { type InternalAxiosRequestConfig } from 'axios';
+import { useStoredUserService } from '@/composables/user/storedUserService'
+import axios, { type InternalAxiosRequestConfig } from 'axios'
 
 const { storedUser } = useStoredUserService();
 const axiosInstance = axios.create({});

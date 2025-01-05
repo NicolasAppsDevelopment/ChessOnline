@@ -1,9 +1,7 @@
-
-import {Route, Controller, Post, Body, Security, Request, Get} from "tsoa";
-import { roomsService } from "../services/rooms.service";
-import { gameHistoryService } from "../services/gameHistory.service";
+import { Body, Controller, Get, Post, Request, Route, Security } from 'tsoa'
+import { roomsService } from '../services/rooms.service'
 import { CreateRoomInputDTO, JoinRoomInputDTO } from '../dto/room.dto'
-import express from "express";
+import express from 'express'
 import { getUserIdFromJWT } from '../middlewares/authentication'
 
 @Route("rooms")

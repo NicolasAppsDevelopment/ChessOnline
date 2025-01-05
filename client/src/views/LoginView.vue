@@ -24,12 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { InputText, Password, Button, InputGroup, InputGroupAddon, Message } from 'primevue'
-import { useUserService } from '@/composables/user/userService';
-import type { User } from '@/models/User';
-import router from "@/router";
-import {AxiosError} from "axios";
+import { ref } from 'vue'
+import { Button, InputGroup, InputGroupAddon, InputText, Message, Password } from 'primevue'
+import { useUserService } from '@/composables/user/userService'
+import type { User } from '@/models/User'
+import router from '@/router'
+import { AxiosError } from 'axios'
 
 const { login } = useUserService();
 const user = ref<User>({ username: "", password: "", id: -1 });

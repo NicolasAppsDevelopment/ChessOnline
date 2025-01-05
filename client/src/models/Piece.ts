@@ -1,6 +1,3 @@
-import type {Position} from "./Position";
-import type {Chessboard} from "./Chessboard";
-
 export enum Color {
   Black = "Black",
   White = "White"

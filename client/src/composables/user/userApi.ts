@@ -1,12 +1,6 @@
-import axiosInstance from '@/config/AxiosConfig';
-import {
-  ApiUrlLogin,
-  ApiUrlRefresh,
-  ApiUrlRegister,
-  ApiUrlGetUser,
-  ApiUrlGetLeaderboard,
-} from '@/constants/ApiUrl'
-import type { User, UserRank } from '@/models/User';
+import axiosInstance from '@/config/AxiosConfig'
+import { ApiUrlGetLeaderboard, ApiUrlGetUser, ApiUrlLogin, ApiUrlRefresh, ApiUrlRegister } from '@/constants/ApiUrl'
+import type { User, UserRank } from '@/models/User'
 
 export function useUserApi() {
   return {

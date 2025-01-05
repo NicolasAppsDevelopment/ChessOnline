@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Navbar from "@/components/Navbar.vue";
-import { useStoredUserService } from "@/composables/user/storedUserService";
-import { useUserService } from '@/composables/user/userService';
+import Navbar from '@/components/Navbar.vue'
+import { useStoredUserService } from '@/composables/user/storedUserService'
+import { useUserService } from '@/composables/user/userService'
 import { onMounted, onUpdated, ref } from 'vue'
 import type { UserRank } from '@/models/User'
 
@@ -47,7 +47,3 @@ onUpdated(async () => {
     </table>
   </div>
 </template>
-
-<style scoped>
-
-</style>

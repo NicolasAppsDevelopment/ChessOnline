@@ -21,8 +21,8 @@
 </template>
 
 <script setup lang="ts">
-import { Dialog, Button } from "primevue";
-import { useModal } from '@/composables/modal';
+import { Button, Dialog } from 'primevue'
+import { useModal } from '@/composables/modal'
 
 const { visible, close } = useModal();
 

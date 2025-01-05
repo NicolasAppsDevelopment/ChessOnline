@@ -1,8 +1,8 @@
-import { expressAuthentication } from "./authentication";
-import { userService } from "../services/user.service";
-import { Response, NextFunction } from "express";
-import {SocketUserRequest} from "../models/SocketUserRequest";
-import {UserJwt} from "../models/UserJwt";
+import { expressAuthentication } from './authentication'
+import { userService } from '../services/user.service'
+import { NextFunction, Response } from 'express'
+import { SocketUserRequest } from '../models/SocketUserRequest'
+import { UserJwt } from '../models/UserJwt'
 
 export async function socketIoAuthentication(req: SocketUserRequest, res: Response, next: NextFunction) {
     const isHandshake = req._query.sid === undefined;

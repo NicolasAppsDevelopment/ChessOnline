@@ -1,10 +1,8 @@
-import {Route, Controller, Post, Body, Security, Header} from "tsoa";
-import { AuthenticationInputDTO } from "../dto/authentication.dto";
-import { authService } from "../services/authentication.service";
-import {jwtDecode} from "jwt-decode";
-import {UserJwtPayload} from "../models/UserJwtPayload";
+import { Body, Controller, Header, Post, Route, Security } from 'tsoa'
+import { AuthenticationInputDTO } from '../dto/authentication.dto'
+import { authService } from '../services/authentication.service'
+import { jwtDecode } from 'jwt-decode'
 import { userService } from '../services/user.service'
-import { notFound } from '../error/NotFoundError'
 import { UserJwt } from '../models/UserJwt'
 
 @Route("auth")

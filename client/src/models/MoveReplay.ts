@@ -1,4 +1,4 @@
-export interface MoveReplayOutputDTO {
+export interface MoveReplay {
   promotion: boolean;
   promotionIntoWhichPiece: string;
   from_x: number;

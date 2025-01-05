@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import ChessBoardComponent from "@/components/ChessBoard.vue";
-import Navbar from "@/components/Navbar.vue";
-import { useRoomService } from "@/composables/room/roomService";
+import ChessBoardComponent from '@/components/ChessBoard.vue'
+import Navbar from '@/components/Navbar.vue'
+import { useRoomService } from '@/composables/room/roomService'
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { Chessboard } from "@/models/Chessboard";
+import { Chessboard } from '@/models/Chessboard'
 import { socket } from '@/socket'
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
 import router from '@/router'
 import { useRoute } from 'vue-router'
-import { useToast } from 'primevue/usetoast';
+import { useToast } from 'primevue/usetoast'
 import { Button } from 'primevue'
 import PromotionSelectorWindow from '@/components/PromotionSelectorDialog.vue'
-import { useConfirm } from "primevue/useconfirm";
+import { useConfirm } from 'primevue/useconfirm'
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import EndGameWindow from '@/components/EndGameWindow.vue'
 
@@ -34,7 +34,7 @@ socket.on('JOIN_ROOM_RESPONSE', async (error: string) => {
 });
 socket.on('UPDATE_CHESSBOARD', (board: any) => {
   if (board === null) {
-    toast.add({ severity: 'error', summary: 'Error', detail: "bébou" , closable: false, life: 4000});
+    toast.add({ severity: 'error', summary: 'Error', detail: "Game not found." , closable: false, life: 4000});
     router.push({ path: '/' });
     return;
   }

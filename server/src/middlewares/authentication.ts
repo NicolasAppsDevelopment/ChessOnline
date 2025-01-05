@@ -1,7 +1,7 @@
-import * as express from "express";
-import * as jwt from "jsonwebtoken";
-import { JWT_SECRET } from "../services/authentication.service";
-import {UserJwt} from "../models/UserJwt";
+import * as express from 'express'
+import * as jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../services/authentication.service'
+import { UserJwt } from '../models/UserJwt'
 
 export function expressAuthentication(
     request: express.Request,

@@ -1,4 +1,4 @@
-import {UserJwtPayload} from "./UserJwtPayload";
+import { UserJwtPayload } from './UserJwtPayload'
 
 export interface UserJwt {
     jwtPayload : UserJwtPayload;

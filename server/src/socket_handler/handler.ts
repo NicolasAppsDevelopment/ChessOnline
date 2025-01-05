@@ -1,7 +1,7 @@
 import { Server, Socket } from 'socket.io'
-import {Position} from "../models/Position";
-import {roomsService} from "../services/rooms.service";
-import {User} from "../models/User";
+import { Position } from '../models/Position'
+import { roomsService } from '../services/rooms.service'
+import { User } from '../models/User'
 import { ExtraDataMove } from '../models/ExtraDataMove'
 
 export function createHandler(socket: Socket, user: User, io: Server) {

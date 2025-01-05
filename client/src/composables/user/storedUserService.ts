@@ -1,9 +1,9 @@
-import type { User } from '@/models/User';
-import { ref } from 'vue';
-import router from "@/router";
-import {jwtDecode} from "jwt-decode";
-import {useUserApi} from "@/composables/user/userApi";
-import {socket} from "@/socket";
+import type { User } from '@/models/User'
+import { ref } from 'vue'
+import router from '@/router'
+import { jwtDecode } from 'jwt-decode'
+import { useUserApi } from '@/composables/user/userApi'
+import { socket } from '@/socket'
 import type { UserJwt } from '@/models/UserJwt'
 
 const storedUser = ref<User>({ username: '', password: '', id: -1 });

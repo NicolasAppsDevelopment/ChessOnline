@@ -1,9 +1,5 @@
-import axiosInstance from '@/config/AxiosConfig';
-import {
-  ApiUrlAccessRoom,
-  ApiUrlCreateRoom,
-  ApiUrlGetRooms,
-} from '@/constants/ApiUrl';
+import axiosInstance from '@/config/AxiosConfig'
+import { ApiUrlAccessRoom, ApiUrlCreateRoom, ApiUrlGetRooms } from '@/constants/ApiUrl'
 import type { CreateRoom, ListRoomItem } from '@/models/Room'
 import router from '@/router'
 

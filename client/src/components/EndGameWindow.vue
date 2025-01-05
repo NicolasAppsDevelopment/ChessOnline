@@ -11,9 +11,9 @@
 </template>
 
 <script setup lang="ts">
-import { Dialog, Button } from "primevue";
-import { Chessboard } from '@/models/Chessboard';
-import router from '@/router/index';
+import { Button, Dialog } from 'primevue'
+import { Chessboard } from '@/models/Chessboard'
+import router from '@/router/index'
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import { socket } from '@/socket'
 
