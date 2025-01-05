@@ -100,7 +100,6 @@ function requestUpdate() {
     <table class="gameHistory">
       <thead>
         <tr>
-          <th><i class="fa-solid fa-chess-board"></i> Room Name</th>
           <th><i class="fa-solid fa-calendar"></i> Date</th>
           <th><i class="fa-solid fa-user"></i> Black Player</th>
           <th><i class="fa-solid fa-user"></i> White Player</th>
@@ -110,7 +109,6 @@ function requestUpdate() {
       </thead>
       <tbody>
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
-          <td>{{ gameHistory.room?.name }}</td>
           <td>{{ gameHistory.startDate }}</td>
           <td>
             <RouterLink :to="'/user/' + gameHistory.blackPlayer?.id" @click="stopPropagation">
