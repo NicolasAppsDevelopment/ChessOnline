@@ -114,20 +114,24 @@ function next() {
     <p><i class="fa-solid fa-crown"></i> Winner : {{ gameHistory?.winner?.username }}</p>
   </div>
 
-  <div class="flex flex-column gap-1 p-1" >
-    <Tag class="player-tag text-center" severity="danger">
-      <div class="flex items-center gap-2 px-1">
-        <i class="fa-solid fa-user "></i>
-        <span class="text-base">{{ gameHistory?.blackPlayer?.username }}</span>
-      </div>
-    </Tag>
+  <div class="flex flex-column gap-1 p-1">
+    <RouterLink :to="'/user/' + gameHistory?.blackPlayer?.id">
+      <Tag class="player-tag" severity="danger">
+        <div class="flex items-center gap-2 px-1">
+          <i class="fa-solid fa-user "></i>
+          <span class="text-base">{{ gameHistory?.blackPlayer?.username ?? "Deleted user" }}</span>
+        </div>
+      </Tag>
+    </RouterLink>
     <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
-    <Tag class="player-tag text-center" severity="success">
-      <div class="flex items-center gap-2 px-1">
-        <i class="fa-solid fa-user "></i>
-        <span class="text-base">{{ gameHistory?.whitePlayer?.username }}</span>
-      </div>
-    </Tag>
+    <RouterLink :to="'/user/' + gameHistory?.whitePlayer?.id">
+      <Tag class="player-tag" severity="success">
+        <div class="flex items-center gap-2 px-1">
+          <i class="fa-solid fa-user "></i>
+          <span class="text-base">{{ gameHistory?.whitePlayer?.username ?? "Deleted user" }}</span>
+        </div>
+      </Tag>
+    </RouterLink>
   </div>
 
   <div class="flex gap-1 p-1">

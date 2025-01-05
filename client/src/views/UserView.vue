@@ -7,18 +7,23 @@ import { useStoredUserService } from '@/composables/user/storedUserService'
 import { useUserService } from '@/composables/user/userService'
 import { useGameHistoryService } from '@/composables/history/historyService'
 import type { User } from '@/models/User'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 import { AxiosError } from 'axios'
+
+const route = useRoute();
+watch(() => route.params.id, async () => {
+  getData();
+});
+
 const userService = useUserService();
 const storedUserService = useStoredUserService();
 const gameHistoryService = useGameHistoryService();
 const userId = storedUserService.storedUser.value.id;
-const route = useRoute();
 const confirm = useConfirm();
 const toast = useToast();
-const isOwner = route.params.id == userId.toString();
+const isOwner = ref(false);
 let lastError = ref("");
 let processing = ref(false);
 
@@ -30,6 +35,10 @@ let averageGameMoves = ref<number>(0);
 let totalGameTime = ref<number>(0);
 
 onMounted(async () => {
+  getData();
+});
+
+async function getData() {
   if (!route.params.id || route.params.id !instanceof String) {
     return;
   }
@@ -46,7 +55,8 @@ onMounted(async () => {
   averageGameMoves.value = await gameHistoryService.getAverageGameMoveByUserId(id);
   totalGameTime.value = await gameHistoryService.getTotalGametimeByUserId(id);
 
-});
+  isOwner.value = route.params.id == userId.toString();
+}
 
 function requestDeletion() {
   confirm.require({

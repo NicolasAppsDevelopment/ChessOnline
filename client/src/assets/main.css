@@ -235,6 +235,9 @@
   }
 }
 
+.player-tag {
+  width: 100%;
+}
 .player-tag i {
   align-self: center;
 }

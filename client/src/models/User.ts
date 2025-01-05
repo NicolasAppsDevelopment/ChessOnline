@@ -7,6 +7,7 @@ export interface User {
 }
 
 export interface UserRank {
+  id: number;
   username: string;
   elo: number;
 }

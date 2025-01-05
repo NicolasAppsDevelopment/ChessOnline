@@ -4,7 +4,7 @@ import Navbar from "@/components/Navbar.vue";
 import { Button, Checkbox } from 'primevue'
 import { useStoredUserService } from "@/composables/user/storedUserService"
 import { useGameHistoryService } from '@/composables/history/historyService'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
 import router from '@/router'
 import { useRoute } from 'vue-router'
@@ -12,11 +12,15 @@ import { AxiosError } from 'axios'
 import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 
+const route = useRoute();
+watch(() => route.params.id, async () => {
+  getData();
+});
+
 const storedUserService = useStoredUserService();
 const gameHistoryService = useGameHistoryService();
 //const historyService = useHistoryService();
 
-const route = useRoute();
 const confirm = useConfirm();
 const toast = useToast();
 const lastError = ref("");
@@ -24,9 +28,13 @@ const processing = ref(false);
 
 const gameHistories = ref<GameHistory[]>([]);
 const userId = storedUserService.storedUser.value.id;
-const isOwner = route.params.id == userId.toString();
+const isOwner = ref(false);
 
 onMounted(async () => {
+  getData();
+});
+
+async function getData() {
   if (!route.params.id || route.params.id !instanceof String) {
     return;
   }
@@ -36,7 +44,8 @@ onMounted(async () => {
   }
 
   gameHistories.value = await gameHistoryService.getUserGameHistories(id);
-});
+  isOwner.value = route.params.id == userId.toString();
+}
 
 function goToGameHistory(id: number) {
   router.push({ path: '/gameReview/' + id });
@@ -103,9 +112,21 @@ function requestUpdate() {
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
           <td>{{ gameHistory.room?.name }}</td>
           <td>{{ gameHistory.startDate }}</td>
-          <td>{{ gameHistory.blackPlayer?.username }}</td>
-          <td>{{ gameHistory.whitePlayer?.username }}</td>
-          <td>{{ gameHistory.winner?.username }}</td>
+          <td>
+            <RouterLink :to="'/user/' + gameHistory.blackPlayer?.id" @click="stopPropagation">
+              {{ gameHistory.blackPlayer?.username }}
+            </RouterLink>
+          </td>
+          <td>
+            <RouterLink :to="'/user/' + gameHistory.whitePlayer?.id" @click="stopPropagation">
+              {{ gameHistory.whitePlayer?.username }}
+            </RouterLink>
+          </td>
+          <td>
+            <RouterLink :to="'/user/' + gameHistory.winner?.id" @click="stopPropagation">
+              {{ gameHistory.winner?.username }}
+            </RouterLink>
+          </td>
           <td v-if="isOwner"><Checkbox v-model="gameHistory.isPublic" binary @click="stopPropagation" /></td>
         </tr>
       </tbody>
