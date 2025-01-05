@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 import Navbar from "@/components/Navbar.vue";
-import {useRoomService} from "@/composables/room/roomService";
+import { useRoomService } from "@/composables/room/roomService";
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { Chessboard } from "@/models/Chessboard";
 import { socket } from '@/socket'

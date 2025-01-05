@@ -2,8 +2,8 @@
 
 import Navbar from "@/components/Navbar.vue";
 import { Button, Checkbox } from 'primevue'
-import { useStoredUserService } from "@/composables/user/storedUserService";
-import { useUserService } from '@/composables/user/userService';
+import { useStoredUserService } from "@/composables/user/storedUserService"
+import { useGameHistoryService } from '@/composables/history/historyService'
 import { onMounted, ref } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
 import router from '@/router'
@@ -13,7 +13,7 @@ import { useConfirm } from 'primevue/useconfirm'
 import { useToast } from 'primevue/usetoast'
 
 const storedUserService = useStoredUserService();
-const userService = useUserService();
+const gameHistoryService = useGameHistoryService();
 //const historyService = useHistoryService();
 
 const route = useRoute();
@@ -35,7 +35,7 @@ onMounted(async () => {
     return;
   }
 
-  gameHistories.value = await userService.getUserGameHistories(id);
+  gameHistories.value = await gameHistoryService.getUserGameHistories(id);
 });
 
 function goToGameHistory(id: number) {

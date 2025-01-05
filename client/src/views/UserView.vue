@@ -5,6 +5,7 @@ import { Button, InputGroup, InputGroupAddon, InputText, InputNumber, Message, P
 import { useRoute } from 'vue-router'
 import { useStoredUserService } from '@/composables/user/storedUserService'
 import { useUserService } from '@/composables/user/userService'
+import { useGameHistoryService } from '@/composables/history/historyService'
 import type { User } from '@/models/User'
 import { onMounted, ref } from 'vue'
 import { useConfirm } from 'primevue/useconfirm'
@@ -12,6 +13,7 @@ import { useToast } from 'primevue/usetoast'
 import { AxiosError } from 'axios'
 const userService = useUserService();
 const storedUserService = useStoredUserService();
+const gameHistoryService = useGameHistoryService();
 const userId = storedUserService.storedUser.value.id;
 const route = useRoute();
 const confirm = useConfirm();
@@ -39,10 +41,10 @@ onMounted(async () => {
   user.value = await userService.getUserById(id);
   user.value.password = "";
 
-  winPercentage.value = await userService.getWinPercentageByUserId(id);
-  averageGameDuraion.value = await userService.getAverageGameDurationByUserId(id);
-  averageGameMoves.value = await userService.getAverageGameMoveByUserId(id);
-  totalGameTime.value = await userService.getTotalGametimeByUserId(id);
+  winPercentage.value = await gameHistoryService.getWinPercentageByUserId(id);
+  averageGameDuraion.value = await gameHistoryService.getAverageGameDurationByUserId(id);
+  averageGameMoves.value = await gameHistoryService.getAverageGameMoveByUserId(id);
+  totalGameTime.value = await gameHistoryService.getTotalGametimeByUserId(id);
 
 });
 

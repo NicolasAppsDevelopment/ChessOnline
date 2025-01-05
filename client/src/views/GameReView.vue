@@ -2,8 +2,8 @@
 import ChessBoardComponent from "@/components/ChessBoard.vue";
 import Navbar from "@/components/Navbar.vue";
 
-import {useRoomService} from "@/composables/room/roomService";
-import { useUserService } from '@/composables/user/userService';
+import { useRoomService } from "@/composables/room/roomService";
+import { useGameHistoryService } from '@/composables/history/historyService'
 import { useStoredUserService } from '@/composables/user/storedUserService'
 
 import { onMounted, ref } from 'vue'
@@ -28,7 +28,7 @@ let chessboard = ref<Chessboard>(new Chessboard());//TODO props
 const storedUserService = useStoredUserService();
 const userId = storedUserService.storedUser.value.id;
 
-const userService = useUserService();
+const gameHistoryService = useGameHistoryService();
 const gameHistorId = parseInt(route.params.id as string);
 const gameHistory = ref<GameHistory>();
 
@@ -39,7 +39,7 @@ let chessboardStates: Chessboard[] = [] ;
 const processing = ref<boolean>(true);
 
 onMounted(async () => {
-  gameHistory.value = await userService.getGameHistoryById(gameHistorId);
+  gameHistory.value = await gameHistoryService.getGameHistoryById(gameHistorId);
   moves = gameHistory.value.moves;
 
   if (!moves) {

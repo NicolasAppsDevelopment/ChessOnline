@@ -1,17 +1,27 @@
-import type { CreateRoom, ListRoomItem } from '@/models/Room'
-import { useRoomApi } from '@/composables/room/roomApi';
+import type { GameHistory } from '@/models/GameHistory'
+import { useGameHistoryApi } from './historyApi';
 
-const roomApi = useRoomApi();
-export function useRoomService() {
+const gameHistoryApi = useGameHistoryApi();
+export function useGameHistoryService() {
   return {
-    async join(roomUuid: string): Promise<void> {
-      await roomApi.join(roomUuid);
+    async getUserGameHistories(id: number): Promise<GameHistory[]> {
+      return await gameHistoryApi.getUserGameHistories(id);
     },
-    async create(room: CreateRoom): Promise<void> {
-      await roomApi.create(room);
+    async getGameHistoryById(id: number): Promise<GameHistory> {
+      return await gameHistoryApi.getGameHistoryById(id);
     },
-    async list(): Promise<ListRoomItem[]> {
-      return await roomApi.list();
-    }
+    async getWinPercentageByUserId(id: number): Promise<number> {
+      return await gameHistoryApi.getWinPercentageByUserId(id);
+    },
+    async getAverageGameDurationByUserId(id: number): Promise<number> {
+      return await gameHistoryApi.getAverageGameDurationByUserId(id);
+    },
+    async getAverageGameMoveByUserId(id: number): Promise<number> {
+      return await gameHistoryApi.getAverageGameMoveByUserId(id);
+    },
+    async getTotalGametimeByUserId(id: number): Promise<number> {
+      return await gameHistoryApi.getTotalGametimeByUserId(id);
+    },
   };
 }
+
