@@ -13,7 +13,7 @@ const routes = [
   { path: '/register', component: RegisterView },
   { path: '/leaderboard', component: LeaderboardView },
   { path: '/user/:id', component: UserView }, // ALSO STATISTICS PAGE
-  { path: '/history', component: HistoryView },
+  { path: '/history/:id', component: HistoryView },
   { path: '/gameReview/:id', component: GameReView },
   { path: '/game/:id', component: GameView },
 ];

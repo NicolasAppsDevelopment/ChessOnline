@@ -52,7 +52,7 @@ const items = ref([
   {
     label: 'History',
     icon: 'fa-solid fa-book-open',
-    route: '/history'
+    route: '/history/' + user.id
   }
 ]);
 </script>

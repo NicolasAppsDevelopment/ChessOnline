@@ -6,16 +6,24 @@ import { useUserService } from '@/composables/user/userService';
 import { onMounted, ref } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
 import router from '@/router'
+import { useRoute } from 'vue-router'
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
 
-const userId = storedUserService.storedUser.value.id;
+const route = useRoute();
 const gameHistories = ref<GameHistory[]>([]);
 
 onMounted(async () => {
-  console.log(await userService.getUserGameHistories(userId));
-  gameHistories.value = await userService.getUserGameHistories(userId);
+  if (!route.params.id || route.params.id !instanceof String) {
+    return;
+  }
+  const id = parseInt(route.params.id as string);
+  if (isNaN(id)) {
+    return;
+  }
+
+  gameHistories.value = await userService.getUserGameHistories(id);
 });
 
 function goToGameHistory(id: number) {

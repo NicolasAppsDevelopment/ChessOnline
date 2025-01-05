@@ -78,20 +78,22 @@ export class Chessboard {
       return false;
     }
 
-    if (this.movePiece(from, to, extra)) {
-      if (!this.isOpponentCanMove()) {
-        this.isEndGame = true;
-
-        if (this.isOpponentKingInCheck()) {
-          this.winnerPlayerId = userId; // checkmate
-        } // else pat
-
-        this._onMatchEnded();
-      }
-      // TODO: Check others draw conditions (threefold repetition, only kings left)
-
-      this.switchTurn();
+    if (!this.movePiece(from, to, extra)) {
+      return false;
     }
+
+    if (!this.isOpponentCanMove()) {
+      this.isEndGame = true;
+
+      if (this.isOpponentKingInCheck()) {
+        this.winnerPlayerId = userId; // checkmate
+      } // else pat
+
+      this._onMatchEnded();
+    }
+    // TODO: Check others draw conditions (threefold repetition, only kings left)
+
+    this.switchTurn();
 
     this._onPlayed(from, to, userId, extra);
     return true;
