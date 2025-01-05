@@ -1,7 +1,7 @@
 # Chess online
 ## Initialise & start project
 - git clone https://github.com/NicolasAppsDevelopment/chess-online.git
-- Open 2 terminals :
+- Open 2 terminals from the root folder of the project:
    - In the first terminal :
      - cd server
      - npm install
