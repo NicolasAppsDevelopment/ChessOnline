@@ -26,8 +26,8 @@ export class GameHistory
 {
     public id!: number;
     public startDate!: Date;
-    public endDate!: Date | null ;
-    public room!: Room;
+    public endDate!: Date | null;
+    public room!: Room | null;
     public room_uuid!: string;
     public blackPlayer!: User | null;
     public blackPlayer_id!: number | null;
@@ -56,7 +56,8 @@ GameHistory.init(
         },
         room_uuid: {
             type: DataTypes.STRING,
-            allowNull: false,
+            allowNull: true,
+          onDelete: 'SET NULL',
         },
         blackPlayer_id: {
             type: DataTypes.INTEGER,

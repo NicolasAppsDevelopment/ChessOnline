@@ -189,7 +189,12 @@
 						"nullable": true
 					},
 					"room": {
-						"$ref": "#/components/schemas/ListRoomItemOutputDTO"
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/ListRoomItemOutputDTO"
+							}
+						],
+						"nullable": true
 					},
 					"blackPlayer": {
 						"allOf": [

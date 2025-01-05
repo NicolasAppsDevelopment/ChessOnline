@@ -151,9 +151,7 @@ function requestUpdate() {
       </InputGroup>
 
       <div class="flex gap-1 p-1">
-        <RouterLink to="" v-if="isOwner">
-          <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" :disabled="processing" />
-        </RouterLink>
+        <Button label="Save" icon="fa-solid fa-floppy-disk" v-if="isOwner" @click="requestUpdate()" :disabled="processing" />
         <Button label="Logout" icon="fa-solid fa-power-off" v-if="isOwner" @click="storedUserService.clear()" />
         <Button label="Delete account" icon="fa-solid fa-trash" v-if="isOwner" @click="requestDeletion()" :disabled="processing" />
         <RouterLink :to="'/history/' + route.params.id">
@@ -168,7 +166,7 @@ function requestUpdate() {
       <p><i class="fa-solid fa-stopwatch"></i> Average Game Duration :  {{ averageGameDuraion }} minutes</p>
       <p><i class="fa-solid fa-hourglass-half"></i> Total of game time  :  {{ totalGameTime }} minutes</p>
       <p><i class="fa-solid fa-up-down-left-right"></i> Average Game Moves  :  {{ averageGameMoves }} </p>
-      
+
     </div>
   </div>
 

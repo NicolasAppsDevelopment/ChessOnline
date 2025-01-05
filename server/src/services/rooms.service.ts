@@ -9,6 +9,7 @@ import { ExtraDataMove } from '../models/ExtraDataMove'
 import { gameHistoryService } from './gameHistory.service'
 import { moveService } from './move.service'
 import { userService } from './user.service'
+import { GameHistory } from '../models/GameHistory'
 
 export class RoomsService {
   public boards: Map<string, Chessboard> = new Map();
@@ -119,6 +120,13 @@ export class RoomsService {
     } else {
       notFound("Room");
     }
+  }
+
+  public async clear(): Promise<void> {
+    try {
+      await Room.destroy({ where: {}, truncate: true });
+      roomsService.boards.clear();
+    } catch {}
   }
 }
 

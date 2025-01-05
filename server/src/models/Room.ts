@@ -40,3 +40,4 @@ Room.init(
 );
 
 Room.sync();
+

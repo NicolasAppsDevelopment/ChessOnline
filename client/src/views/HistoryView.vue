@@ -1,18 +1,27 @@
 <script setup lang="ts">
 
 import Navbar from "@/components/Navbar.vue";
-import { Checkbox } from 'primevue'
+import { Button, Checkbox } from 'primevue'
 import { useStoredUserService } from "@/composables/user/storedUserService";
 import { useUserService } from '@/composables/user/userService';
 import { onMounted, ref } from 'vue'
 import type { GameHistory } from '@/models/GameHistory'
 import router from '@/router'
 import { useRoute } from 'vue-router'
+import { AxiosError } from 'axios'
+import { useConfirm } from 'primevue/useconfirm'
+import { useToast } from 'primevue/usetoast'
 
 const storedUserService = useStoredUserService();
 const userService = useUserService();
+//const historyService = useHistoryService();
 
 const route = useRoute();
+const confirm = useConfirm();
+const toast = useToast();
+const lastError = ref("");
+const processing = ref(false);
+
 const gameHistories = ref<GameHistory[]>([]);
 const userId = storedUserService.storedUser.value.id;
 const isOwner = route.params.id == userId.toString();
@@ -31,6 +40,45 @@ onMounted(async () => {
 
 function goToGameHistory(id: number) {
   router.push({ path: '/gameReview/' + id });
+}
+
+function stopPropagation(event: Event) {
+  event.stopPropagation();
+}
+
+function requestUpdate() {
+  confirm.require({
+    header: 'Confirmation',
+    message: 'Are you sure you want to update your history visibility?',
+    icon: 'fa-solid fa-triangle-exclamation',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      icon: 'fa-solid fa-xmark',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Confirm',
+      icon: 'fa-solid fa-check',
+    },
+    accept: async () => {
+      lastError.value = "";
+      processing.value = true;
+
+      try {
+        //await gameHistoryService.update(user.value);
+        toast.add({ severity: 'success', summary: 'Success', detail: 'History visibility updated successfully.', life: 4000 });
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          lastError.value = error.response?.data.message ?? error.message;
+        } else {
+          lastError.value = "Unknown error";
+        }
+      } finally {
+        processing.value = false;
+      }
+    },
+  });
 }
 
 </script>
@@ -53,14 +101,17 @@ function goToGameHistory(id: number) {
       </thead>
       <tbody>
         <tr v-for="gameHistory in gameHistories" :key="gameHistory.id" @click="goToGameHistory(gameHistory.id)">
-          <td>{{ gameHistory.room.name }}</td>
+          <td>{{ gameHistory.room?.name }}</td>
           <td>{{ gameHistory.startDate }}</td>
           <td>{{ gameHistory.blackPlayer?.username }}</td>
           <td>{{ gameHistory.whitePlayer?.username }}</td>
           <td>{{ gameHistory.winner?.username }}</td>
-          <td v-if="isOwner"><Checkbox v-model="gameHistory.isPublic" binary /></td>
+          <td v-if="isOwner"><Checkbox v-model="gameHistory.isPublic" binary @click="stopPropagation" /></td>
         </tr>
       </tbody>
     </table>
+    <div class="flex gap-1 p-1">
+      <Button label="Save" icon="fa-solid fa-floppy-disk" @click="requestUpdate()" :disabled="processing" v-if="isOwner"/>
+    </div>
   </div>
 </template>

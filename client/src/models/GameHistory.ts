@@ -6,7 +6,7 @@ export interface GameHistory {
   id: number;
   startDate: Date;
   endDate?: Date | null;
-  room: ListRoomItem;
+  room?: ListRoomItem | null;
   blackPlayer?: UserRank |  null;
   whitePlayer?: UserRank |  null;
   winner?: UserRank | null;

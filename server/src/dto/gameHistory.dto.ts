@@ -18,9 +18,9 @@ export interface GameHistoryOutputDTO {
   id: number;
   startDate: Date;
   endDate?: Date | null;
-  room: ListRoomItemOutputDTO;
-  blackPlayer?: UserRankOutputDTO |  null;
-  whitePlayer?: UserRankOutputDTO |  null;
+  room: ListRoomItemOutputDTO | null;
+  blackPlayer?: UserRankOutputDTO | null;
+  whitePlayer?: UserRankOutputDTO | null;
   winner?: UserRankOutputDTO | null;
   moves?: MoveOutputDTO[] | null;
   isPublic: boolean;

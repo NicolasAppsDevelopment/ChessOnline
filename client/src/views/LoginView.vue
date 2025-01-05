@@ -39,6 +39,7 @@ let processing = ref(false);
 
 async function getToken() {
   try {
+    lastError.value = "";
     processing.value = true;
     await login(user.value);
     router.push({ path: '/' });

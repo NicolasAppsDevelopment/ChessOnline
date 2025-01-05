@@ -19,6 +19,8 @@ let lastError = ref("");
 let processing = ref(false);
 async function getRooms() {
   try {
+    lastError.value = "";
+    processing.value = true;
     rooms.value = await roomService.list();
   } catch (error) {
     if (error instanceof AxiosError) {
@@ -34,6 +36,7 @@ async function getRooms() {
 
 async function createRoom() {
   try {
+    lastError.value = "";
     processing.value = true;
     await roomService.create(newRoom.value);
   } catch (error) {

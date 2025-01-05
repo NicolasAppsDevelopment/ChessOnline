@@ -109,7 +109,7 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"double","required":true},
             "startDate": {"dataType":"datetime","required":true},
             "endDate": {"dataType":"union","subSchemas":[{"dataType":"datetime"},{"dataType":"enum","enums":[null]}]},
-            "room": {"ref":"ListRoomItemOutputDTO","required":true},
+            "room": {"dataType":"union","subSchemas":[{"ref":"ListRoomItemOutputDTO"},{"dataType":"enum","enums":[null]}],"required":true},
             "blackPlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "whitePlayer": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},
             "winner": {"dataType":"union","subSchemas":[{"ref":"UserRankOutputDTO"},{"dataType":"enum","enums":[null]}]},

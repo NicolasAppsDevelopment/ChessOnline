@@ -11,6 +11,8 @@ import {socketIoAuthentication} from "./middlewares/socketIoAuth";
 import {User} from "./models/User";
 import { roomsService } from './services/rooms.service';
 
+roomsService.clear();
+
 const PORT = process.env.PORT ?? 8100;
 
 const app = express();

@@ -33,13 +33,14 @@ import {AxiosError} from "axios";
 
 const { register } = useUserService();
 
-const user = ref<User>({ username: "", password: "" });
+const user = ref<User>({ username: "", password: "", id: -1, elo: 0 });
 let lastError = ref("");
 let processing = ref(false);
 
 async function getToken() {
   try {
     processing.value = true;
+    lastError.value = "";
     await register(user.value);
     router.push({ path: '/' });
   } catch (error) {
