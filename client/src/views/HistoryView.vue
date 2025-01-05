@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import Navbar from "@/components/Navbar.vue";
-import { Button, Checkbox, Message } from 'primevue'
+import { Checkbox, Message } from 'primevue'
 import { useStoredUserService } from "@/composables/user/storedUserService"
 import { useGameHistoryService } from '@/composables/history/historyService'
 import { onMounted, ref, watch } from 'vue'
