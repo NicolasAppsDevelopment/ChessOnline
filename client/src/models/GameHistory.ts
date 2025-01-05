@@ -5,7 +5,6 @@ import type { UserReplay } from "./User";
 export interface GameHistory {
   id: number;
   startDate: Date;
-  room?: ListRoomItem | null;
   blackPlayer?: UserReplay |  null;
   whitePlayer?: UserReplay |  null;
   winner?: UserReplay | null;

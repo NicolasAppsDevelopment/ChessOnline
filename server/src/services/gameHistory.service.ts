@@ -22,10 +22,6 @@ export class GameHistoryService {
       },
       include: [
           {
-            model: Room,
-            as: "room",
-          },
-          {
             model: User,
             as: "blackPlayer",
             attributes: ['id', 'username'],
@@ -63,24 +59,19 @@ export class GameHistoryService {
       },
       include: [
         {
-          model: Room,
-          as: "room",
-        },
-        {
           model: User,
           as: "blackPlayer",
+          attributes: ['id', 'username'],
         },
         {
           model: User,
           as: "whitePlayer",
+          attributes: ['id', 'username'],
         },
         {
           model: User,
           as: "winner",
-        },
-        {
-          model: Move,
-          as: "moves",
+          attributes: ['id', 'username'],
         },
       ],
       order: [

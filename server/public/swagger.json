@@ -154,14 +154,6 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"room": {
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/ListRoomItemOutputDTO"
-							}
-						],
-						"nullable": true
-					},
 					"blackPlayer": {
 						"allOf": [
 							{
@@ -193,7 +185,6 @@
 				"required": [
 					"id",
 					"startDate",
-					"room",
 					"isPublic"
 				],
 				"type": "object",

@@ -15,7 +15,6 @@ export interface GameHistoryVisibilityInputPutDTO {
 export interface GameHistoryOutputDTO {
   id: number;
   startDate: Date;
-  room: ListRoomItemOutputDTO | null;
   blackPlayer?: UserReplayOutputDTO | null;
   whitePlayer?: UserReplayOutputDTO | null;
   winner?: UserReplayOutputDTO | null;

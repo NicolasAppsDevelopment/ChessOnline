@@ -6,7 +6,6 @@ export class GameHistoryMapper {
     return {
       id: gameHistory.id,
       startDate : gameHistory.startDate,
-      room: gameHistory.room,
       blackPlayer: gameHistory.blackPlayer,
       whitePlayer: gameHistory.whitePlayer,
       winner: gameHistory.winner,
