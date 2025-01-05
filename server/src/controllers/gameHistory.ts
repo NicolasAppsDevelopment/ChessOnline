@@ -9,6 +9,7 @@ import {
 import { gameHistoryService } from "../services/gameHistory.service";
 import {
   GameHistoryVisibilityInputPutDTO,
+  GameReplayOutputDTO,
   GameHistoryOutputDTO
 } from '../dto/gameHistory.dto'
 import express from 'express'
@@ -35,7 +36,7 @@ export class GameHistoryController extends Controller {
   // Récupère l'historique d'une partie par son id
   @Get("{id}")
   @Security("jwt")
-  public async getGameHistoryById(@Path() id: number): Promise<GameHistoryOutputDTO> {
+  public async getGameHistoryById(@Path() id: number): Promise<GameReplayOutputDTO> {
     return gameHistoryService.getGameHistoryById(id);
   }
 

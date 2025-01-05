@@ -1,4 +1,4 @@
-import { GameHistoryOutputDTO } from "../dto/gameHistory.dto";
+import { GameHistoryOutputDTO, GameReplayOutputDTO } from "../dto/gameHistory.dto";
 import { GameHistory } from "../models/GameHistory";
 
 export class GameHistoryMapper {
@@ -6,7 +6,6 @@ export class GameHistoryMapper {
     return {
       id: gameHistory.id,
       startDate : gameHistory.startDate,
-      endDate : gameHistory.endDate,
       room: gameHistory.room,
       blackPlayer: gameHistory.blackPlayer,
       whitePlayer: gameHistory.whitePlayer,
@@ -17,6 +16,21 @@ export class GameHistoryMapper {
   }
 
   public static toOutputDtoList(gameHistoryList: GameHistory[]): GameHistoryOutputDTO[] {
+    return gameHistoryList.map((gameHistory) => GameHistoryMapper.toOutputDto(gameHistory));
+  }
+}
+
+export class GameReplayMapper {
+  public static toOutputDto(gameHistory: GameHistory): GameReplayOutputDTO {
+    return {
+      blackPlayer: gameHistory.blackPlayer,
+      whitePlayer: gameHistory.whitePlayer,
+      winner: gameHistory.winner,
+      moves: gameHistory.moves,
+    };
+  }
+
+  public static toOutputDtoList(gameHistoryList: GameHistory[]): GameReplayOutputDTO[] {
     return gameHistoryList.map((gameHistory) => GameHistoryMapper.toOutputDto(gameHistory));
   }
 }

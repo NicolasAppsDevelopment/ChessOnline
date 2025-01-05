@@ -1,4 +1,4 @@
-import { UserOutputDTO } from '../dto/user.dto'
+import { UserOutputDTO, UserRankOutputDTO } from '../dto/user.dto'
 import { notFound } from "../error/NotFoundError";
 import { UserMapper } from "../mapper/user.mapper";
 import { User } from "../models/User";
@@ -15,16 +15,7 @@ export class UserService {
     }
   }
 
-  public async getUserByUsername(name: string): Promise<User> {
-    let user = await User.findOne({where: {username: name}});
-    if (user) {
-      return user;
-    } else {
-      notFound("User");
-    }
-  }
-
-  public async getLeaderboard(): Promise<User[]> {
+  public async getLeaderboard(): Promise<UserRankOutputDTO[]> {
     const users = await User.findAll({
       attributes: ['id', 'username', 'elo'],
       order: [['elo', 'DESC']]

@@ -12,7 +12,7 @@ import { Button, Tag } from 'primevue'
 import { useConfirm } from "primevue/useconfirm";
 
 import { getChessboardFromRawBoard } from '@/mapper/ChessboardMapper'
-import type { GameHistory } from '@/models/GameHistory'
+import type { GameReplay } from '@/models/GameHistory'
 import { Position } from '@/models/Position'
 import { Chessboard } from "@/models/Chessboard";
 import type { Move } from "@/models/Move";
@@ -30,7 +30,7 @@ const userId = storedUserService.storedUser.value.id;
 
 const gameHistoryService = useGameHistoryService();
 const gameHistorId = parseInt(route.params.id as string);
-const gameHistory = ref<GameHistory>();
+const gameHistory = ref<GameReplay>();
 
 const moveNumber = ref<number>(0);
 let moves: Move[] | null | undefined = null;

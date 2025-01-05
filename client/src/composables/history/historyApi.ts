@@ -2,7 +2,7 @@ import axiosInstance from '@/config/AxiosConfig';
 import {
   ApiUrlGetUserGameHistories,
 } from '@/constants/ApiUrl'
-import type { GameHistory } from '@/models/GameHistory'
+import type { GameHistory, GameReplay } from '@/models/GameHistory'
 
 export function useGameHistoryApi() {
   return {
@@ -10,7 +10,7 @@ export function useGameHistoryApi() {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}user/` + id);
       return res.data;
     },
-    async getGameHistoryById(id: number): Promise<GameHistory> {
+    async getGameHistoryById(id: number): Promise<GameReplay> {
       const res = await axiosInstance.get(`${ApiUrlGetUserGameHistories}` + id);
       return res.data;
     },

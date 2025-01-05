@@ -183,11 +183,6 @@
 						"type": "string",
 						"format": "date-time"
 					},
-					"endDate": {
-						"type": "string",
-						"format": "date-time",
-						"nullable": true
-					},
 					"room": {
 						"allOf": [
 							{
@@ -237,6 +232,43 @@
 					"room",
 					"isPublic"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GameReplayOutputDTO": {
+				"properties": {
+					"blackPlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"whitePlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"winner": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"moves": {
+						"items": {
+							"$ref": "#/components/schemas/MoveOutputDTO"
+						},
+						"type": "array",
+						"nullable": true
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -536,7 +568,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/UserOutputDTO"
+										"$ref": "#/components/schemas/UserRankOutputDTO"
 									},
 									"type": "array"
 								}
@@ -600,7 +632,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GameHistoryOutputDTO"
+									"$ref": "#/components/schemas/GameReplayOutputDTO"
 								}
 							}
 						}
@@ -773,6 +805,91 @@
 						}
 					}
 				]
+			}
+		},
+		"/gameHistories/visibility": {
+			"put": {
+				"operationId": "UpdateGameHistory",
+				"responses": {
+					"204": {
+						"description": "No content"
+					}
+				},
+				"tags": [
+					"GameHistories"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/GameHistoryVisibilityInputPutDTO"
+							}
+						}
+					}
+				}
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GameReplayOutputDTO": {
+				"properties": {
+					"blackPlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"whitePlayer": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"winner": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/UserRankOutputDTO"
+							}
+						],
+						"nullable": true
+					},
+					"moves": {
+						"items": {
+							"$ref": "#/components/schemas/MoveOutputDTO"
+						},
+						"type": "array",
+						"nullable": true
+					}
+				},
+			"GameHistoryVisibilityInputPutDTO": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"isPublic": {
+						"type": "boolean"
+					}
+				},
+				"required": [
+					"id",
+					"isPublic"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+										"$ref": "#/components/schemas/UserRankOutputDTO"
+									"$ref": "#/components/schemas/GameReplayOutputDTO"
 			}
 		},
 		"/gameHistories/visibility": {
