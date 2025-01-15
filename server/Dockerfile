@@ -12,7 +12,7 @@ COPY . .
 
 RUN npm run build
 
-FROM node:slim
+FROM node
 
 ENV NODE_ENV production
 USER node
@@ -23,7 +23,7 @@ WORKDIR /usr/src/app
 # Install app dependencies
 COPY package*.json ./
 
-RUN sudo apt-get update && sudo apt-get install -y python3 python3-pip build-essential && npm config set python /usr/bin/python3 && npm ci --production
+RUN npm ci --production
 
 COPY --from=builder /usr/src/app/dist ./dist
 
