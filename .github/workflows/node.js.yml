@@ -9,6 +9,9 @@ on:
   pull_request:
     branches: [ "main" ]
 
+env:
+    DOCKER_IMAGE_NAME: chess-online-back/${{ vars.DOCKERHUB_USERNAME }}:${{ github.ref_name }}-latest
+
 jobs:
   login:
     runs-on: ubuntu-latest
@@ -51,5 +54,6 @@ jobs:
     - name: Build and push Docker image
       working-directory: ./server
       run: |
-        docker build -t chess-online-back .
-        docker push ${{ vars.DOCKERHUB_USERNAME }}/chess-online-back:latest
+        
+        docker build -t ${{ env.DOCKER_IMAGE_NAME }} .
+        docker push ${{ env.DOCKER_IMAGE_NAME }}
