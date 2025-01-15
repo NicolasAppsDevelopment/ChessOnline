@@ -34,6 +34,8 @@ jobs:
         npm run generate
         npm run build --if-present
     - name: Run linter
+      working-directory: ./server
       run: npm run lint
     - name: Run typecheck
+      working-directory: ./server
       run: npm run typecheck
