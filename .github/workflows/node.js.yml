@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-    DOCKER_IMAGE_NAME: chess-online-back/${{ vars.DOCKERHUB_USERNAME }}:${{ github.ref_name }}-latest
+    DOCKER_IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/chess-online-back:${{ github.ref_name }}-latest
 
 jobs:
   login:
