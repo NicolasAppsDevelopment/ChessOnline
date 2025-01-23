@@ -136,11 +136,11 @@ watch(drawAskingOpponentPlayerId, async (newVal) => {
 
 <template>
   <Navbar></Navbar>
-  <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+  <ChessBoardComponent v-model="chessboard as Chessboard"></ChessBoardComponent>
   <div class="flex gap-1 p-1">
     <Button label="Resign" icon="fa-solid fa-flag" @click="resign()"></Button>
     <Button label="Draw" icon="fa-solid fa-equals" @click="askDraw()"></Button>
   </div>
-  <EndGameWindow v-model="chessboard"></EndGameWindow>
+  <EndGameWindow v-model="chessboard as Chessboard"></EndGameWindow>
   <PromotionSelectorWindow></PromotionSelectorWindow>
 </template>

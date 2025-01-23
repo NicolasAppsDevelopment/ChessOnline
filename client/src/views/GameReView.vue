@@ -116,7 +116,7 @@ function next() {
         </div>
       </Tag>
     </RouterLink>
-    <ChessBoardComponent v-model="chessboard"></ChessBoardComponent>
+    <ChessBoardComponent v-model="chessboard as Chessboard"></ChessBoardComponent>
     <RouterLink :to="'/user/' + gameHistory?.whitePlayer?.id">
       <Tag class="player-tag" severity="success">
         <div class="flex items-center gap-2 px-1">
