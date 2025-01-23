@@ -28,7 +28,7 @@ const gameHistory = ref<GameReplay>();
 const moveNumber = ref<number>(0);
 let moves: MoveReplay[] | null | undefined = null;
 
-let chessboardStates: Chessboard[] = [] ;
+const chessboardStates: Chessboard[] = [] ;
 const processing = ref<boolean>(true);
 
 onMounted(async () => {
@@ -44,7 +44,7 @@ onMounted(async () => {
   for (const move of moves) {
     chessboard.value.replayMovePiece(new Position(move.from_x, move.from_y), new Position(move.to_x, move.to_y))
     if (move.promotion) {
-      let cellToModify = chessboard.value.getCellFromXY(move.to_x, move.to_y)
+      const cellToModify = chessboard.value.getCellFromXY(move.to_x, move.to_y)
       if (cellToModify != null) {
         if (cellToModify.piece != null) {
           switch (move.promotionIntoWhichPiece) {

@@ -116,7 +116,7 @@ export class Chessboard {
   }
 
   getBoard(): Cell[][] {
-    let board: Cell[][] = [];
+    const board: Cell[][] = [];
 
     for (let x = 0; x < 8; x++) {
       board[x] = [];

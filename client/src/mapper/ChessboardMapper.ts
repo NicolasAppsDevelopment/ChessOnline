@@ -4,7 +4,7 @@ import { getPieceFromRaw } from '@/mapper/PieceMapper'
 import { Chessboard } from '@/models/Chessboard'
 
 export function getCellsFromRawBoard(board: any) {
-  let cells: Cell[] = [];
+  const cells: Cell[] = [];
   for (const cell of board) {
     cells.push(new Cell(getPositionFromRaw(cell.position), getPieceFromRaw(cell.piece), cell.isHighlighted));
   }
@@ -12,7 +12,7 @@ export function getCellsFromRawBoard(board: any) {
 }
 
 export function getChessboardFromRawBoard(rawChessboard: any) {
-  let chessboard: Chessboard = new Chessboard();
+  const chessboard: Chessboard = new Chessboard();
   chessboard.board = getCellsFromRawBoard(rawChessboard.board);
   chessboard.colorTurn = rawChessboard.colorTurn;
   chessboard.whitePlayerId = rawChessboard.whitePlayerId;

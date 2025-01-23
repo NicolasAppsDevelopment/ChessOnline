@@ -5,7 +5,7 @@ export function getPositionFromRaw(position: any) {
 }
 
 export function getPositionArrayFromRaw(positions: any) {
-  let positionArray: Position[] = [];
+  const positionArray: Position[] = [];
   for (const position of positions) {
     positionArray.push(getPositionFromRaw(position));
   }

@@ -34,8 +34,8 @@ import { AxiosError } from 'axios'
 const { login } = useUserService();
 const user = ref<User>({ username: "", password: "", id: -1 });
 
-let lastError = ref("");
-let processing = ref(false);
+const lastError = ref("");
+const processing = ref(false);
 
 async function getToken() {
   try {

@@ -16,8 +16,8 @@ onMounted(async () => {
   getRooms();
 });
 
-let lastError = ref("");
-let processing = ref(false);
+const lastError = ref("");
+const processing = ref(false);
 async function getRooms() {
   try {
     lastError.value = "";

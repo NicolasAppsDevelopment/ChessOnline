@@ -24,15 +24,15 @@ const userId = storedUserService.storedUser.value.id;
 const confirm = useConfirm();
 const toast = useToast();
 const isOwner = ref(false);
-let lastError = ref("");
-let processing = ref(false);
+const lastError = ref("");
+const processing = ref(false);
 
 const user = ref<User>({ username: "", password: "", id: -1, elo: 0 });
 
-let winPercentage = ref<number>(0);
-let averageGameDuraion = ref<number>(0);
-let averageGameMoves = ref<number>(0);
-let totalGameTime = ref<number>(0);
+const winPercentage = ref<number>(0);
+const averageGameDuraion = ref<number>(0);
+const averageGameMoves = ref<number>(0);
+const totalGameTime = ref<number>(0);
 
 onMounted(async () => {
   getData();
