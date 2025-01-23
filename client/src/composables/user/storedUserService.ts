@@ -9,7 +9,7 @@ import type { UserJwt } from '@/models/UserJwt'
 const storedUser = ref<User>({ username: '', password: '', id: -1 });
 const userApi = useUserApi();
 
-let refreshTimeout: number | null = null;
+let refreshTimeout: NodeJS.Timeout | null = null;
 
 export function useStoredUserService() {
   return {
