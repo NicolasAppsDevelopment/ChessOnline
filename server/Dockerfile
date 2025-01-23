@@ -28,4 +28,4 @@ RUN npm ci --production
 COPY --from=builder /usr/src/app/build ./build
 
 EXPOSE 8100
-CMD [ "node", "build/index.js" ]
+CMD [ "node", "build/app.js" ]
